@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:srcCompat="@drawable/anonymous_user_image" />
+
+    <TextView
+        android:id="@+id/usernameView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="17dp"
+        android:layout_marginStart="17dp"
+        android:layout_toEndOf="@+id/imageButton1"
+        android:layout_toRightOf="@+id/imageButton1"
+        android:text="username" />
+
+    <TextView
+        android:id="@+id/timeView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="21dp"
+        android:layout_marginStart="21dp"
+        android:layout_toEndOf="@+id/usernameView1"
+        android:layout_toRightOf="@+id/usernameView1"
+        android:text="time" />
+
+    <TextView
+        android:id="@+id/editedView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/timeView1"
+        android:layout_marginLeft="21dp"
+        android:layout_marginStart="21dp"
+        android:layout_toEndOf="@+id/timeView1"
+        android:layout_toRightOf="@+id/timeView1"
+        android:text="Edited" />
+
+    <TextView
+        android:id="@+id/qstringView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/usernameView1"
+        android:layout_alignStart="@+id/usernameView1"
+        android:layout_below="@+id/usernameView1"
+        android:inputType="textCapSentences|textMultiLine"
+        android:text="qstring" />
+
+    <TextView
+        android:id="@+id/categoryView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/qstringView1"
+        android:layout_alignStart="@+id/qstringView1"
+        android:layout_below="@+id/qstringView1"
+        android:text="category" />
+
+    <TextView
+        android:id="@+id/viewsView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/timeView1"
+        android:layout_alignStart="@+id/timeView1"
+        android:layout_below="@+id/qstringView1"
+        android:text="views" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        app:srcCompat="@drawable/right_arrow_icon" />
+</RelativeLayout>

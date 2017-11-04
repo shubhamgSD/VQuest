@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category_array">
+        <item>General</item>
+        <item>Common Academic</item>
+        <item>Academic-CSE</item>
+        <item>Academic-ECE</item>
+        <item>Academic-ME</item>
+        <item>Hostel</item>
+        <item>Mess</item>
+        <item>Events</item>
+    </string-array>
+</resources>
