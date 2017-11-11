@@ -3,6 +3,7 @@ package com.csy.vquest;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Timestamp;
 import java.util.Map;
@@ -25,7 +29,7 @@ import java.util.Map;
 
 public class QuestionFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
-    private int qno = 2;
+    private long qno = 4;
 
     private String category = "";
     private String question = "";
@@ -42,6 +46,8 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
     private CheckBox checkBox;
     private EditText editText;
     private Spinner spinner;
+    private FirebaseDatabase database;
+    private long noOfChild=0;
 
     public QuestionFragment() {
         // Required empty public constructor
@@ -67,17 +73,36 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
             }
         });
 
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference rootRef = database.getReference();
+        DatabaseReference questionRef = rootRef.child("question");
+
+        questionRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                noOfChild = dataSnapshot.getChildrenCount();
+                Log.d("Value","onDataChannge"+noOfChild);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         btn1 = (Button) view.findViewById(R.id.button4);
         btn1.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
                 question = editText.getText().toString();
-
+                noOfChild = noOfChild+1;
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference rootRef = database.getReference();
                 DatabaseReference questionRef = rootRef.child("question");
-                DatabaseReference newQuestionRef = questionRef.child(String.valueOf(qno));
+
+                DatabaseReference newQuestionRef = questionRef.child(String.valueOf(noOfChild));
                 newQuestionRef.child("category").setValue(category);
                 newQuestionRef.child("qanonymity").setValue(anonymity);
                 newQuestionRef.child("qedited").setValue(edited);
