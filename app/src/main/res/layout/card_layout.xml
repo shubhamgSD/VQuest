@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:cardCornerRadius="20dp"
+        app:contentPadding="10dp"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@color/questions">
+
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+           <TextView
+               android:id="@+id/textView1"
+               android:layout_width="match_parent"
+               android:layout_height="70dp"
+               android:layout_above="@+id/textView10"
+               android:layout_alignParentLeft="true"
+               android:layout_alignParentStart="true"
+               android:layout_marginBottom="14dp"
+               android:text="Question String and Category" />
+
+           <ImageView
+               android:id="@+id/imageView4"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignParentLeft="true"
+               android:layout_alignParentStart="true"
+               android:layout_alignParentTop="true"
+               android:src="@drawable/anonymous_user_image" />
+
+           <TextView
+               android:id="@+id/textView6"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignParentTop="true"
+               android:layout_marginLeft="18dp"
+               android:layout_marginStart="18dp"
+               android:layout_toEndOf="@+id/imageView4"
+               android:layout_toRightOf="@+id/imageView4"
+               android:text="UserName" />
+
+
+           <TextView
+               android:id="@+id/textView8"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignLeft="@+id/textView6"
+               android:layout_alignStart="@+id/textView6"
+               android:layout_below="@+id/textView6"
+               android:text="Time" />
+
+           <TextView
+               android:id="@+id/textView10"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignParentBottom="true"
+               android:layout_marginBottom="11dp"
+               android:layout_marginLeft="40dp"
+               android:layout_marginStart="40dp"
+               android:layout_toEndOf="@+id/button3"
+               android:layout_toRightOf="@+id/button3"
+               android:text="views" />
+
+           <TextView
+               android:id="@+id/textView3"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignBaseline="@+id/textView10"
+               android:layout_alignBottom="@+id/textView10"
+               android:layout_alignParentEnd="true"
+               android:layout_alignParentRight="true"
+               android:layout_marginEnd="11dp"
+               android:layout_marginRight="11dp"
+               android:text="replies" />
+       </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

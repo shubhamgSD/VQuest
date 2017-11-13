@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/VQuest.iml" filepath="$PROJECT_DIR$/.idea/VQuest.iml" />
-      <module fileurl="file://C:\MinorProject\VQuest\VQuest.iml" filepath="C:\MinorProject\VQuest\VQuest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/VQuest.iml" filepath="$PROJECT_DIR$/VQuest.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

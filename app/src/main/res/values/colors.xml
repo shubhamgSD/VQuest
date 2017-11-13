@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#100f10</color>
+    <color name="question">#beccf2</color>
+    <color name="questions">#ffffff</color>
+    <color name="answers">#ffffff</color>
+    <color name="back_questions">#eaecee</color>
+    <color name="back_answers">#eaecee</color>
+
 </resources>

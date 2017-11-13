@@ -42,10 +42,8 @@ public class CustomFirebaseListAdapter extends FirebaseListAdapter<QuestionBean>
             QuestionBean model = getItem(position);
 
             TextView qstringView = (TextView) view.findViewById(R.id.textView1);
-            TextView categoryView = (TextView) view.findViewById(R.id.textView2);
-
             qstringView.setText(model.getQstring());
-            categoryView.setText(model.getCategory());
+
 
         return view;
 

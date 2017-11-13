@@ -32,6 +32,7 @@ public class AnsFragment extends Fragment {
     QuestionBean message;
     String key;
     FirebaseListAdapter<AnswerBean> firebaseListAdapter;
+    int flag=0;
     public AnsFragment() {
         // Required empty public constructor
     }
@@ -73,14 +74,12 @@ public class AnsFragment extends Fragment {
                    // Log.d("check  after inflate >","view= "+view);
                 }
 
-                AnswerBean model =  getItem(position);
-
-                TextView astringView = (TextView) view.findViewById(R.id.tv3);
-                TextView astringView2 = (TextView) view.findViewById(R.id.tv4);
 
 
-                astringView.setText(model.getAstring());
-                astringView2.setText(model.getAstring());
+                    AnswerBean model = getItem(position);
+
+                    TextView astringView = (TextView) view.findViewById(R.id.tv3);
+                    astringView.setText(model.getAstring());
 
                 return view;
 

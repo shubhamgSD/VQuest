@@ -44,7 +44,7 @@ public class AnsOfQuestion extends Fragment {
 
        final  EditText editText = (EditText) view.findViewById(R.id.editText);
         btn = (Button) view.findViewById(R.id.button6);
-        final EditText editText2 = (EditText) view.findViewById(R.id.editText2);
+
 
 
         if(getArguments()!=null)

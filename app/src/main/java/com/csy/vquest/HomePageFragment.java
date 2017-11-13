@@ -50,7 +50,7 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
         DatabaseReference questionRef = rootRef.child("question");
 
         firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
-                QuestionBean.class,R.layout.check_layout,questionRef);
+                QuestionBean.class,R.layout.card_layout,questionRef);
 
         listView.setAdapter(firebaseListAdapter);
         listView.setOnItemClickListener(this);
