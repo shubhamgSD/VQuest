@@ -1,5 +1,6 @@
 package com.csy.vquest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,9 +18,14 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class NavigationDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
+
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +33,8 @@ public class NavigationDrawerActivity extends AppCompatActivity
         setContentView(R.layout.activity_navigation_drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        firebaseAuth = FirebaseAuth.getInstance();
+
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -48,7 +56,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
         Fragment fragment = new HomePageFragment();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment, fragment)
+                .replace(R.id.fragment, fragment, "home_page_fragment")
                 .commit();
 
 
@@ -60,8 +68,14 @@ public class NavigationDrawerActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        }
+        else {
+
+            HomePageFragment homePageFragment = (HomePageFragment) getSupportFragmentManager().findFragmentByTag("home_page_fragment");
+            if(homePageFragment != null && homePageFragment.isVisible())
+                moveTaskToBack(true);
+            else
+                super.onBackPressed();
         }
     }
 
@@ -91,19 +105,19 @@ public class NavigationDrawerActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+            case R.id.nav_home:
+                Fragment fragment = new HomePageFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, fragment, "home_page_fragment");
 
-        } else if (id == R.id.nav_slideshow) {
+            case R.id.nav_logout:
+                firebaseAuth.signOut();
+                Intent intent = new Intent(this, SignInActivity.class);
+                startActivity(intent);
+                break;
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
 
         }
 

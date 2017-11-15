@@ -81,6 +81,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                                 // ...
                             }
                         });
+                break;
 
             case R.id.link_signup:
                 Intent intent = new Intent(this, SignUpActivity.class);
@@ -89,5 +90,10 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }
