@@ -6,6 +6,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import android.widget.Toast;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.Date;
 
@@ -34,6 +38,177 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
 
     public HomePageFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.home_filter_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.isChecked())
+            item.setChecked(false);
+        else
+            item.setChecked(true);
+
+        Query query;
+
+        switch(item.getItemId()) {
+
+            case R.id.fil_all:
+
+            case R.id.fil_unanswered:
+                if(item.isChecked()) {
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question");
+
+                }
+
+
+            case R.id.fil_answered:
+
+            case R.id.fil_general:
+                if(item.isChecked())
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question")
+                            .orderByChild("category")
+                            .equalTo("General");
+                else
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question");
+                break;
+
+            case R.id.fil_academic_common:
+                if(item.isChecked())
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question")
+                            .orderByChild("category")
+                            .equalTo("Common Academic");
+                else
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question");
+                break;
+
+            case R.id.fil_academic_cse:
+                if(item.isChecked())
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question")
+                            .orderByChild("category")
+                            .equalTo("Academic-CSE");
+                else
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question");
+                break;
+
+            case R.id.fil_academic_ece:
+                if(item.isChecked())
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question")
+                            .orderByChild("category")
+                            .equalTo("Academic-ECE");
+                else
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question");
+                break;
+
+            case R.id.fil_academic_me:
+                if(item.isChecked())
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question")
+                            .orderByChild("category")
+                            .equalTo("Academic-ME");
+                else
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question");
+                break;
+
+            case R.id.fil_hostel:
+                if(item.isChecked())
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question")
+                            .orderByChild("category")
+                            .equalTo("Hostel");
+                else
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question");
+                break;
+
+            case R.id.fil_mess:
+                if(item.isChecked())
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question")
+                            .orderByChild("category")
+                            .equalTo("Mess");
+                else
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question");
+                break;
+
+            case R.id.fil_events:
+                if(item.isChecked())
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question")
+                            .orderByChild("category")
+                            .equalTo("Events");
+                else
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question");
+                break;
+
+            default:
+                query = FirebaseDatabase
+                        .getInstance()
+                        .getReference()
+                        .child("question");
+                break;
+
+        }
+
+        listView.setAdapter(new CustomFirebaseListAdapter(
+                getActivity(),
+                QuestionBean.class,
+                R.layout.card_layout,
+                query
+        ));
+
+        return true;
+
     }
 
     @Override

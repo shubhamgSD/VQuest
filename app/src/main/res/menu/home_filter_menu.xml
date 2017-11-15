@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--
+    <item
+        android:id="@+id/filterSpinner"
+        android:title="Filter"
+        app:actionViewClass="android.widget.Spinner"
+        android:background="#ff00"
+        app:showAsAction="always" />-->
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/fil_all"
+            android:title="All questions"/>
+        <item android:id="@+id/fil_answered"
+            android:title="Answered"/>
+        <item android:id="@+id/fil_unanswered"
+            android:title="Unanswered"/>
+    </group>
+
+    <!--<item
+        android:id="@+id/fil_spinner"
+        android:title="Category"
+        app:actionViewClass="android.widget.Spinner"
+        />-->
+
+    <item android:title="Category">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@+id/fil_general"
+                    android:title="General"/>
+
+                <item android:title="Academic">
+                    <menu>
+                        <group android:checkableBehavior="single">
+                            <item android:id="@+id/fil_academic_common"
+                                android:title="Common Academic"/>
+                            <item android:id="@+id/fil_academic_cse"
+                                android:title="Academic-CSE"/>
+                            <item android:id="@+id/fil_academic_ece"
+                                android:title="Academic-ECE"/>
+                            <item android:id="@+id/fil_academic_me"
+                                android:title="Academic-ME"/>
+                        </group>
+                    </menu>
+                </item>
+
+                <item android:id="@+id/fil_hostel"
+                    android:title="Hostel"/>
+                <item android:id="@+id/fil_mess"
+                    android:title="Mess"/>
+                <item android:id="@+id/fil_events"
+                    android:title="Events"/>
+            </group>
+        </menu>
+    </item>
+
+
+</menu>
