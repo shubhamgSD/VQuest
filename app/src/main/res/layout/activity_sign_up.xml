@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.csy.vquest.SignUpActivity">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <EditText
+                android:id="@+id/input_fname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:inputType="textPersonName"
+                android:hint="First name"/>
+
+            <EditText
+                android:id="@+id/input_lname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:inputType="textPersonName"
+                android:hint="Last name"/>
+
+            <EditText
+                android:id="@+id/input_new_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:inputType="textEmailAddress"
+                android:hint="Email address"/>
+
+            <EditText
+                android:id="@+id/input_uname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:inputType="text"
+                android:hint="Unique username"/>
+
+            <EditText
+                android:id="@+id/input_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:inputType="number"
+                android:hint="Contact no."/>
+
+            <EditText
+                android:id="@+id/input_new_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:inputType="textPassword"
+                android:hint="Set password"/>
+
+            <EditText
+                android:id="@+id/input_con_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:inputType="textPassword"
+                android:hint="Confirm password"/>
+
+            <CheckBox
+                android:id="@+id/check_anonym"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Use app anonymously"
+                android:checked="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"/>
+
+            <CheckBox
+                android:id="@+id/check_terms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Agree with terms and conditions"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"/>
+
+            <Button
+                android:id="@+id/btn_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sign Up !"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

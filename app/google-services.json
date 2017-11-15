@@ -60,17 +60,61 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:146460896954:android:b3b4a31cdda60ce6",
+        "mobilesdk_app_id": "1:146460896954:android:1ad18b00fb818a96",
         "android_client_info": {
-          "package_name": "com.example.yash_mishra.csy"
+          "package_name": "com.example.yash_mishra.myproject"
         }
       },
       "oauth_client": [
         {
-          "client_id": "146460896954-3i9qsce0ue3699brudl6ao6f277vikd5.apps.googleusercontent.com",
+          "client_id": "146460896954-ovll17fj881d3r8c9jqgr5ja05peglgn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.yash_mishra.csy",
+            "package_name": "com.example.yash_mishra.myproject",
+            "certificate_hash": "86ac470badd70436cdb04c76505f27b50c789f60"
+          }
+        },
+        {
+          "client_id": "146460896954-glmeeloh2j6p8kls8p6u9ssvhkkkqh1r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGgbx42tZEam2yJG96NqMcJ4XZVyZvte4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "146460896954-glmeeloh2j6p8kls8p6u9ssvhkkkqh1r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146460896954:android:2b6b89c89b60ceac",
+        "android_client_info": {
+          "package_name": "com.example.yash_mishra.ysc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "146460896954-c0se2v50ivftip2gae21v3tdb5kbmub0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.yash_mishra.ysc",
             "certificate_hash": "86ac470badd70436cdb04c76505f27b50c789f60"
           }
         },
