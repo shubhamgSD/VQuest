@@ -120,7 +120,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     uname_valid = false;
                 }
                 else {
-//                        Log.d("Error", memberRef.orderByChild("username").equalTo(uname)+uname);
                     memberRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
