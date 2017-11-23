@@ -81,7 +81,8 @@ public class AnsOfQuestion extends Fragment {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference rootRef = database.getReference();
                 DatabaseReference questionRef = rootRef.child("answer").child(key);
-                final DatabaseReference newAnswerRef = questionRef.child(noOfChild+"");
+                rootRef.child("question").child(key).child("replies").setValue(noOfChild);
+                final DatabaseReference newAnswerRef = questionRef.child(String.valueOf(noOfChild));
                 newAnswerRef.child("aanonymity").setValue(1);
                 newAnswerRef.child("aedited").setValue(0);
                 newAnswerRef.child("astring").setValue(editText.getText().toString());
