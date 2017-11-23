@@ -44,6 +44,7 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
         // Required empty public constructor
     }
 
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.home_filter_menu, menu);

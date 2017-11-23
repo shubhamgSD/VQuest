@@ -14,7 +14,7 @@
         app:cardCornerRadius="5dp"
         android:layout_margin="10dp"
         app:contentPadding="5dp"
-        app:cardBackgroundColor="@color/question"
+        android:background="@drawable/abcdef"
         >
 
         <RelativeLayout
@@ -30,7 +30,9 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:text="Answer" />
+                android:text="Answer"
+                android:textColor="@color/colorPrimary"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"/>
 
             <TextView
                 android:id="@+id/qstring_view1"
@@ -72,7 +74,9 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:text="Report" />
+                android:text="Report"
+                android:textColor="@color/red"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"/>
 
             <TextView
                 android:id="@+id/time_view2"

@@ -1,6 +1,7 @@
 package com.csy.vquest;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,16 +54,63 @@ public class CustomFirebaseListAdapter extends FirebaseListAdapter<QuestionBean>
         qstringView.setText(model.getQstring());
         categoryView.setText(model.getCategory());
 
-        if(model.getQanonymity() == 0)
-            unameView.setText(model.getUsername());
-        else
-            unameView.setText("Anonymous");
+        if(model.getCategory().equals("Events"))
+        {
 
+            categoryView.setTextColor(Color.parseColor("#303F9F"));
+        }
+        else if(model.getCategory().equals("General"))
+        {
+
+            categoryView.setTextColor(Color.parseColor("#FF3DB927"));
+        }
+        else if(model.getCategory().equals("Common Academic"))
+        {
+
+            categoryView.setTextColor(Color.parseColor("#FFF4F727"));
+        }
+        else if(model.getCategory().equals("Academic-CSE"))
+        {
+
+            categoryView.setTextColor(Color.parseColor("#FFFF0000"));
+        }
+        else if(model.getCategory().equals("Academic-ECE"))
+        {
+
+            categoryView.setTextColor(Color.parseColor("#FFE433D8"));
+        }
+        else if(model.getCategory().equals("Academic-ME"))
+        {
+
+            categoryView.setTextColor(Color.parseColor("#FFF98F33"));
+        }
+        else if(model.getCategory().equals("Hostel"))
+        {
+
+            categoryView.setTextColor(Color.parseColor("#FFC73FE9"));
+        }
+        else if(model.getCategory().equals("Mess"))
+        {
+
+            categoryView.setTextColor(Color.parseColor("#FF30CEC0"));
+        }
+
+
+        if(model.getQanonymity() == 0) {
+            unameView.setText(model.getUsername());
+            unameView.setTextColor(Color.parseColor("#0000EE"));
+
+        }
+        else {
+            unameView.setText("Anonymous");
+        }
         viewsView.setText(String.valueOf(model.getViews()) + " views");
 
         Date date = new Date(model.getTime());
         timeView.setText(date.toString());
-        replyView.setText(model.getReplies() + " replies");
+
+        replyView.setText(model.getReplies()+" replies");
+
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 
