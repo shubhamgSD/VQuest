@@ -1,31 +1,32 @@
+package com.csy.vquest;
 
-        package com.csy.vquest;
+import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Toast;
 
-        import android.content.Intent;
-        import android.support.annotation.NonNull;
-        import android.support.v7.app.AppCompatActivity;
-        import android.os.Bundle;
-        import android.text.Editable;
-        import android.text.TextWatcher;
-        import android.util.Log;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.CheckBox;
-        import android.widget.CompoundButton;
-        import android.widget.EditText;
-        import android.widget.Toast;
-
-        import com.google.android.gms.tasks.OnCompleteListener;
-        import com.google.android.gms.tasks.Task;
-        import com.google.firebase.auth.AuthResult;
-        import com.google.firebase.auth.FirebaseAuth;
-        import com.google.firebase.auth.FirebaseUser;
-        import com.google.firebase.database.DataSnapshot;
-        import com.google.firebase.database.DatabaseError;
-        import com.google.firebase.database.DatabaseReference;
-        import com.google.firebase.database.FirebaseDatabase;
-        import com.google.firebase.database.Query;
-        import com.google.firebase.database.ValueEventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
@@ -71,6 +72,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        setTitle("Sign Up");
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         fnameText = (EditText) findViewById(R.id.input_fname);
@@ -93,67 +96,77 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         anonymCheck.setOnCheckedChangeListener(this);
         termsCheck.setOnCheckedChangeListener(this);
         signupBtn.setOnClickListener(this);
+        unameText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-//        unameText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//                uname = unameText.getText().toString().trim();
-//                if (uname.isEmpty()){
-//                    unameText.setError("Required");
-//                    uname_valid = false;
-//                }
-//                else if(uname.contains(" ")){
-//                    unameText.setError("No space allowed");
-//                    uname_valid = false;
-//                }
-//                else {
-////                        Log.d("Error", memberRef.orderByChild("username").equalTo(uname)+uname);
-//                    memberRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            for (DataSnapshot data :
-//                                    dataSnapshot.getChildren()) {
-//                                unameText.setError(null);
-//                                uname_valid = true;
-//                                if (data.child(uname).exists()){
-//                                    unameText.setError("Already exists");
-//                                    uname_valid = false;
-//                                    break;
-//                                }
-//
-//                            }
-//
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(DatabaseError databaseError) {
-//
-//                        }
-//                    });
-//
-//                }
-//
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                uname = unameText.getText().toString().trim();
+                if (uname.isEmpty()){
+                    Log.d("empty", "working");
+                    unameText.setError("Required");
+                    uname_valid = false;
+                }
+                else if(uname.contains(" ")){
+                        unameText.setError("No space allowed");
+                        uname_valid = false;
+                }
+                else if(uname.contains("@")){
+                    unameText.setError("No @ allowed");
+                    uname_valid = false;
+                }
+                else {
+                    memberRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            for (DataSnapshot data :
+                                    dataSnapshot.getChildren()) {
+                                unameText.setError(null);
+                                uname_valid = true;
+                                if (data.child("username").getValue(String.class).equalsIgnoreCase(uname)){
+                                    unameText.setError("Already exists");
+                                    uname_valid = false;
+                                    break;
+                                }
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+
+
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 
     @Override
     public void onClick(View v) {
+
+//        View view = this.getCurrentFocus();
+//        if (view != null) {
+//            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//        }
 
         if(v.getId() == R.id.btn_signup) {
 
@@ -251,13 +264,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             if (fname_valid && lname_valid && email_valid && uname_valid && contact_valid && pass_valid && conpass_valid && terms_valid) {
 
                 Log.d(email, pass);
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                user.sendEmailVerification().addOnCompleteListener(this, new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//
-//                    }
-//                });
 
                 firebaseAuth.createUserWithEmailAndPassword(email, pass)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -269,25 +275,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 //                                    updateUI(user);
 
                                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                                    firebaseUser.sendEmailVerification().addOnCompleteListener(SignUpActivity.this,new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-
-                                            Toast.makeText(SignUpActivity.this, "OnComplete", Toast.LENGTH_LONG).show();
-
-                                            if (task.isSuccessful()) {
-                                                Toast.makeText(SignUpActivity.this,
-                                                        "Verification email sent to ",
-                                                        Toast.LENGTH_LONG).show();
-                                            } else {
-                                                //Log.e(TAG, "sendEmailVerification", task.getException());
-                                                Toast.makeText(SignUpActivity.this,
-                                                        "Failed to send verification email.",
-                                                        Toast.LENGTH_LONG).show();
-                                            }
-
-                                        }
-                                    });
+                                    firebaseUser.sendEmailVerification();
 
                                     DatabaseReference newMemberRef = memberRef.child(firebaseUser.getUid());
                                     newMemberRef.child("aboutme").setValue(null);
@@ -298,9 +286,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                     newMemberRef.child("phone").setValue(contactNum);
                                     newMemberRef.child("status").setValue("Student");
                                     newMemberRef.child("username").setValue(uname);
-//
-//                                    Toast.makeText(SignUpActivity.this, "Authentication successfull.",
-//                                            Toast.LENGTH_LONG).show();
+
+                                    Toast.makeText(SignUpActivity.this, "Authentication successfull.",
+                                            Toast.LENGTH_LONG).show();
 
                                     onBackPressed();
 
@@ -344,4 +332,3 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 }
-
