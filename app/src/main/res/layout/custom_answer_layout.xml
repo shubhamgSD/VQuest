@@ -20,16 +20,17 @@
 
 
         <TextView
-            android:id="@+id/tv3"
+            android:id="@+id/astring_view"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:layout_above="@+id/button10"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:text="Answer String" />
+            android:layout_centerVertical="true"
+            android:text="Answer String"
+            android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/uimage_view1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -38,18 +39,19 @@
             android:src="@drawable/anonymous_user_image" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/uname_view2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="18dp"
             android:layout_marginStart="18dp"
-            android:layout_toEndOf="@+id/imageView4"
-            android:layout_toRightOf="@+id/imageView4"
-            android:text="UserName" />
+            android:layout_toEndOf="@+id/uimage_view1"
+            android:layout_toRightOf="@+id/uimage_view1"
+            android:text="UserName"
+            android:textStyle="bold" />
 
         <Button
-            android:id="@+id/button9"
+            android:id="@+id/btn_report1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -58,23 +60,34 @@
             android:text="Report" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/time_view2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView6"
-            android:layout_alignStart="@+id/textView6"
-            android:layout_below="@+id/textView6"
+            android:layout_alignLeft="@+id/uname_view2"
+            android:layout_alignStart="@+id/uname_view2"
+            android:layout_below="@+id/uname_view2"
             android:text="Time" />
 
         <Button
-            android:id="@+id/button10"
+            android:id="@+id/btn_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:text="Like" />
 
+        <TextView
+            android:id="@+id/likes_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/btn_like"
+            android:layout_alignBottom="@+id/btn_like"
+            android:layout_marginLeft="13dp"
+            android:layout_marginStart="13dp"
+            android:layout_toEndOf="@+id/btn_like"
+            android:layout_toRightOf="@+id/btn_like"
+            android:text="Likes" />
 
 
     </RelativeLayout>

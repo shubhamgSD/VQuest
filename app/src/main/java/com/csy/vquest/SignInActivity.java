@@ -35,6 +35,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        setTitle("Sign In");
+
         firebaseAuth = FirebaseAuth.getInstance();
         emailText = (EditText) findViewById(R.id.input_email);
         passText = (EditText) findViewById(R.id.input_password);
