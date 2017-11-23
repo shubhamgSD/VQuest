@@ -66,7 +66,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private String pass;
     private String conpass;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
