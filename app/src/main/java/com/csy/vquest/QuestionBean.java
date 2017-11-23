@@ -15,11 +15,12 @@ public class QuestionBean {
     private String username;
     private int views;
     private int visibility;
+    private int replies;
 
     public QuestionBean() {
     }
 
-    public QuestionBean(String category, int qanonymity, int qedited, String qstring, int r_no, long time, String username, int views, int visibility) {
+    public QuestionBean(String category, int qanonymity, int qedited, String qstring, int r_no, long time, String username, int views, int visibility, int replies) {
         this.category = category;
         this.qanonymity = qanonymity;
         this.qedited = qedited;
@@ -29,6 +30,15 @@ public class QuestionBean {
         this.username = username;
         this.views = views;
         this.visibility = visibility;
+        this.replies = replies;
+    }
+
+    public int getReplies() {
+        return replies;
+    }
+
+    public void setReplies(int replies) {
+        this.replies = replies;
     }
 
     public int getQanonymity() {
