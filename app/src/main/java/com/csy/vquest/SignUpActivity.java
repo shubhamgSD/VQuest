@@ -72,6 +72,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        setTitle("Sign Up");
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         fnameText = (EditText) findViewById(R.id.input_fname);
@@ -105,6 +107,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                 uname = unameText.getText().toString().trim();
                 if (uname.isEmpty()){
+                    Log.d("empty", "working");
                     unameText.setError("Required");
                     uname_valid = false;
                 }
@@ -112,16 +115,21 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         unameText.setError("No space allowed");
                         uname_valid = false;
                 }
+                else if(uname.contains("@")){
+                    unameText.setError("No @ allowed");
+                    uname_valid = false;
+                }
                 else {
 //                        Log.d("Error", memberRef.orderByChild("username").equalTo(uname)+uname);
                     memberRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+
                             for (DataSnapshot data :
                                     dataSnapshot.getChildren()) {
                                 unameText.setError(null);
                                 uname_valid = true;
-                                if (data.child(uname).exists()){
+                                if (data.child("username").getValue(String.class).equalsIgnoreCase(uname)){
                                     unameText.setError("Already exists");
                                     uname_valid = false;
                                     break;

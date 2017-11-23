@@ -20,9 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
 
@@ -57,8 +61,8 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
 
         switch(item.getItemId()) {
 
-            case R.id.fil_all:
-
+//            case R.id.fil_all:
+//
             case R.id.fil_unanswered:
                 if(item.isChecked()) {
                     query = FirebaseDatabase
@@ -67,9 +71,14 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                             .child("question");
 
                 }
-
-
-            case R.id.fil_answered:
+                else
+                    query = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("question");
+                break;
+//
+//            case R.id.fil_answered:
 
             case R.id.fil_general:
                 if(item.isChecked())
@@ -237,7 +246,7 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
             public void onClick(View v) {
                 Fragment fragment = new QuestionFragment();
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.fragment, fragment)
+                        .replace(R.id.fragment, fragment, "question_fragment")
                         .addToBackStack("questionfragment")
                         .commit();
             }
@@ -249,7 +258,22 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        DatabaseReference databaseReference = firebaseListAdapter.getRef(position);
+        final DatabaseReference databaseReference = firebaseListAdapter.getRef(position);
+
+        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference viewRef = rootRef.child("question_views");
+        viewRef.child(databaseReference.getKey()).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(0);
+        viewRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                databaseReference.child("views").setValue(dataSnapshot.child(databaseReference.getKey()).getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
       Bundle bundle  = new Bundle();
       bundle.putString("key",databaseReference.getKey());
@@ -258,7 +282,7 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
         fragment.setArguments(bundle);
         getFragmentManager().beginTransaction()
                 .replace(R.id.fragment, fragment)
-                .addToBackStack("questionfragment")
+                .addToBackStack("ansFragment")
                 .commit();
     }
 }

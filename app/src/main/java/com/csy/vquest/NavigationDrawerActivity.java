@@ -105,12 +105,37 @@ public class NavigationDrawerActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
+        Fragment fragment;
+
         switch (item.getItemId()) {
 
             case R.id.nav_home:
-                Fragment fragment = new HomePageFragment();
+                HomePageFragment homePageFragment = (HomePageFragment) getSupportFragmentManager().findFragmentByTag("home_page_fragment");
+                if(homePageFragment != null && homePageFragment.isVisible()){
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    break;
+                }
+                fragment = new HomePageFragment();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment, fragment, "home_page_fragment");
+                        .replace(R.id.fragment, fragment, "home_page_fragment")
+                        .commit();
+                break;
+
+            case R.id.nav_new_que:
+                QuestionFragment questionFragment = (QuestionFragment) getSupportFragmentManager().findFragmentByTag("question_fragment");
+                if (questionFragment != null && questionFragment.isVisible()){
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    break;
+                }
+                fragment = new QuestionFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, fragment, "question_fragment")
+                        .addToBackStack("questionFragment")
+                        .commit();
+                break;
 
             case R.id.nav_logout:
                 firebaseAuth.signOut();
