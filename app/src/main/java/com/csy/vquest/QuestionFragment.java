@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +38,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
 
     private Timestamp timestamp = null;
     private int views = 0;
-    private String username = "chirag";
+    private String username = "";
     private int edited = 0;
     private int r_no = -1;
     private int visibility = 1;
@@ -66,10 +67,12 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
+                if(isChecked) {
                     anonymity = 1;
-                else
+                }
+                else {
                     anonymity = 0;
+                }
             }
         });
 
@@ -102,18 +105,32 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
                 DatabaseReference rootRef = database.getReference();
                 DatabaseReference questionRef = rootRef.child("question");
 
-                DatabaseReference newQuestionRef = questionRef.child(String.valueOf(noOfChild));
+                final DatabaseReference newQuestionRef = questionRef.child(String.valueOf(noOfChild));
                 newQuestionRef.child("category").setValue(category);
                 newQuestionRef.child("qanonymity").setValue(anonymity);
                 newQuestionRef.child("qedited").setValue(edited);
                 newQuestionRef.child("qstring").setValue(question);
                 newQuestionRef.child("r_no").setValue(r_no);
                 newQuestionRef.child("time").setValue(ServerValue.TIMESTAMP);
-                newQuestionRef.child("username").setValue(username);
                 newQuestionRef.child("views").setValue(views);
                 newQuestionRef.child("visibility").setValue(visibility);
 
-                Toast.makeText(getActivity(),category+", "+question+", "+anonymity,Toast.LENGTH_LONG).show();
+                rootRef.child("member")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child("username").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        newQuestionRef.child("username").setValue(dataSnapshot.getValue());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                Toast.makeText(getActivity(),"Question raised succesfully",Toast.LENGTH_LONG).show();
+
             }
         });
 

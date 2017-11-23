@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +31,7 @@ public class AnsOfQuestion extends Fragment {
     private long noOfChild=0;
     private Button btn;
     private FirebaseDatabase database;
+    private int anonymity = 1;
 
     public AnsOfQuestion() {
         // Required empty public constructor
@@ -79,15 +81,32 @@ public class AnsOfQuestion extends Fragment {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference rootRef = database.getReference();
                 DatabaseReference questionRef = rootRef.child("answer").child(key);
-                DatabaseReference newQuestionRef = questionRef.child(noOfChild+"");
-                newQuestionRef.child("aanonymity").setValue(1);
-                newQuestionRef.child("aedited").setValue(0);
-                newQuestionRef.child("astring").setValue(editText.getText().toString());
-                newQuestionRef.child("likes").setValue(0);
-                newQuestionRef.child("r_no").setValue(-1);
-                newQuestionRef.child("time").setValue(ServerValue.TIMESTAMP);
-                newQuestionRef.child("username").setValue("XYZ");
-                newQuestionRef.child("visibility").setValue(1);
+                final DatabaseReference newAnswerRef = questionRef.child(noOfChild+"");
+                newAnswerRef.child("aanonymity").setValue(1);
+                newAnswerRef.child("aedited").setValue(0);
+                newAnswerRef.child("astring").setValue(editText.getText().toString());
+                newAnswerRef.child("likes").setValue(0);
+                newAnswerRef.child("r_no").setValue(-1);
+                newAnswerRef.child("time").setValue(ServerValue.TIMESTAMP);
+
+
+                
+
+                rootRef.child("member")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child("username").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        newAnswerRef.child("username").setValue(dataSnapshot.getValue());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                
+                newAnswerRef.child("visibility").setValue(1);
              //   Log.d("Value In Button click",i+"");
 
             }
