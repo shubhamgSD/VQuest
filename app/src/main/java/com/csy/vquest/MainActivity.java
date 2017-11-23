@@ -23,14 +23,16 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
-        if(currentUser == null) {
-            Intent intent = new Intent(this, SignInActivity.class);
-            startActivity(intent);
+        Intent intent;
+
+        if (currentUser == null) {
+            intent = new Intent(this, SignInActivity.class);
         }
-        else{
-            Intent intent = new Intent(this, NavigationDrawerActivity.class);
-            startActivity(intent);
+        else {
+            intent = new Intent(this, NavigationDrawerActivity.class);
         }
+
+        startActivity(intent);
 
     }
 
