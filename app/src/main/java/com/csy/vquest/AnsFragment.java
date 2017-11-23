@@ -123,11 +123,22 @@ public class AnsFragment extends Fragment {
                 TextView time = (TextView) view.findViewById(R.id.time_view2);
                 TextView likeView = (TextView) view.findViewById(R.id.likes_view);
 
-                astringView.setText(model.getAstring());
-                username.setText(model.getUsername());
-                likeView.setText(model.getLikes() + " likes");
-                Date date = new Date(model.getTime());
-                time.setText(date.toString());
+
+                    astringView.setText(model.getAstring());
+
+                    likeView.setText(model.getLikes()+" likes");
+                    Date date = new Date(model.getTime());
+                    time.setText(date.toString());
+
+                    if(model.getaanonymity()==1)
+                    {
+                        username.setText("Anonymous");
+                    }
+                    else
+                    {
+                        username.setText(model.getUsername());
+                    }
+
                 return view;
 
             }
@@ -135,25 +146,36 @@ public class AnsFragment extends Fragment {
 
         };
 
-        queRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
 
-                    if (messageSnapshot.getKey().equals(key)) {
-                        questionBean = messageSnapshot.getValue(QuestionBean.class);
-                        qstring.setText(questionBean.getQstring());
-                        username_view.setText(questionBean.getUsername());
-                        views_view.setText(questionBean.getViews() + " views");
-                        Date date = new Date(questionBean.getTime());
-                        time_view.setText(date.toString());
+      queRef.addListenerForSingleValueEvent(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+              for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
 
-                    }
-                }
-            }
+                  if(messageSnapshot.getKey().equals(key))
+                  {
+                      questionBean = messageSnapshot.getValue(QuestionBean.class);
+                      qstring.setText(questionBean.getQstring());
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                      views_view.setText(questionBean.getViews()+" views");
+                      Date date = new Date(questionBean.getTime());
+                      time_view.setText(date.toString());
+
+                      if(questionBean.getQanonymity() == 1)
+                      {
+                          username_view.setText("Anonymous");
+                      }
+                      else
+                      {
+                          username_view.setText(questionBean.getUsername());
+                      }
+
+              }
+              }
+          }
+
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
 
             }
         });

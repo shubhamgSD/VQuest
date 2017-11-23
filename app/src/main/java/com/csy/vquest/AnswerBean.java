@@ -6,7 +6,7 @@ package com.csy.vquest;
 
 public class AnswerBean {
 
-    private int qanonymity;
+    private int aanonymity;
     private int aedited;
     private String astring;
     private int likes;
@@ -18,8 +18,8 @@ public class AnswerBean {
     public AnswerBean() {
     }
 
-    public AnswerBean(int qanonymity, int aedited, String astring, int likes, int r_no, long time, String username, int visibility) {
-        this.qanonymity = qanonymity;
+    public AnswerBean(int aanonymity, int aedited, String astring, int likes, int r_no, long time, String username, int visibility) {
+        this.aanonymity = aanonymity;
         this.aedited = aedited;
         this.astring = astring;
         this.likes = likes;
@@ -29,12 +29,12 @@ public class AnswerBean {
         this.visibility = visibility;
     }
 
-    public int getQanonymity() {
-        return qanonymity;
+    public int getaanonymity() {
+        return aanonymity;
     }
 
-    public void setQanonymity(int qanonymity) {
-        this.qanonymity = qanonymity;
+    public void setaanonymity(int aanonymity) {
+        this.aanonymity = aanonymity;
     }
 
     public int getAedited() {
