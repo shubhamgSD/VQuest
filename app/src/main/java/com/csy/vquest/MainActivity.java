@@ -19,18 +19,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
-        if(currentUser == null) {
-            Intent intent = new Intent(this, SignInActivity.class);
-            startActivity(intent);
+        Intent intent;
+
+        if (currentUser == null) {
+            intent = new Intent(this, SignInActivity.class);
         }
-        else{
-            Intent intent = new Intent(this, NavigationDrawerActivity.class);
-            startActivity(intent);
+        else {
+            intent = new Intent(this, NavigationDrawerActivity.class);
         }
+
+        startActivity(intent);
 
     }
 
