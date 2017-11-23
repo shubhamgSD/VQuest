@@ -62,6 +62,7 @@ public class CustomFirebaseListAdapter extends FirebaseListAdapter<QuestionBean>
 
         Date date = new Date(model.getTime());
         timeView.setText(date.toString());
+        replyView.setText(model.getReplies() + " replies");
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 

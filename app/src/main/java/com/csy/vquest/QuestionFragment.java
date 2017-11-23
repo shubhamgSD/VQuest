@@ -114,6 +114,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
                 newQuestionRef.child("time").setValue(ServerValue.TIMESTAMP);
                 newQuestionRef.child("views").setValue(views);
                 newQuestionRef.child("visibility").setValue(visibility);
+                newQuestionRef.child("replies").setValue(0);
 
                 rootRef.child("member")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -130,6 +131,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
                 });
 
                 Toast.makeText(getActivity(),"Question raised succesfully",Toast.LENGTH_LONG).show();
+                getActivity().onBackPressed();
 
             }
         });
