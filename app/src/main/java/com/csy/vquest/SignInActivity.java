@@ -1,6 +1,9 @@
 package com.csy.vquest;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +61,12 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
 
             case R.id.btn_login:
+
+                final ProgressDialog progressDialog = new ProgressDialog(this);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Please wait...");
+                progressDialog.show();
+
                 email = emailText.getText().toString().trim();
                 password = passText.getText().toString();
 
@@ -68,10 +78,16 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                                     // Sign in success, update UI with the signed-in user's information
                                     FirebaseUser user = firebaseAuth.getCurrentUser();
                                     if(user.isEmailVerified()){
+
+                                        progressDialog.dismiss();
+
                                         Intent intent = new Intent(SignInActivity.this, NavigationDrawerActivity.class);
                                         startActivity(intent);
                                     }
                                     else{
+
+                                        progressDialog.dismiss();
+
                                         Toast.makeText(SignInActivity.this, "Verify your email by following the link sent to your registered email address.",
                                                 Toast.LENGTH_LONG).show();
                                     }
@@ -79,6 +95,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
                                 } else {
                                     // If sign in fails, display a message to the user.
+
+                                    progressDialog.dismiss();
+
                                     makeText(SignInActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }
