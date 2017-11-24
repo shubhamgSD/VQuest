@@ -3,6 +3,7 @@ package com.csy.vquest;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -26,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -36,9 +38,15 @@ public class AnsFragment extends Fragment {
 
     QuestionBean questionBean;
     String key;
+    String answernode;
     FirebaseListAdapter<AnswerBean> firebaseListAdapter;
     int flag = 0;
-
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int minute;
+    private int seconds;
 
     private Button likeBtn;
     private ListView listView;
@@ -101,12 +109,24 @@ public class AnsFragment extends Fragment {
                         Log.d("Position", position + "");
                         final DatabaseReference databaseReference = firebaseListAdapter.getRef(position);
                         DatabaseReference rootref = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference likeref = rootref.child("answer_like");
-                        likeref.child(key).child(databaseReference.getKey()).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(0);
+                        final DatabaseReference likeref = rootref.child("answer_like");
+
+
                         likeref.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                databaseReference.child("likes").setValue(dataSnapshot.child(key).child(databaseReference.getKey()).getChildrenCount());
+
+                                if(dataSnapshot.child(key).child(databaseReference.getKey()).hasChild(FirebaseAuth.getInstance()
+                                .getCurrentUser().getUid()))
+                                {
+                                    likeref.child(key).child(databaseReference.getKey()).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+                                }
+                                else
+                                {
+                                    likeref.child(key).child(databaseReference.getKey()).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(0);
+                                }
+
+
                             }
 
                             @Override
@@ -115,6 +135,21 @@ public class AnsFragment extends Fragment {
                             }
                         });
 
+                        likeref.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                databaseReference.child("likes").setValue(dataSnapshot.child(key).child(databaseReference.getKey()).getChildrenCount());
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
                     }
                 });
 
@@ -122,21 +157,61 @@ public class AnsFragment extends Fragment {
                 TextView username = (TextView) view.findViewById(R.id.uname_view2);
                 TextView time = (TextView) view.findViewById(R.id.time_view2);
                 TextView likeView = (TextView) view.findViewById(R.id.likes_view);
+                final Button likebtn = (Button) view.findViewById(R.id.btn_like);
+
+                final DatabaseReference anslikeref = getRef(position);
+                DatabaseReference rootref = FirebaseDatabase.getInstance().getReference();
+                final DatabaseReference likeref = rootref.child("answer_like");
+                likeref.child(key).child(anslikeref.getKey()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                        {
+                           likebtn.setTextColor(Color.parseColor("#ffffff"));
+                           likebtn.setBackgroundColor(Color.parseColor("#FF7F92FA"));
+                        }
+                        else
+                        {
+                            likebtn.setTextColor(Color.parseColor("#100f10"));
+                            likebtn.setBackgroundColor(Color.parseColor("#FFB7B6B6"));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
 
-                    astringView.setText(model.getAstring());
+
+
+                astringView.setText(model.getAstring());
 
                     likeView.setText(model.getLikes()+" likes");
                     Date date = new Date(model.getTime());
-                    time.setText(date.toString());
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                year = cal.get(Calendar.YEAR);
+                month = cal.get(Calendar.MONTH);
+                day = cal.get(Calendar.DAY_OF_MONTH);
+                hour = cal.get(Calendar.HOUR_OF_DAY);
+                minute = cal.get(Calendar.MINUTE);
+                seconds = cal.get(Calendar.SECOND);
+                time.setText(day+"/"+month+"/"+year);
+
+
 
                     if(model.getaanonymity()==1)
                     {
                         username.setText("Anonymous");
+                        username.setTextColor(Color.parseColor("#FF4B4A4B"));
                     }
                     else
                     {
                         username.setText(model.getUsername());
+                        username.setTextColor(Color.parseColor("#0000EE"));
                     }
 
                 return view;
@@ -159,15 +234,28 @@ public class AnsFragment extends Fragment {
 
                       views_view.setText(questionBean.getViews()+" views");
                       Date date = new Date(questionBean.getTime());
-                      time_view.setText(date.toString());
+
+                      Calendar cal = Calendar.getInstance();
+                      cal.setTime(date);
+                      year = cal.get(Calendar.YEAR);
+                      month = cal.get(Calendar.MONTH);
+                      day = cal.get(Calendar.DAY_OF_MONTH);
+                      hour = cal.get(Calendar.HOUR_OF_DAY);
+                      minute = cal.get(Calendar.MINUTE);
+                      seconds = cal.get(Calendar.SECOND);
+                      time_view.setText(day+"/"+month+"/"+year);
+
 
                       if(questionBean.getQanonymity() == 1)
                       {
                           username_view.setText("Anonymous");
+                          username_view.setTextColor(Color.parseColor("#FF4B4A4B"));
+
                       }
                       else
                       {
                           username_view.setText(questionBean.getUsername());
+                          username_view.setTextColor(Color.parseColor("#0000EE"));
                       }
 
               }
