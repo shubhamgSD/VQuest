@@ -18,6 +18,7 @@
         android:layout_marginBottom="35dp"
         android:layout_marginEnd="35dp"
         android:layout_marginRight="35dp"
+        android:elevation="@dimen/cardview_default_elevation"
         android:clickable="true"
         android:src="@android:drawable/ic_input_add" />
 

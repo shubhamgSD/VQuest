@@ -2,6 +2,7 @@ package com.csy.vquest;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -286,6 +288,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                     newMemberRef.child("phone").setValue(contactNum);
                                     newMemberRef.child("status").setValue("Student");
                                     newMemberRef.child("username").setValue(uname);
+
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(fname + " " + lname)
+//                                            .setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
+                                            .build();
+
+                                    firebaseUser.updateProfile(profileUpdates);
 
                                     Toast.makeText(SignUpActivity.this, "Authentication successfull.",
                                             Toast.LENGTH_LONG).show();

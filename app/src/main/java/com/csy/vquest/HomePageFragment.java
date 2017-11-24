@@ -58,154 +58,89 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
         else
             item.setChecked(true);
 
+        DatabaseReference questionRef = FirebaseDatabase.getInstance().getReference().child("question");
+
         Query query;
 
         switch(item.getItemId()) {
 
-//            case R.id.fil_all:
-//
-            case R.id.fil_unanswered:
-                if(item.isChecked()) {
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question");
+            case R.id.fil_all:
+                query = questionRef;
+                break;
 
+            case R.id.fil_unanswered:
+                if(item.isChecked())
+                    query = questionRef.orderByChild("replies").equalTo(0);
+                else
+                    query = questionRef;
+                break;
+
+            case R.id.fil_answered:
+                if(item.isChecked()){
+                    query = questionRef;
                 }
                 else
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question");
+                    query = questionRef;
                 break;
-//
-//            case R.id.fil_answered:
 
             case R.id.fil_general:
                 if(item.isChecked())
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question")
-                            .orderByChild("category")
-                            .equalTo("General");
+                    query = questionRef.orderByChild("category").equalTo("General");
                 else
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question");
+                    query = questionRef;
                 break;
 
             case R.id.fil_academic_common:
                 if(item.isChecked())
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question")
-                            .orderByChild("category")
-                            .equalTo("Common Academic");
+                    query = questionRef.orderByChild("category").equalTo("Common Academic");
                 else
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question");
+                    query = questionRef;
                 break;
 
             case R.id.fil_academic_cse:
                 if(item.isChecked())
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question")
-                            .orderByChild("category")
-                            .equalTo("Academic-CSE");
+                    query = questionRef.orderByChild("category").equalTo("Academic-CSE");
                 else
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question");
+                    query = questionRef;
                 break;
 
             case R.id.fil_academic_ece:
                 if(item.isChecked())
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question")
-                            .orderByChild("category")
-                            .equalTo("Academic-ECE");
+                    query = questionRef.orderByChild("category").equalTo("Academic-ECE");
                 else
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question");
+                    query = questionRef;
                 break;
 
             case R.id.fil_academic_me:
                 if(item.isChecked())
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question")
-                            .orderByChild("category")
-                            .equalTo("Academic-ME");
+                    query = questionRef.orderByChild("category").equalTo("Academic-ME");
                 else
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question");
+                    query = questionRef;
                 break;
 
             case R.id.fil_hostel:
                 if(item.isChecked())
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question")
-                            .orderByChild("category")
-                            .equalTo("Hostel");
+                    query = questionRef.orderByChild("category").equalTo("Hostel");
                 else
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question");
+                    query = questionRef;
                 break;
 
             case R.id.fil_mess:
                 if(item.isChecked())
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question")
-                            .orderByChild("category")
-                            .equalTo("Mess");
+                    query = questionRef.orderByChild("category").equalTo("Mess");
                 else
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question");
+                    query = questionRef;
                 break;
 
             case R.id.fil_events:
                 if(item.isChecked())
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question")
-                            .orderByChild("category")
-                            .equalTo("Events");
+                    query = questionRef.orderByChild("category").equalTo("Events");
                 else
-                    query = FirebaseDatabase
-                            .getInstance()
-                            .getReference()
-                            .child("question");
+                    query = questionRef;
                 break;
 
             default:
-                query = FirebaseDatabase
-                        .getInstance()
-                        .getReference()
-                        .child("question");
+                query = questionRef;
                 break;
 
         }

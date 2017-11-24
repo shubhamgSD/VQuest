@@ -261,12 +261,6 @@ public class AnsFragment extends Fragment {
                             }
                         });
                 dialogBuilder.create().show();
-//               Fragment fragment = new AnsOfQuestion();
-//               fragment.setArguments(bundle);
-//               getFragmentManager().beginTransaction()
-//                       .replace(R.id.fragment, fragment)
-//                       .addToBackStack("")
-//                       .commit();
             }
         });
 
