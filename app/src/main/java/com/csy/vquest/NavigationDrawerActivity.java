@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,14 +17,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class NavigationDrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener
-{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseAuth firebaseAuth;
 
@@ -54,11 +56,21 @@ public class NavigationDrawerActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerView = navigationView.getHeaderView(0);
+
+        TextView emailView = (TextView) headerView.findViewById(R.id.nav_emailView);
+        emailView.setText(firebaseAuth.getCurrentUser().getEmail());
+
+        TextView unameView = (TextView) headerView.findViewById(R.id.nav_unameView);
+        unameView.setText(firebaseAuth.getCurrentUser().getDisplayName());
+
+        ImageView imageView = (ImageView) headerView.findViewById(R.id.nav_imageView);
+        imageView.setImageURI(firebaseAuth.getCurrentUser().getPhotoUrl());
+
         Fragment fragment = new HomePageFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment, fragment, "home_page_fragment")
                 .commit();
-
 
 
     }
@@ -68,11 +80,10 @@ public class NavigationDrawerActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else {
+        } else {
 
             HomePageFragment homePageFragment = (HomePageFragment) getSupportFragmentManager().findFragmentByTag("home_page_fragment");
-            if(homePageFragment != null && homePageFragment.isVisible())
+            if (homePageFragment != null && homePageFragment.isVisible())
                 moveTaskToBack(true);
             else
                 super.onBackPressed();
@@ -112,7 +123,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
             case R.id.nav_home:
                 HomePageFragment homePageFragment = (HomePageFragment) getSupportFragmentManager().findFragmentByTag("home_page_fragment");
-                if(homePageFragment != null && homePageFragment.isVisible()){
+                if (homePageFragment != null && homePageFragment.isVisible()) {
                     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                     drawer.closeDrawer(GravityCompat.START);
                     break;
@@ -125,7 +136,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
             case R.id.nav_new_que:
                 QuestionFragment questionFragment = (QuestionFragment) getSupportFragmentManager().findFragmentByTag("question_fragment");
-                if (questionFragment != null && questionFragment.isVisible()){
+                if (questionFragment != null && questionFragment.isVisible()) {
                     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                     drawer.closeDrawer(GravityCompat.START);
                     break;
