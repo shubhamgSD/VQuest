@@ -1,5 +1,6 @@
 package com.csy.vquest;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -265,7 +267,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
             if (fname_valid && lname_valid && email_valid && uname_valid && contact_valid && pass_valid && conpass_valid && terms_valid) {
 
-                Log.d(email, pass);
+                final ProgressDialog progressDialog = new ProgressDialog(this);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Please wait...");
+                progressDialog.show();
 
                 firebaseAuth.createUserWithEmailAndPassword(email, pass)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -296,6 +301,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                                     firebaseUser.updateProfile(profileUpdates);
 
+                                    progressDialog.dismiss();
+
                                     Toast.makeText(SignUpActivity.this, "Authentication successfull.",
                                             Toast.LENGTH_LONG).show();
 
@@ -303,6 +310,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                                 } else {
                                     // If sign in fails, display a message to the user.
+
+                                    progressDialog.dismiss();
+
                                     Toast.makeText(SignUpActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
 //                                    updateUI(null);

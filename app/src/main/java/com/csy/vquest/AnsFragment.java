@@ -29,6 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
+
+import static com.csy.vquest.NavigationDrawerActivity.current_uname;
 
 
 /**
@@ -48,11 +51,12 @@ public class AnsFragment extends Fragment {
     private int minute;
     private int seconds;
 
-    private Button likeBtn;
+    private Button likeBtn, qVar_btn, aVar_btn;
     private ListView listView;
     private TextView username_view, time_view, qstring, views_view;
     private long currentAnswers;
-    ;
+
+    FirebaseAuth firebaseAuth;
 
     public AnsFragment() {
         // Required empty public constructor
@@ -65,8 +69,12 @@ public class AnsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_ans, container, false);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
         listView = (ListView) view.findViewById(R.id.ans_lv);
-        Button btn = (Button) view.findViewById(R.id.btn_answer);
+        Button answerBtn = (Button) view.findViewById(R.id.btn_answer);
+        qVar_btn = (Button) view.findViewById(R.id.btn_report);
+
 
         qstring = (TextView) view.findViewById(R.id.qstring_view1);
         username_view = (TextView) view.findViewById(R.id.uname_view2);
@@ -79,9 +87,21 @@ public class AnsFragment extends Fragment {
         }
 
 
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference answerRef = rootRef.child("answer").child(key);
-        DatabaseReference queRef = rootRef.child("question");
+        final DatabaseReference queRef = rootRef.child("question");
+
+//        rootRef.child("member").child(firebaseAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                current_uname = dataSnapshot.child("username").getValue().toString();
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         firebaseListAdapter = new FirebaseListAdapter<AnswerBean>(getActivity(),
                 AnswerBean.class, R.layout.custom_answer_layout, answerRef) {
@@ -99,6 +119,7 @@ public class AnsFragment extends Fragment {
                     // Log.d("check  after inflate >","view= "+view);
                 }
 
+                final int tempPos = position;
 
                 AnswerBean model = getItem(position);
                 likeBtn = (Button) view.findViewById(R.id.btn_like);
@@ -116,13 +137,10 @@ public class AnsFragment extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                if(dataSnapshot.child(key).child(databaseReference.getKey()).hasChild(FirebaseAuth.getInstance()
-                                .getCurrentUser().getUid()))
-                                {
+                                if (dataSnapshot.child(key).child(databaseReference.getKey()).hasChild(FirebaseAuth.getInstance()
+                                        .getCurrentUser().getUid())) {
                                     likeref.child(key).child(databaseReference.getKey()).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-                                }
-                                else
-                                {
+                                } else {
                                     likeref.child(key).child(databaseReference.getKey()).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(0);
                                 }
 
@@ -153,7 +171,7 @@ public class AnsFragment extends Fragment {
                     }
                 });
 
-                TextView astringView = (TextView) view.findViewById(R.id.astring_view);
+                final TextView astringView = (TextView) view.findViewById(R.id.astring_view);
                 TextView username = (TextView) view.findViewById(R.id.uname_view2);
                 TextView time = (TextView) view.findViewById(R.id.time_view2);
                 TextView likeView = (TextView) view.findViewById(R.id.likes_view);
@@ -165,18 +183,14 @@ public class AnsFragment extends Fragment {
                 likeref.child(key).child(anslikeref.getKey()).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid()))
-                        {
-                           likebtn.setTextColor(Color.parseColor("#ffffff"));
-                           likebtn.setBackgroundColor(Color.parseColor("#FF7F92FA"));
-                        }
-                        else
-                        {
+                        if (dataSnapshot.hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            likebtn.setTextColor(Color.parseColor("#ffffff"));
+                            likebtn.setBackgroundColor(Color.parseColor("#FF7F92FA"));
+                        } else {
                             likebtn.setTextColor(Color.parseColor("#100f10"));
                             likebtn.setBackgroundColor(Color.parseColor("#FFB7B6B6"));
                         }
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
@@ -185,11 +199,59 @@ public class AnsFragment extends Fragment {
 
 
 
+                aVar_btn = (Button) view.findViewById(R.id.btn_report1);
+                if(model.getUsername().equalsIgnoreCase(current_uname))
+                    aVar_btn.setText("Edit");
+                else
+                    aVar_btn.setText("Report");
+
+                aVar_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(aVar_btn.getText().toString().equalsIgnoreCase("Report")) {
+
+                            Toast.makeText(getContext(), aVar_btn.getText().toString(), Toast.LENGTH_SHORT).show();
+
+
+                        }
+                        else {
+
+                            Toast.makeText(getContext(), aVar_btn.getText().toString(), Toast.LENGTH_SHORT).show();
+
+                            AlertDialog.Builder aEditDialog = new AlertDialog.Builder(getActivity());
+                            final View aEditView = LayoutInflater.from(getContext()).inflate(R.layout.edit_answer_dialog, null);
+                            final EditText aEditText = (EditText) aEditView.findViewById(R.id.input_edited_answer);
+                            aEditText.setText(astringView.getText().toString());
+                            aEditDialog.setView(aEditView);
+                            aEditDialog.setTitle("Edit answer");
+                            aEditDialog.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    if(aEditText.getText() == null)
+                                        aEditText.setError("Required");
+                                    else{
+                                        aEditText.setError(null);
+                                        DatabaseReference ansRef = rootRef.child("answer").child(key).child(firebaseListAdapter.getRef(tempPos).getKey());
+                                        ansRef.child("astring").setValue(aEditText.getText().toString());
+                                        ansRef.child("aedited").setValue(1);
+                                        ansRef.child("time").setValue(ServerValue.TIMESTAMP);
+                                        Toast.makeText(getContext(), "Answer Edited successfully", Toast.LENGTH_LONG).show();
+                                    }
+
+                                }
+                            });
+                            aEditDialog.create().show();
+
+                        }
+                    }});
+
+
 
                 astringView.setText(model.getAstring());
 
-                    likeView.setText(model.getLikes()+" likes");
-                    Date date = new Date(model.getTime());
+                likeView.setText(model.getLikes() + " likes");
+                Date date = new Date(model.getTime());
 
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(date);
@@ -199,7 +261,7 @@ public class AnsFragment extends Fragment {
                 hour = cal.get(Calendar.HOUR_OF_DAY);
                 minute = cal.get(Calendar.MINUTE);
                 seconds = cal.get(Calendar.SECOND);
-                time.setText(day+"/"+month+"/"+year);
+                time.setText(day + "/" + month + "/" + year);
 
 
 
@@ -218,19 +280,17 @@ public class AnsFragment extends Fragment {
 
             }
 
-
         };
 
 
-      queRef.addListenerForSingleValueEvent(new ValueEventListener() {
-          @Override
-          public void onDataChange(DataSnapshot dataSnapshot) {
-              for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
 
-                  if(messageSnapshot.getKey().equals(key))
-                  {
-                      questionBean = messageSnapshot.getValue(QuestionBean.class);
-                      qstring.setText(questionBean.getQstring());
+        queRef.child(key).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        questionBean = dataSnapshot.getValue(QuestionBean.class);
+                        qstring.setText(questionBean.getQstring());
+
 
                       views_view.setText(questionBean.getViews()+" views");
                       Date date = new Date(questionBean.getTime());
@@ -258,12 +318,15 @@ public class AnsFragment extends Fragment {
                           username_view.setTextColor(Color.parseColor("#0000EE"));
                       }
 
-              }
-              }
-          }
+                        if(questionBean.getUsername().equalsIgnoreCase(current_uname))
+                            qVar_btn.setText("Edit");
+                        else
+                            qVar_btn.setText("Report");
 
-          @Override
-          public void onCancelled(DatabaseError databaseError) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
@@ -278,8 +341,45 @@ public class AnsFragment extends Fragment {
             }
         });
 
+        qVar_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(qVar_btn.getText().toString() == "Report"){
 
-        btn.setOnClickListener(new View.OnClickListener() {
+
+
+                }
+                else {
+
+                    AlertDialog.Builder qEditDialog = new AlertDialog.Builder(getActivity());
+                    final View qEditView = LayoutInflater.from(getActivity()).inflate(R.layout.edit_question_dialog, null);
+                    final EditText qEditText = (EditText) qEditView.findViewById(R.id.input_edited_question);
+                    qEditText.setText(qstring.getText().toString());
+                    qEditDialog.setView(qEditView);
+                    qEditDialog.setTitle("Edit question");
+                    qEditDialog.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            if(qEditText.getText() == null)
+                                qEditText.setError("Required");
+                            else{
+                                qEditText.setError(null);
+                                queRef.child(key).child("qstring").setValue(qEditText.getText().toString());
+                                queRef.child(key).child("qedited").setValue(1);
+                                queRef.child(key).child("time").setValue(ServerValue.TIMESTAMP);
+                                Toast.makeText(getContext(), "Question Edited successfully", Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    });
+                    qEditDialog.create().show();
+
+                }
+            }
+        });
+
+        answerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -288,7 +388,9 @@ public class AnsFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         currentAnswers = dataSnapshot.getChildrenCount();
-                        Log.d("current answers", currentAnswers+"");
+
+                        Log.d("current answers", currentAnswers + "");
+
                     }
 
                     @Override
@@ -324,20 +426,7 @@ public class AnsFragment extends Fragment {
                                 newAnswerRef.child("r_no").setValue(-1);
                                 newAnswerRef.child("time").setValue(ServerValue.TIMESTAMP);
                                 newAnswerRef.child("visibility").setValue(1);
-
-                                rootRef.child("member")
-                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .child("username").addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        newAnswerRef.child("username").setValue(dataSnapshot.getValue());
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
+                                newAnswerRef.child("username").setValue(current_uname);
 
                                 Toast.makeText(getActivity(), "Answered succesfully", Toast.LENGTH_SHORT).show();
 
@@ -356,18 +445,4 @@ public class AnsFragment extends Fragment {
 
     }
 
-//    @Override
-//    public void onClick(View v) {
-//
-//        switch (v.getId()) {
-//
-//            case R.id.like_btn:
-//            int position = listView.getPositionForView((View) v.getParent());
-//            Log.d("Position",position+"");
-//            break;
-//
-//
-//        }
-//
-//    }
 }
