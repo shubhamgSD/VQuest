@@ -144,13 +144,10 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                 break;
 
         }
+        firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
+                QuestionBean.class,R.layout.card_layout,query);
 
-        listView.setAdapter(new CustomFirebaseListAdapter(
-                getActivity(),
-                QuestionBean.class,
-                R.layout.card_layout,
-                query
-        ));
+        listView.setAdapter(firebaseListAdapter);
 
         return true;
 
