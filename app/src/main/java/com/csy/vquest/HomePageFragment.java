@@ -141,10 +141,11 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                 break;
 
         }
+      //  query = query.orderByChild("time");
+
         firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
                 QuestionBean.class,R.layout.card_layout,query);
 
-        query = query.orderByChild("time");
         listView.setAdapter(firebaseListAdapter);
 
         return true;
