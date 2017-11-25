@@ -13,6 +13,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -22,6 +25,13 @@ public class CustomFirebaseListAdapter extends FirebaseListAdapter<QuestionBean>
 
     private Context mContext;
     private int mLayout;
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int minute;
+    private int seconds;
+
 
     public CustomFirebaseListAdapter(Context context, Class modelClass, int mLayout,
                                      Query query) {
@@ -103,11 +113,20 @@ public class CustomFirebaseListAdapter extends FirebaseListAdapter<QuestionBean>
         }
         else {
             unameView.setText("Anonymous");
+            unameView.setTextColor(Color.parseColor("#FF4B4A4B"));
         }
         viewsView.setText(String.valueOf(model.getViews()) + " views");
 
         Date date = new Date(model.getTime());
-        timeView.setText(date.toString());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        year = cal.get(Calendar.YEAR);
+        month = cal.get(Calendar.MONTH);
+        day = cal.get(Calendar.DAY_OF_MONTH);
+        hour = cal.get(Calendar.HOUR_OF_DAY);
+        minute = cal.get(Calendar.MINUTE);
+        seconds = cal.get(Calendar.SECOND);
+        timeView.setText(day+"/"+month+"/"+year);
 
         replyView.setText(model.getReplies()+" replies");
 
