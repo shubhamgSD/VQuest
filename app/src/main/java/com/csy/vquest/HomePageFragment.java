@@ -38,8 +38,6 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
 
     CustomFirebaseListAdapter firebaseListAdapter;
 
-
-
     public HomePageFragment() {
         // Required empty public constructor
     }
@@ -76,9 +74,8 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                 break;
 
             case R.id.fil_answered:
-                if(item.isChecked()){
-                    query = questionRef;
-                }
+                if(item.isChecked())
+                    query = questionRef.orderByChild("replies").startAt(1);
                 else
                     query = questionRef;
                 break;
@@ -147,6 +144,7 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
         firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
                 QuestionBean.class,R.layout.card_layout,query);
 
+        query = query.orderByChild("time");
         listView.setAdapter(firebaseListAdapter);
 
         return true;
