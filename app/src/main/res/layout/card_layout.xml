@@ -47,7 +47,6 @@
                android:layout_alignParentTop="true"
                android:layout_marginLeft="18dp"
                android:layout_marginStart="18dp"
-               android:layout_toEndOf="@+id/uimage_view1"
                android:layout_toRightOf="@+id/uimage_view1"
                android:text="UserName"
                android:textColor="@android:color/holo_blue_dark"
@@ -70,7 +69,6 @@
                android:layout_height="wrap_content"
                android:layout_alignParentBottom="true"
                android:layout_alignParentLeft="true"
-               android:layout_alignParentStart="true"
                android:text="views"
                android:textColor="@color/time_color" />
 
@@ -89,8 +87,6 @@
                android:id="@+id/category_view"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:layout_alignBottom="@+id/uname_view2"
-               android:layout_alignParentEnd="true"
                android:layout_alignParentRight="true"
                android:text="Category"
                android:textColor="@color/category_color" />

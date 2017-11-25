@@ -214,15 +214,16 @@ public class AnsFragment extends Fragment {
                 aVar_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(aVar_btn.getText().toString().equalsIgnoreCase("Report")) {
 
-                            Toast.makeText(getContext(), aVar_btn.getText().toString(), Toast.LENGTH_SHORT).show();
+                        Button aBtn = (Button) v.findViewById(R.id.btn_report1);
+
+                        if(aBtn.getText().toString().equalsIgnoreCase("Report")) {
+
 
 
                         }
                         else {
 
-                            Toast.makeText(getContext(), aVar_btn.getText().toString(), Toast.LENGTH_SHORT).show();
 
                             AlertDialog.Builder aEditDialog = new AlertDialog.Builder(getActivity());
                             final View aEditView = LayoutInflater.from(getContext()).inflate(R.layout.edit_answer_dialog, null);
@@ -246,11 +247,18 @@ public class AnsFragment extends Fragment {
                                     }
 
                                 }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
                             });
                             aEditDialog.create().show();
 
                         }
-                    });
+                    }
+                });
                     
 
 
@@ -380,6 +388,12 @@ public class AnsFragment extends Fragment {
                                 queRef.child(key).child("time").setValue(ServerValue.TIMESTAMP);
                                 Toast.makeText(getContext(), "Question Edited successfully", Toast.LENGTH_LONG).show();
                             }
+
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
                         }
                     });
