@@ -142,6 +142,8 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
 
         }
 
+        query = query.orderByChild("time");
+
         listView.setAdapter(new CustomFirebaseListAdapter(
                 getActivity(),
                 QuestionBean.class,

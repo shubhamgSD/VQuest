@@ -165,12 +165,15 @@ public class AnsFragment extends Fragment {
                 aVar_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(aVar_btn.getText().toString() == "Report") {
+                        if(aVar_btn.getText().toString().equalsIgnoreCase("Report")) {
 
+                            Toast.makeText(getContext(), aVar_btn.getText().toString(), Toast.LENGTH_SHORT).show();
 
 
                         }
                         else {
+
+                            Toast.makeText(getContext(), aVar_btn.getText().toString(), Toast.LENGTH_SHORT).show();
 
                             AlertDialog.Builder aEditDialog = new AlertDialog.Builder(getActivity());
                             final View aEditView = LayoutInflater.from(getContext()).inflate(R.layout.edit_answer_dialog, null);
