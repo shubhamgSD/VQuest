@@ -137,13 +137,10 @@ public class AnsFragment extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                if(dataSnapshot.child(key).child(databaseReference.getKey()).hasChild(FirebaseAuth.getInstance()
-                                .getCurrentUser().getUid()))
-                                {
+                                if (dataSnapshot.child(key).child(databaseReference.getKey()).hasChild(FirebaseAuth.getInstance()
+                                        .getCurrentUser().getUid())) {
                                     likeref.child(key).child(databaseReference.getKey()).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-                                }
-                                else
-                                {
+                                } else {
                                     likeref.child(key).child(databaseReference.getKey()).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(0);
                                 }
 
@@ -186,15 +183,12 @@ public class AnsFragment extends Fragment {
                 likeref.child(key).child(anslikeref.getKey()).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid()))
-                        {
-                           likebtn.setTextColor(Color.parseColor("#ffffff"));
-                           likebtn.setBackgroundColor(Color.parseColor("#FF7F92FA"));
-                        }
-                        else
-                        {
+                        if (dataSnapshot.hasChild(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            likebtn.setTextColor(Color.parseColor("#ffffff"));
+                            likebtn.setBackgroundColor(Color.parseColor("#FF7F92FA"));
+                        } else {
                             likebtn.setTextColor(Color.parseColor("#100f10"));
-                            likebtn.setBackgroundColor(Color.parseColor("#FFB7B6B6"));
+                            likebtn.setBackgroundColor(Color.parseColor("#FFD4D1D1"));
                         }
                     }
                     @Override
@@ -203,7 +197,7 @@ public class AnsFragment extends Fragment {
                     }
                 });
 
-                
+
 
                 aVar_btn = (Button) view.findViewById(R.id.btn_report1);
                 if(model.getUsername().equalsIgnoreCase(current_uname))
@@ -259,15 +253,14 @@ public class AnsFragment extends Fragment {
                         }
                     }
                 });
-                    
 
 
 
 
                 astringView.setText(model.getAstring());
 
-                    likeView.setText(model.getLikes()+" likes");
-                    Date date = new Date(model.getTime());
+                likeView.setText(model.getLikes() + " likes");
+                Date date = new Date(model.getTime());
 
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(date);
@@ -277,7 +270,7 @@ public class AnsFragment extends Fragment {
                 hour = cal.get(Calendar.HOUR_OF_DAY);
                 minute = cal.get(Calendar.MINUTE);
                 seconds = cal.get(Calendar.SECOND);
-                time.setText(day+"/"+month+"/"+year);
+                time.setText(day + "/" + month + "/" + year);
 
 
 
@@ -291,15 +284,13 @@ public class AnsFragment extends Fragment {
                         username.setText(model.getUsername());
                         username.setTextColor(Color.parseColor("#0000EE"));
                     }
-                
-
-
 
                 return view;
 
             }
 
         };
+
 
 
         queRef.child(key).addValueEventListener(new ValueEventListener() {
@@ -412,6 +403,9 @@ public class AnsFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         currentAnswers = dataSnapshot.getChildrenCount();
+
+                        Log.d("current answers", currentAnswers + "");
+
                     }
 
                     @Override
