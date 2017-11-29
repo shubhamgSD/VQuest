@@ -13,14 +13,16 @@
         android:layout_height="200dp"
         app:cardCornerRadius="5dp"
         android:layout_margin="10dp"
-        app:contentPadding="5dp"
-        android:background="@drawable/abcdef"
+
         >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp">
+            android:background="@drawable/imgone"
+            android:padding="10dp"
+
+            >
 
 
             <Button
@@ -30,6 +32,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:paddingLeft="5dp"
                 android:text="Answer"
                 android:textColor="@color/colorPrimary"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"/>
@@ -70,13 +73,13 @@
 
             <Button
                 android:id="@+id/btn_report"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="76dp"
+                android:layout_height="35dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:text="Report/Edit"
+                android:gravity="center"
+                android:text="Report"
                 android:textColor="@color/red" />
 
             <TextView
