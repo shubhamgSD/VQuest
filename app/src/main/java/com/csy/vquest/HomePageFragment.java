@@ -1,6 +1,8 @@
 package com.csy.vquest;
 
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -30,11 +32,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
 
+import static com.csy.vquest.NavigationDrawerActivity.current_uname;
+
 public class HomePageFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private FloatingActionButton floatBtn;
-    private ImageButton imageButton;
     private ListView listView;
+
+    private String fragmentType;
 
     CustomFirebaseListAdapter firebaseListAdapter;
 
@@ -156,17 +161,33 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        getActivity().setTitle("Home");
+        fragmentType = getArguments().getString("fragment");
+
+        if (fragmentType == "home") {
+            getActivity().setTitle("Home");
+        } else {
+            getActivity().setTitle("My Questions");
+        }
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
-        setHasOptionsMenu(true);
+
+        if (fragmentType == "home") {
+            setHasOptionsMenu(true);
+        } else {
+            setHasOptionsMenu(false);
+        }
 
         listView = (ListView) view.findViewById(R.id.listViewHome);
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference questionRef = rootRef.child("question");
 
-        firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
-                QuestionBean.class,R.layout.card_layout,questionRef);
+        if (fragmentType == "home") {
+            firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
+                    QuestionBean.class,R.layout.card_layout,questionRef);
+        } else {
+            firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
+                    QuestionBean.class,R.layout.card_layout,questionRef.orderByChild("username").equalTo(current_uname));
+        }
 
         listView.setAdapter(firebaseListAdapter);
         listView.setOnItemClickListener(this);
@@ -217,4 +238,5 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                 .addToBackStack("ansFragment")
                 .commit();
     }
+
 }

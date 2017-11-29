@@ -13,12 +13,12 @@
         <item
             android:id="@+id/nav_my_que"
             android:title="My Questions" />
-        <item
+        <!--<item
             android:id="@+id/nav_my_ans"
             android:title="My Answers" />
         <item
             android:id="@+id/nav_settings"
-            android:title="Settings" />
+            android:title="Settings" />-->
         <item
             android:id="@+id/nav_feedback"
             android:title="Help and Feedback" />

@@ -1,11 +1,13 @@
 package com.csy.vquest;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -17,9 +19,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 public class NavigationDrawerActivity extends AppCompatActivity
@@ -88,6 +93,9 @@ public class NavigationDrawerActivity extends AppCompatActivity
         imageView.setImageURI(firebaseAuth.getCurrentUser().getPhotoUrl());
 
         Fragment fragment = new HomePageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("fragment", "home");
+        fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment, fragment, "home_page_fragment")
                 .commit();
@@ -138,6 +146,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
 
         Fragment fragment;
+        Bundle bundle;
 
         switch (item.getItemId()) {
 
@@ -149,6 +158,9 @@ public class NavigationDrawerActivity extends AppCompatActivity
                     break;
                 }
                 fragment = new HomePageFragment();
+                bundle = new Bundle();
+                bundle.putString("fragment", "home");
+                fragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, fragment, "home_page_fragment")
                         .commit();
@@ -167,6 +179,68 @@ public class NavigationDrawerActivity extends AppCompatActivity
                         .addToBackStack("questionFragment")
                         .commit();
                 break;
+
+            case R.id.nav_my_que:
+                HomePageFragment homePageFragment1 = (HomePageFragment) getSupportFragmentManager().findFragmentByTag("my_question_fragment");
+                if(homePageFragment1 != null && homePageFragment1.isVisible()) {
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    break;
+                }
+                fragment = new HomePageFragment();
+                bundle = new Bundle();
+                bundle.putString("fragment", "myquestion");
+                fragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, fragment, "my_question_fragment")
+                        .addToBackStack("myQuestionFragment")
+                        .commit();
+
+                break;
+
+            case R.id.nav_feedback:
+                AlertDialog.Builder feedbackDialog = new AlertDialog.Builder(this);
+                View feedView = LayoutInflater.from(this).inflate(R.layout.feedback_dialog, null);
+                final EditText feedText = (EditText) feedView.findViewById(R.id.input_feedback);
+                feedbackDialog.setView(feedView);
+                feedbackDialog.setTitle("Help & Feedback");
+                feedbackDialog.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference newFeedRef = rootRef.child("feedback").child(firebaseAuth.getCurrentUser().getUid());
+                        newFeedRef.child("fstring").setValue(feedText.getText().toString());
+                        newFeedRef.child("time").setValue(ServerValue.TIMESTAMP);
+                        Toast.makeText(NavigationDrawerActivity.this, "Thankyou for your views", Toast.LENGTH_LONG).show();
+
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                feedbackDialog.create().show();
+
+                break;
+
+//            case R.id.nav_my_ans:
+//                CreateSurveyFragment createSurveyFragment = (CreateSurveyFragment) getSupportFragmentManager().findFragmentByTag("create_survey_fragment");
+//                if(createSurveyFragment != null && createSurveyFragment.isVisible()){
+//                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//                    drawer.closeDrawer(GravityCompat.START);
+//                    break;
+//                }
+//                fragment = new CreateSurveyFragment();
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.fragment, fragment, "create_survey_fragment")
+//                        .addToBackStack("createsurveyfragment")
+//                        .commit();
+//
+//                break;
 
             case R.id.nav_logout:
                 firebaseAuth.signOut();
