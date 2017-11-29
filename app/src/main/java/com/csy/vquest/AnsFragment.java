@@ -188,7 +188,7 @@ public class AnsFragment extends Fragment {
                             likebtn.setBackgroundColor(Color.parseColor("#FF7F92FA"));
                         } else {
                             likebtn.setTextColor(Color.parseColor("#100f10"));
-                            likebtn.setBackgroundColor(Color.parseColor("#FFB7B6B6"));
+                            likebtn.setBackgroundColor(Color.parseColor("#FFD4D1D1"));
                         }
                     }
                     @Override
