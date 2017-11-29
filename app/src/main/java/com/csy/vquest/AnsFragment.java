@@ -219,7 +219,7 @@ public class AnsFragment extends Fragment {
 
                         if(aBtn.getText().toString().equalsIgnoreCase("Report")) {
 
-
+                            Toast.makeText(getActivity(), "Reported successfully", Toast.LENGTH_LONG).show();
 
                         }
                         else {
@@ -364,7 +364,7 @@ public class AnsFragment extends Fragment {
             public void onClick(View v) {
                 if(qVar_btn.getText().toString() == "Report"){
 
-
+                    Toast.makeText(getActivity(), "Reported successfully", Toast.LENGTH_LONG).show();
 
                 }
                 else {
