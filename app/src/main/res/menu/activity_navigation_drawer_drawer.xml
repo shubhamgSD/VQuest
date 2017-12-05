@@ -13,6 +13,9 @@
         <item
             android:id="@+id/nav_my_que"
             android:title="My Questions" />
+        <item
+            android:id="@+id/nav_create_survey"
+            android:title="Create Survey" />
         <!--<item
             android:id="@+id/nav_my_ans"
             android:title="My Answers" />

@@ -227,20 +227,20 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
                 break;
 
-//            case R.id.nav_my_ans:
-//                CreateSurveyFragment createSurveyFragment = (CreateSurveyFragment) getSupportFragmentManager().findFragmentByTag("create_survey_fragment");
-//                if(createSurveyFragment != null && createSurveyFragment.isVisible()){
-//                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//                    drawer.closeDrawer(GravityCompat.START);
-//                    break;
-//                }
-//                fragment = new CreateSurveyFragment();
-//                getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.fragment, fragment, "create_survey_fragment")
-//                        .addToBackStack("createsurveyfragment")
-//                        .commit();
-//
-//                break;
+            case R.id.nav_create_survey:
+                CreateSurveyFragment createSurveyFragment = (CreateSurveyFragment) getSupportFragmentManager().findFragmentByTag("create_survey_fragment");
+                if(createSurveyFragment != null && createSurveyFragment.isVisible()){
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    break;
+                }
+                fragment = new CreateSurveyFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, fragment, "create_survey_fragment")
+                        .addToBackStack("createsurveyfragment")
+                        .commit();
+
+                break;
 
             case R.id.nav_logout:
                 firebaseAuth.signOut();

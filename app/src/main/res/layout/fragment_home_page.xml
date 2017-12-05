@@ -49,8 +49,9 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="35dp"
             android:layout_marginRight="35dp"
+            android:elevation="@dimen/cardview_default_elevation"
             android:src="@android:drawable/ic_input_add"
-            />
+            app:backgroundTint="@color/colorPrimary" />
 
     </RelativeLayout>
 

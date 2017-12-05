@@ -29,6 +29,8 @@ public class CreateSurveyFragment extends Fragment implements AdapterView.OnItem
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_survey, container, false);
 
+        getActivity().setTitle("Create Survey");
+
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner2);
         spinner.setOnItemSelectedListener(this);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
@@ -46,7 +48,7 @@ public class CreateSurveyFragment extends Fragment implements AdapterView.OnItem
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         options = Integer.parseInt(parent.getItemAtPosition(position).toString());
         //listviewadapter adpter = new listviewadapter(getActivity(), R.layout.survey_option_item,hints);
-        ArrayAdapter<String> adpter = new ArrayAdapter(getActivity(),R.layout.survey_option_item,R.id.input_option,hints);
+        ArrayAdapter<String> adpter = new ArrayAdapter<>(getActivity(),R.layout.survey_option_item,R.id.input_option,hints);
         optionsListView.setAdapter(adpter);
 
     }

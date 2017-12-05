@@ -1,28 +1,25 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/back_answers"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     tools:context="com.csy.vquest.AnsFragment">
 
 
     <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="175dp"
         app:cardCornerRadius="5dp"
         android:layout_margin="10dp"
-
-        >
+        android:layout_alignParentTop="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/imgone"
-            android:padding="10dp"
-
-            >
+            android:padding="10dp">
 
 
             <Button
@@ -32,7 +29,6 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:paddingLeft="5dp"
                 android:text="Answer"
                 android:textColor="@color/colorPrimary"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"/>
@@ -104,18 +100,17 @@
 
     </android.support.v7.widget.CardView>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false">-->
+
         <ListView
             android:id="@+id/ans_lv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="6"></ListView>
+            android:layout_below="@id/card_view"/>
 
-</LinearLayout>
+    <!--</LinearLayout>-->
 
-
-
-
-</LinearLayout>
+</RelativeLayout>
