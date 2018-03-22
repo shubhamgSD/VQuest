@@ -61,6 +61,8 @@ public class ApiFragment extends Fragment {
 
     private static final String TAG = "ApiFragment";
 
+
+
     private GoogleCredential mCredential;
 
     private CloudNaturalLanguage mApi = new CloudNaturalLanguage.Builder(
