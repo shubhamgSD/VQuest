@@ -33,6 +33,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private String email;
     private String password;
+    private TextView forgotpassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +45,17 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         passText = (EditText) findViewById(R.id.input_password);
         loginBtn = (Button) findViewById(R.id.btn_login);
         signupView = (TextView) findViewById(R.id.link_signup);
+        forgotpassword = (TextView)findViewById(R.id.link_forgotpassword);
 
         loginBtn.setOnClickListener(this);
         signupView.setOnClickListener(this);
+
+        forgotpassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SignInActivity.this, PasswordActivity.class));
+            }
+        });
 
     }
 

@@ -21,10 +21,17 @@
         android:elevation="@dimen/cardview_default_elevation"
         android:clickable="true"
         android:src="@android:drawable/ic_input_add" />-->
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list">
+
+    </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/list">
 
         <ListView
             android:id="@+id/listViewHome"
@@ -38,7 +45,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/list">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
@@ -49,8 +59,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="35dp"
             android:layout_marginRight="35dp"
-            android:src="@android:drawable/ic_input_add"
-            />
+            android:src="@android:drawable/ic_input_add" />
 
     </RelativeLayout>
 

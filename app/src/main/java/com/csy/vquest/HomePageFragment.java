@@ -6,6 +6,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import static com.csy.vquest.NavigationDrawerActivity.current_uname;
@@ -40,6 +44,15 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
     private ListView listView;
 
     private String fragmentType;
+    private DatabaseReference announcementRef;
+    private RecyclerView list;
+    private LinearLayoutManager mLayoutManager;
+    private static int year;
+    private static int month;
+    private static int day;
+    private static int hour;
+    private static int minute;
+    private static int seconds;
 
     CustomFirebaseListAdapter firebaseListAdapter;
 
@@ -161,6 +174,8 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
         fragmentType = getArguments().getString("fragment");
 
         if (fragmentType == "home") {
@@ -169,6 +184,14 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
             getActivity().setTitle("My Questions");
         }
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
+
+        announcementRef = FirebaseDatabase.getInstance().getReference("announcement");
+        announcementRef.keepSynced(true);
+        list = (RecyclerView) view.findViewById(R.id.list);
+        mLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, true);
+        mLayoutManager.setStackFromEnd(true);
+        list.setLayoutManager(mLayoutManager);
+
 
         if (fragmentType == "home") {
             setHasOptionsMenu(true);
@@ -237,6 +260,52 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                 .replace(R.id.fragment, fragment)
                 .addToBackStack("ansFragment")
                 .commit();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseRecyclerAdapter<AnnouncementBean,AnnouncementViewHolder>firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<AnnouncementBean, AnnouncementViewHolder>
+                (AnnouncementBean.class, R.layout.announcement_item,AnnouncementViewHolder.class,announcementRef) {
+            @Override
+            protected void populateViewHolder(AnnouncementViewHolder viewHolder, AnnouncementBean model, int position) {
+                viewHolder.setannouncement(model.getAstring());
+                viewHolder.setusername(model.getUsername());
+                viewHolder.settime(model.getTime());
+            }
+        };
+        list.setAdapter(firebaseRecyclerAdapter);
+
+    }
+
+    public static class AnnouncementViewHolder extends RecyclerView.ViewHolder{
+        View mview;
+        public AnnouncementViewHolder(View itemview){
+            super(itemview);
+            mview = itemview;
+        }
+        public void setusername(String username){
+            TextView announcement_username = (TextView)mview.findViewById(R.id.user_name);
+            announcement_username.setText(username);
+        }
+        public void setannouncement(String announcement){
+            TextView announcement_string = (TextView)mview.findViewById(R.id.user_announcement);
+            announcement_string.setText(announcement);
+        }
+        public void settime(long time){
+            TextView announcement_time = (TextView) mview.findViewById(R.id.user_time);
+            Date date = new Date(time);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            year = cal.get(Calendar.YEAR);
+            month = cal.get(Calendar.MONTH);
+            day = cal.get(Calendar.DAY_OF_MONTH);
+            hour = cal.get(Calendar.HOUR_OF_DAY);
+            minute = cal.get(Calendar.MINUTE);
+            seconds = cal.get(Calendar.SECOND);
+            announcement_time.setText(day+"/"+month+"/"+year);
+
+        }
     }
 
 }

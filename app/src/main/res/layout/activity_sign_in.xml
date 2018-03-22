@@ -8,7 +8,8 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:fillViewport="true" >
 
         <!--<RelativeLayout
             android:id="@+id/form_layout_sign_in"
@@ -20,7 +21,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="56dp"
+            android:paddingTop="40dp"
             android:paddingLeft="24dp"
             android:paddingRight="24dp">
 
@@ -56,8 +57,8 @@
                     android:id="@+id/input_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:hint="Password"/>
+                    android:hint="Password"
+                    android:inputType="textPassword" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.v7.widget.AppCompatButton
@@ -69,13 +70,22 @@
                 android:padding="12dp"
                 android:text="Login"/>
 
-            <TextView android:id="@+id/link_signup"
+            <TextView
+                android:id="@+id/link_signup"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="No account yet? Create one"
                 android:gravity="center"
-                android:textSize="16dip"/>
+                android:text="No account yet? Create one"
+                android:textSize="16dip" />
+
+            <TextView
+                android:id="@+id/link_forgotpassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Forgot your password?"
+                android:textSize="16dip" />
 
         </LinearLayout>
 

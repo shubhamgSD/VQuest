@@ -130,7 +130,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
                     }
                 });
 
-                Toast.makeText(getActivity(),"Question raised succesfully",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"Question raised successfully",Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
 
             }

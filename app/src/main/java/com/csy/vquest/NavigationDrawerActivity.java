@@ -198,6 +198,20 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
                 break;
 
+            case R.id.nav_new_ann:
+                AnnouncementFragment announcementFragment = (AnnouncementFragment) getSupportFragmentManager().findFragmentByTag("announcement_fragment");
+                if(announcementFragment != null && announcementFragment.isVisible()) {
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    break;
+                }
+                fragment = new AnnouncementFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, fragment, "announcement_fragment")
+                        .addToBackStack("announcementFragment")
+                        .commit();
+                break;
+
             case R.id.nav_feedback:
                 AlertDialog.Builder feedbackDialog = new AlertDialog.Builder(this);
                 View feedView = LayoutInflater.from(this).inflate(R.layout.feedback_dialog, null);
