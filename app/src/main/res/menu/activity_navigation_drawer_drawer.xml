@@ -14,6 +14,9 @@
             android:id="@+id/nav_my_que"
             android:title="My Questions" />
         <item
+            android:id="@+id/nav_new_ann"
+            android:title="New Announcement" />
+        <item
             android:id="@+id/nav_create_survey"
             android:title="Create Survey" />
         <item
