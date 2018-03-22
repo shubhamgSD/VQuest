@@ -33,16 +33,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class NavigationDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseAuth firebaseAuth;
     public static String current_uname;
+    private long nFeeds = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FirebaseMessaging.getInstance().subscribeToTopic("pushNotifications");
+
         setContentView(R.layout.activity_navigation_drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -182,7 +187,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
             case R.id.nav_my_que:
                 HomePageFragment homePageFragment1 = (HomePageFragment) getSupportFragmentManager().findFragmentByTag("my_question_fragment");
-                if(homePageFragment1 != null && homePageFragment1.isVisible()) {
+                if (homePageFragment1 != null && homePageFragment1.isVisible()) {
                     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                     drawer.closeDrawer(GravityCompat.START);
                     break;
@@ -199,6 +204,20 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_feedback:
+                DatabaseReference feedRef = FirebaseDatabase.getInstance().getReference().child("feedback");
+                feedRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot != null)
+                            nFeeds = dataSnapshot.getChildrenCount();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 AlertDialog.Builder feedbackDialog = new AlertDialog.Builder(this);
                 View feedView = LayoutInflater.from(this).inflate(R.layout.feedback_dialog, null);
                 final EditText feedText = (EditText) feedView.findViewById(R.id.input_feedback);
@@ -208,39 +227,62 @@ public class NavigationDrawerActivity extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference newFeedRef = rootRef.child("feedback").child(firebaseAuth.getCurrentUser().getUid());
-                        newFeedRef.child("fstring").setValue(feedText.getText().toString());
-                        newFeedRef.child("time").setValue(ServerValue.TIMESTAMP);
-                        Toast.makeText(NavigationDrawerActivity.this, "Thankyou for your views", Toast.LENGTH_LONG).show();
+                        String feedString = feedText.getText().toString();
+                        if(feedString == null || feedString.equals("")){
+                            feedText.setError("Required");
+                        }
+                        else {
+                            nFeeds++;
+                            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                            DatabaseReference newFeedRef = rootRef.child("feedback").child(String.valueOf(nFeeds));
+                            newFeedRef.child("username").setValue(current_uname);
+                            newFeedRef.child("fstring").setValue(feedString);
+                            newFeedRef.child("time").setValue(ServerValue.TIMESTAMP);
+                            Toast.makeText(NavigationDrawerActivity.this, "Thankyou for your views", Toast.LENGTH_LONG).show();
+                        }
 
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                });
+                            }
+                        });
 
                 feedbackDialog.create().show();
 
                 break;
 
-//            case R.id.nav_my_ans:
-//                CreateSurveyFragment createSurveyFragment = (CreateSurveyFragment) getSupportFragmentManager().findFragmentByTag("create_survey_fragment");
-//                if(createSurveyFragment != null && createSurveyFragment.isVisible()){
-//                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//                    drawer.closeDrawer(GravityCompat.START);
-//                    break;
-//                }
-//                fragment = new CreateSurveyFragment();
-//                getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.fragment, fragment, "create_survey_fragment")
-//                        .addToBackStack("createsurveyfragment")
-//                        .commit();
-//
-//                break;
+            case R.id.nav_create_survey:
+                CreateSurveyFragment createSurveyFragment = (CreateSurveyFragment) getSupportFragmentManager().findFragmentByTag("create_survey_fragment");
+                if (createSurveyFragment != null && createSurveyFragment.isVisible()) {
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    break;
+                }
+                fragment = new CreateSurveyFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, fragment, "create_survey_fragment")
+                        .addToBackStack("createsurveyfragment")
+                        .commit();
+
+                break;
+
+            case R.id.nav_my_surveys:
+                MySurveysFragment mySurveysFragment = (MySurveysFragment) getSupportFragmentManager().findFragmentByTag("my_surveys_fragment");
+                if(mySurveysFragment != null && mySurveysFragment.isVisible()){
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    break;
+                }
+                fragment = new MySurveysFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, fragment, "my_surveys_fragment")
+                        .addToBackStack("mysurveysfragment")
+                        .commit();
+
+                break;
 
             case R.id.nav_logout:
                 firebaseAuth.signOut();

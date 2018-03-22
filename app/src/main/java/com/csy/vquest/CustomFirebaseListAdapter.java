@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -31,14 +32,15 @@ public class CustomFirebaseListAdapter extends FirebaseListAdapter<QuestionBean>
     private int hour;
     private int minute;
     private int seconds;
+    private ProgressBar loadingIndicator;
 
 
     public CustomFirebaseListAdapter(Context context, Class modelClass, int mLayout,
-                                     Query query) {
+                                     Query query, ProgressBar loadingIndicator) {
         super(context, modelClass, mLayout, query);
         mContext = context;
         this.mLayout = mLayout;
-
+        this.loadingIndicator = loadingIndicator;
     }
 
 
@@ -64,54 +66,38 @@ public class CustomFirebaseListAdapter extends FirebaseListAdapter<QuestionBean>
         qstringView.setText(model.getQstring());
         categoryView.setText(model.getCategory());
 
-        if(model.getCategory().equals("Events"))
-        {
+        if (model.getCategory().equals("Events")) {
 
             categoryView.setTextColor(Color.parseColor("#303F9F"));
-        }
-        else if(model.getCategory().equals("General"))
-        {
+        } else if (model.getCategory().equals("General")) {
 
             categoryView.setTextColor(Color.parseColor("#FF3DB927"));
-        }
-        else if(model.getCategory().equals("Common Academic"))
-        {
+        } else if (model.getCategory().equals("Common Academic")) {
 
             categoryView.setTextColor(Color.parseColor("#FFF4F727"));
-        }
-        else if(model.getCategory().equals("Academic-CSE"))
-        {
+        } else if (model.getCategory().equals("Academic-CSE")) {
 
             categoryView.setTextColor(Color.parseColor("#FFFF0000"));
-        }
-        else if(model.getCategory().equals("Academic-ECE"))
-        {
+        } else if (model.getCategory().equals("Academic-ECE")) {
 
             categoryView.setTextColor(Color.parseColor("#FFE433D8"));
-        }
-        else if(model.getCategory().equals("Academic-ME"))
-        {
+        } else if (model.getCategory().equals("Academic-ME")) {
 
             categoryView.setTextColor(Color.parseColor("#FFF98F33"));
-        }
-        else if(model.getCategory().equals("Hostel"))
-        {
+        } else if (model.getCategory().equals("Hostel")) {
 
             categoryView.setTextColor(Color.parseColor("#FFC73FE9"));
-        }
-        else if(model.getCategory().equals("Mess"))
-        {
+        } else if (model.getCategory().equals("Mess")) {
 
             categoryView.setTextColor(Color.parseColor("#FF30CEC0"));
         }
 
 
-        if(model.getQanonymity() == 0) {
+        if (model.getQanonymity() == 0) {
             unameView.setText(model.getUsername());
             unameView.setTextColor(Color.parseColor("#0000EE"));
 
-        }
-        else {
+        } else {
             unameView.setText("Anonymous");
             unameView.setTextColor(Color.parseColor("#FF4B4A4B"));
         }
@@ -121,26 +107,21 @@ public class CustomFirebaseListAdapter extends FirebaseListAdapter<QuestionBean>
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         year = cal.get(Calendar.YEAR);
-        month = cal.get(Calendar.MONTH);
+        month = cal.get(Calendar.MONTH) + 1;
         day = cal.get(Calendar.DAY_OF_MONTH);
         hour = cal.get(Calendar.HOUR_OF_DAY);
         minute = cal.get(Calendar.MINUTE);
         seconds = cal.get(Calendar.SECOND);
-        timeView.setText(day+"/"+month+"/"+year);
+        timeView.setText(day + "/" + month + "/" + year);
 
-        replyView.setText(model.getReplies()+" replies");
-
-
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-
-
+        replyView.setText(model.getReplies() + " replies");
+        loadingIndicator.setVisibility(View.GONE);
         return view;
 
     }
 
     @Override
     protected void populateView(View v, QuestionBean model, int position) {
-
     }
 
 }

@@ -1,0 +1,178 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.csy.vquest.OneSurveyCreatedFragment">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/survey_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="20dp"
+        app:contentPadding="10dp"
+        android:layout_margin="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/uimage_view1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/anonymous_user_image"
+                android:contentDescription="User Image" />
+
+            <TextView
+                android:id="@+id/uname_view2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="18dp"
+                android:layout_marginStart="18dp"
+                android:layout_toRightOf="@+id/uimage_view1"
+                android:text="UserName"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textStyle="bold"
+                android:layout_toEndOf="@+id/uimage_view1" />
+
+            <TextView
+                android:id="@+id/time_view2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/uname_view2"
+                android:layout_alignStart="@+id/uname_view2"
+                android:layout_below="@+id/uname_view2"
+                android:text="Time"
+                android:textColor="@color/time_color" />
+
+            <TextView
+                android:id="@+id/sstring_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/time_view2"
+                android:padding="10dp"
+                android:text="Survey String"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/sstring_view">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:stretchColumns="1">
+
+                    <TableRow>
+                        <TextView
+                            android:layout_column="1"
+                            android:text="Option 1"
+                            android:padding="10dp"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:id="@+id/tv_survey_votes1"
+                            android:text="votes 1"
+                            android:padding="10dp"
+                            android:textSize="16sp"
+                            android:gravity="right"/>
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView
+                            android:layout_column="1"
+                            android:text="Option 2"
+                            android:padding="10dp"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:id="@+id/tv_survey_votes2"
+                            android:text="votes 2"
+                            android:padding="10dp"
+                            android:textSize="16sp"
+                            android:gravity="right"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/row_option3"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_column="1"
+                            android:text="Option 3"
+                            android:padding="10dp"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:id="@+id/tv_survey_votes3"
+                            android:text="votes 3"
+                            android:padding="10dp"
+                            android:textSize="16sp"
+                            android:gravity="right"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/row_option4"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_column="1"
+                            android:text="Option 4"
+                            android:padding="10dp"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:id="@+id/tv_survey_votes4"
+                            android:text="votes 4"
+                            android:padding="10dp"
+                            android:textSize="16sp"
+                            android:gravity="right"/>
+                    </TableRow>
+
+                    <View
+                        android:layout_height="2dip"
+                        android:background="#FF909090" />
+
+                    <TableRow>
+                        <TextView
+                            android:layout_column="1"
+                            android:text="Total votes"
+                            android:padding="10dp"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:id="@+id/tv_survey_total_votes"
+                            android:text="votes"
+                            android:padding="10dp"
+                            android:textSize="16sp"
+                            android:gravity="right"/>
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView
+                            android:layout_column="1"
+                            android:text="Total views"
+                            android:padding="10dp"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:id="@+id/tv_survey_total_views"
+                            android:text="views"
+                            android:padding="10dp"
+                            android:textSize="16sp"
+                            android:gravity="right"/>
+                    </TableRow>
+
+                </TableLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>
