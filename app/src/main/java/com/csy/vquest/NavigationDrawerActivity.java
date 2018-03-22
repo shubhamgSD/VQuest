@@ -33,19 +33,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.csy.vquest.model.SentimentInfo;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.GenericJson;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.language.v1.CloudNaturalLanguage;
-import com.google.api.services.language.v1.CloudNaturalLanguageRequest;
-import com.google.api.services.language.v1.CloudNaturalLanguageScopes;
-import com.google.api.services.language.v1.model.AnalyzeSentimentRequest;
-import com.google.api.services.language.v1.model.AnalyzeSentimentResponse;
-import com.google.api.services.language.v1.model.Document;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
