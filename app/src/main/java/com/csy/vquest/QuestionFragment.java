@@ -37,7 +37,7 @@ import static com.csy.vquest.NavigationDrawerActivity.current_uname;
 
 public class QuestionFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
-    private long qno = 4;
+//    private long qno = 4;
 
     private String category = "";
     private String question = "";
@@ -55,7 +55,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
     private EditText editText;
     private Spinner spinner;
     private FirebaseDatabase database;
-    private long noOfChild=0;
+    private long noOfChild = 0;
 
     public QuestionFragment() {
         // Required empty public constructor
@@ -74,10 +74,9 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
                     anonymity = 1;
-                }
-                else {
+                } else {
                     anonymity = 0;
                 }
             }
@@ -91,7 +90,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 noOfChild = dataSnapshot.getChildrenCount();
-                Log.d("Value","onDataChannge"+noOfChild);
+                Log.d("Value", "onDataChannge" + noOfChild);
 
             }
 
@@ -102,8 +101,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
         });
 
         btn1 = (Button) view.findViewById(R.id.button4);
-        btn1.setOnClickListener(new View.OnClickListener()
-        {
+        btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((NavigationDrawerActivity)getActivity()).startAnalyze(editText.getText().toString());

@@ -12,6 +12,8 @@ import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,7 +44,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+
+import java.util.Calendar;
+
 import java.io.IOException;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +64,17 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
     private ProgressBar loadingIndicator;
 
     private String fragmentType;
+
+    private DatabaseReference announcementRef;
+    private RecyclerView list;
+    private LinearLayoutManager mLayoutManager;
+    private static int year;
+    private static int month;
+    private static int day;
+    private static int hour;
+    private static int minute;
+    private static int seconds;
+
 //    Parcelable state;
 
 //    private int indexList = 0;
@@ -111,92 +129,92 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
             else
                 item.setChecked(true);
 
-        DatabaseReference questionRef = FirebaseDatabase.getInstance().getReference().child("question");
+            DatabaseReference questionRef = FirebaseDatabase.getInstance().getReference().child("question");
 
-        Query query;
+            Query query;
 
-        switch(item.getItemId()) {
+            switch (item.getItemId()) {
 
-            case R.id.fil_all:
-                query = questionRef;
-                break;
-
-            case R.id.fil_unanswered:
-                if(item.isChecked())
-                    query = questionRef.orderByChild("replies").equalTo(0);
-                else
+                case R.id.fil_all:
                     query = questionRef;
-                break;
+                    break;
 
-            case R.id.fil_answered:
-                if(item.isChecked())
-                    query = questionRef.orderByChild("replies").startAt(1);
-                else
+                case R.id.fil_unanswered:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("replies").equalTo(0);
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_answered:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("replies").startAt(1);
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_general:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("General");
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_academic_common:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("Common Academic");
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_academic_cse:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("Academic-CSE");
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_academic_ece:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("Academic-ECE");
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_academic_me:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("Academic-ME");
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_hostel:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("Hostel");
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_mess:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("Mess");
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_events:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("Events");
+                    else
+                        query = questionRef;
+                    break;
+
+                default:
                     query = questionRef;
-                break;
+                    break;
 
-            case R.id.fil_general:
-                if(item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("General");
-                else
-                    query = questionRef;
-                break;
-
-            case R.id.fil_academic_common:
-                if(item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("Common Academic");
-                else
-                    query = questionRef;
-                break;
-
-            case R.id.fil_academic_cse:
-                if(item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("Academic-CSE");
-                else
-                    query = questionRef;
-                break;
-
-            case R.id.fil_academic_ece:
-                if(item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("Academic-ECE");
-                else
-                    query = questionRef;
-                break;
-
-            case R.id.fil_academic_me:
-                if(item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("Academic-ME");
-                else
-                    query = questionRef;
-                break;
-
-            case R.id.fil_hostel:
-                if(item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("Hostel");
-                else
-                    query = questionRef;
-                break;
-
-            case R.id.fil_mess:
-                if(item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("Mess");
-                else
-                    query = questionRef;
-                break;
-
-            case R.id.fil_events:
-                if(item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("Events");
-                else
-                    query = questionRef;
-                break;
-
-            default:
-                query = questionRef;
-                break;
-
-        }
-      //  query = query.orderByChild("time");
+            }
+            //  query = query.orderByChild("time");
 
             firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
                     QuestionBean.class, R.layout.card_layout, query, loadingIndicator);
@@ -206,6 +224,7 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
         }
 
         return true;
+
     }
 
     @Override
@@ -220,6 +239,14 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
             getActivity().setTitle("My Questions");
         }
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
+
+        announcementRef = FirebaseDatabase.getInstance().getReference("announcement");
+        announcementRef.keepSynced(true);
+        list = (RecyclerView) view.findViewById(R.id.list);
+        mLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, true);
+        mLayoutManager.setStackFromEnd(true);
+        list.setLayoutManager(mLayoutManager);
+
 
         if (fragmentType == "home") {
             setHasOptionsMenu(true);
@@ -289,6 +316,52 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                 .addToBackStack("ansFragment")
                 .commit();
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseRecyclerAdapter<AnnouncementBean,AnnouncementViewHolder>firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<AnnouncementBean, AnnouncementViewHolder>
+                (AnnouncementBean.class, R.layout.announcement_item,AnnouncementViewHolder.class,announcementRef) {
+            @Override
+            protected void populateViewHolder(AnnouncementViewHolder viewHolder, AnnouncementBean model, int position) {
+                viewHolder.setannouncement(model.getAstring());
+                viewHolder.setusername(model.getUsername());
+                viewHolder.settime(model.getTime());
+            }
+        };
+        list.setAdapter(firebaseRecyclerAdapter);
+
+    }
+
+    public static class AnnouncementViewHolder extends RecyclerView.ViewHolder{
+        View mview;
+        public AnnouncementViewHolder(View itemview){
+            super(itemview);
+            mview = itemview;
+        }
+        public void setusername(String username){
+            TextView announcement_username = (TextView)mview.findViewById(R.id.user_name);
+            announcement_username.setText(username);
+        }
+        public void setannouncement(String announcement){
+            TextView announcement_string = (TextView)mview.findViewById(R.id.user_announcement);
+            announcement_string.setText(announcement);
+        }
+        public void settime(long time){
+            TextView announcement_time = (TextView) mview.findViewById(R.id.user_time);
+            Date date = new Date(time);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            year = cal.get(Calendar.YEAR);
+            month = cal.get(Calendar.MONTH);
+            day = cal.get(Calendar.DAY_OF_MONTH);
+            hour = cal.get(Calendar.HOUR_OF_DAY);
+            minute = cal.get(Calendar.MINUTE);
+            seconds = cal.get(Calendar.SECOND);
+            announcement_time.setText(day+"/"+month+"/"+year);
+
+        }
     }
 
 }

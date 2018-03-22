@@ -36,6 +36,7 @@
         </activity>
         <activity android:name=".SignInActivity" />
         <activity android:name=".SignUpActivity" />
+        <activity android:name=".PasswordActivity" />
 
         <service
             android:name=".MyFirebaseMessagingService">
