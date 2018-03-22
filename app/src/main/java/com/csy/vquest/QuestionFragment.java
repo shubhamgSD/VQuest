@@ -169,8 +169,8 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
                                         @Override
                                         public void run() {
 
-//                                            Toast.makeText(getContext(), NavigationDrawerActivity.score+" else",
-//                                                   Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(),"Score: "+ NavigationDrawerActivity.score+" , "+"Magnitude: "+NavigationDrawerActivity.magnitude,
+                                                   Toast.LENGTH_SHORT).show();
                                             Log.d("Else Part","Score");
                                             NavigationDrawerActivity.score=null;
                                             AlertDialog alertDialog = new AlertDialog.Builder(

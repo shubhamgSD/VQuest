@@ -251,6 +251,6 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onResume() {
         super.onResume();
-       // listView.setSelection(pos);
+        //listView.setSelection(pos);
     }
 }

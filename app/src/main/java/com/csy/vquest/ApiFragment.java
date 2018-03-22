@@ -140,6 +140,8 @@ public class ApiFragment extends Fragment {
             final SentimentInfo sentiment = new SentimentInfo(((AnalyzeSentimentResponse) response)
                     .getDocumentSentiment());
                 NavigationDrawerActivity.score = String.valueOf(sentiment.score);
+            NavigationDrawerActivity.magnitude= String.valueOf(sentiment.magnitude);
+
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

@@ -55,7 +55,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
     public  static String searchKey = null;
     public static String score=null;
-    private String magnitude="mag5";
+    public static String magnitude=null;
 
 //    public String getScore() {
 //        return score;
