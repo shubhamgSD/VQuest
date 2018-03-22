@@ -73,7 +73,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
                 final ProgressDialog progressDialog = new ProgressDialog(this);
                 progressDialog.setIndeterminate(true);
-                progressDialog.setMessage("Please wait...");
+                progressDialog.setMessage("Signing in...");
                 progressDialog.show();
 
                 email = emailText.getText().toString().trim();
@@ -86,14 +86,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     FirebaseUser user = firebaseAuth.getCurrentUser();
-                                    if(user.isEmailVerified()){
+                                    if (user.isEmailVerified()) {
 
                                         progressDialog.dismiss();
 
                                         Intent intent = new Intent(SignInActivity.this, NavigationDrawerActivity.class);
                                         startActivity(intent);
-                                    }
-                                    else{
+                                    } else {
 
                                         progressDialog.dismiss();
 

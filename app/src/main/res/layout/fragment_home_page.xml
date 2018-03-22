@@ -59,11 +59,17 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="35dp"
             android:layout_marginRight="35dp"
-            android:src="@android:drawable/ic_input_add" />
+            android:elevation="@dimen/cardview_default_elevation"
+            android:src="@android:drawable/ic_input_add"
+            app:backgroundTint="@color/colorPrimary" />
 
     </RelativeLayout>
 
-
-
+    <ProgressBar
+        android:id="@+id/pb_loading_indicator"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
 </RelativeLayout>

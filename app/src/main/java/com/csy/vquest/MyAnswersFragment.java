@@ -30,6 +30,8 @@ public class MyAnswersFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_answers, container, false);
 
+        getActivity().setTitle("My Answers");
+
         listView = (ListView) view.findViewById(R.id.listViewMyAnswers);
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -40,7 +42,6 @@ public class MyAnswersFragment extends Fragment {
                 QuestionBean.class, R.layout.myanswer_item_card, questionRef) {
             @Override
             protected void populateView(View v, QuestionBean model, int position) {
-
 
 
             }
