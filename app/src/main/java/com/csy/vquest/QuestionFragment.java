@@ -1,8 +1,12 @@
 package com.csy.vquest;
 
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.csy.vquest.model.SentimentInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,7 +33,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 
-public class QuestionFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class QuestionFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
     private long qno = 4;
 
@@ -99,40 +104,98 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
         {
             @Override
             public void onClick(View v) {
-                question = editText.getText().toString();
-                noOfChild = noOfChild+1;
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference rootRef = database.getReference();
-                DatabaseReference questionRef = rootRef.child("question");
-
-                final DatabaseReference newQuestionRef = questionRef.child(String.valueOf(noOfChild));
-                newQuestionRef.child("category").setValue(category);
-                newQuestionRef.child("qanonymity").setValue(anonymity);
-                newQuestionRef.child("qedited").setValue(edited);
-                newQuestionRef.child("qstring").setValue(question);
-                newQuestionRef.child("r_no").setValue(r_no);
-                newQuestionRef.child("time").setValue(ServerValue.TIMESTAMP);
-                newQuestionRef.child("views").setValue(views);
-                newQuestionRef.child("visibility").setValue(visibility);
-                newQuestionRef.child("replies").setValue(0);
-
-                rootRef.child("member")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("username").addListenerForSingleValueEvent(new ValueEventListener() {
+                ((NavigationDrawerActivity)getActivity()).startAnalyze(editText.getText().toString());
+                Thread thread = new Thread(new Runnable() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        newQuestionRef.child("username").setValue(dataSnapshot.getValue());
-                    }
+                    public void run() {
+                        while(true) {
+                            if (NavigationDrawerActivity.score != null) {
+                                if (Double.parseDouble(NavigationDrawerActivity.score) >= 0) {
+//                Toast.makeText(getContext(), NavigationDrawerActivity.score+" if",
+                      //  Toast.LENGTH_SHORT).show();
+                                    NavigationDrawerActivity.score=null;
+                                    question = editText.getText().toString();
+                                    noOfChild = noOfChild + 1;
+                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                    DatabaseReference rootRef = database.getReference();
+                                    DatabaseReference questionRef = rootRef.child("question");
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                                    final DatabaseReference newQuestionRef = questionRef.child(String.valueOf(noOfChild));
+                                    newQuestionRef.child("category").setValue(category);
+                                    newQuestionRef.child("qanonymity").setValue(anonymity);
+                                    newQuestionRef.child("qedited").setValue(edited);
+                                    newQuestionRef.child("qstring").setValue(question);
+                                    newQuestionRef.child("r_no").setValue(r_no);
+                                    newQuestionRef.child("time").setValue(ServerValue.TIMESTAMP);
+                                    newQuestionRef.child("views").setValue(views);
+                                    newQuestionRef.child("visibility").setValue(visibility);
+                                    newQuestionRef.child("replies").setValue(0);
 
+                                    rootRef.child("member")
+                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            .child("username").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            newQuestionRef.child("username").setValue(dataSnapshot.getValue());
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                    // Toast.makeText(getActivity(), "Question raised succesfully", Toast.LENGTH_LONG).show();
+
+                                    //getActivity().onBackPressed();
+
+                                    final Activity activity = getActivity();
+                                    activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            Toast.makeText(getContext(),"Question raised succesfully",
+                                                    Toast.LENGTH_SHORT).show();
+                                            Log.d("If","Score");
+                                            getActivity().onBackPressed();
+
+                                        }
+                                    });
+
+                                    break;
+                                } else {
+                                    final Activity activity = getActivity();
+                                    activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+//                                            Toast.makeText(getContext(), NavigationDrawerActivity.score+" else",
+//                                                   Toast.LENGTH_SHORT).show();
+                                            Log.d("Else Part","Score");
+                                            NavigationDrawerActivity.score=null;
+                                            AlertDialog alertDialog = new AlertDialog.Builder(
+                                                    getContext()).create();
+                                            alertDialog.setTitle("Warning");
+                                            alertDialog.setMessage("Looks like What you are writing is not appropriate");
+                                            alertDialog.setIcon(R.drawable.alert);
+                                           alertDialog.setButton(Dialog.BUTTON_NEUTRAL,"OK", new DialogInterface.OnClickListener() {
+                                               @Override
+                                               public void onClick(DialogInterface dialogInterface, int i) {
+                                                   //Nothing
+                                               }
+                                           });
+                                            alertDialog.show();
+                                     }
+                                    });
+                                 break;
+                                }
+                            }
+                        }
                     }
                 });
 
-                Toast.makeText(getActivity(),"Question raised succesfully",Toast.LENGTH_LONG).show();
-                getActivity().onBackPressed();
 
+                thread.start();
             }
         });
 
@@ -149,6 +212,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
 
     }
 
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         category = parent.getItemAtPosition(position).toString();
@@ -158,5 +222,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
     public void onNothingSelected(AdapterView<?> parent) {
         category = parent.getItemAtPosition(0).toString();
     }
+
+
 
 }

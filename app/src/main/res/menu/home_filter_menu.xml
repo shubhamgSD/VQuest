@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
     <item
@@ -10,7 +10,17 @@
         android:background="#ff00"
         app:showAsAction="always" />-->
 
+    <item android:id="@+id/search"
+        android:title="@string/search_title"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="collapseActionView|ifRoom"
+        app:actionViewClass="android.widget.SearchView" />
+
+
     <group android:checkableBehavior="single">
+
+
+
         <item android:id="@+id/fil_all"
             android:title="All questions"/>
         <item android:id="@+id/fil_answered"
