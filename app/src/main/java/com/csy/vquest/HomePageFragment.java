@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,15 +33,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import com.google.cloud.language.v1.Document;
-import com.google.cloud.language.v1.Document.Type;
-import com.google.cloud.language.v1.LanguageServiceClient;
-import com.google.cloud.language.v1.Sentiment;
-
 import java.io.IOException;
 import java.util.Date;
-
-import io.grpc.Context;
 
 import static android.content.ContentValues.TAG;
 import static com.csy.vquest.NavigationDrawerActivity.current_uname;
@@ -49,6 +43,7 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
 
     private FloatingActionButton floatBtn;
     private ListView listView;
+    private ProgressBar loadingIndicator;
 
     private String fragmentType;
 //    Parcelable state;
@@ -72,124 +67,118 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (item.isChecked())
-            item.setChecked(false);
-        else
-            item.setChecked(true);
+        if (item.getItemId() == R.id.survey_menu) {
 
-        DatabaseReference questionRef = FirebaseDatabase.getInstance().getReference().child("question");
+            Fragment viewSurveyFragment = new ViewSurveyFragment();
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment, viewSurveyFragment, "view_survey_fragment")
+                    .addToBackStack("viewSurveyFragment")
+                    .commit();
 
-        Query query;
+        } else {
 
-        switch (item.getItemId()) {
+            if (item.isChecked())
+                item.setChecked(false);
+            else
+                item.setChecked(true);
 
-            case R.id.fil_all:
-                query = questionRef;
-                break;
+            DatabaseReference questionRef = FirebaseDatabase.getInstance().getReference().child("question");
 
-            case R.id.fil_unanswered:
-                if (item.isChecked())
-                    query = questionRef.orderByChild("replies").equalTo(0);
-                else
+            Query query;
+
+            switch (item.getItemId()) {
+
+                case R.id.fil_all:
                     query = questionRef;
-                break;
+                    break;
 
-            case R.id.fil_answered:
-                if (item.isChecked())
-                    query = questionRef.orderByChild("replies").startAt(1);
-                else
+                case R.id.fil_unanswered:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("replies").equalTo(0);
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_answered:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("replies").startAt(1);
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_general:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("General");
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_academic_common:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("Common Academic");
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_academic_cse:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("Academic-CSE");
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_academic_ece:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("Academic-ECE");
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_academic_me:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("Academic-ME");
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_hostel:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("Hostel");
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_mess:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("Mess");
+                    else
+                        query = questionRef;
+                    break;
+
+                case R.id.fil_events:
+                    if (item.isChecked())
+                        query = questionRef.orderByChild("category").equalTo("Events");
+                    else
+                        query = questionRef;
+                    break;
+
+                default:
                     query = questionRef;
-                break;
+                    break;
 
-            case R.id.fil_general:
-                if (item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("General");
-                else
-                    query = questionRef;
-                break;
+            }
+            //  query = query.orderByChild("time");
 
-            case R.id.fil_academic_common:
-                if (item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("Common Academic");
-                else
-                    query = questionRef;
-                break;
+            firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
+                    QuestionBean.class, R.layout.card_layout, query, loadingIndicator);
 
-            case R.id.fil_academic_cse:
-                if (item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("Academic-CSE");
-                else
-                    query = questionRef;
-                break;
-
-            case R.id.fil_academic_ece:
-                if (item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("Academic-ECE");
-                else
-                    query = questionRef;
-                break;
-
-            case R.id.fil_academic_me:
-                if (item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("Academic-ME");
-                else
-                    query = questionRef;
-                break;
-
-            case R.id.fil_hostel:
-                if (item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("Hostel");
-                else
-                    query = questionRef;
-                break;
-
-            case R.id.fil_mess:
-                if (item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("Mess");
-                else
-                    query = questionRef;
-                break;
-
-            case R.id.fil_events:
-                if (item.isChecked())
-                    query = questionRef.orderByChild("category").equalTo("Events");
-                else
-                    query = questionRef;
-                break;
-
-            default:
-                query = questionRef;
-                break;
+            listView.setAdapter(firebaseListAdapter);
 
         }
-        //  query = query.orderByChild("time");
-
-        firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
-                QuestionBean.class, R.layout.card_layout, query);
-
-        listView.setAdapter(firebaseListAdapter);
 
         return true;
 
     }
-
-
-//    @Override
-//    public void onPause() {
-//        // Save ListView state @ onPause
-//        Log.d(TAG, "saving listview state @ onPause");
-//        state = listView.onSaveInstanceState();
-//        super.onPause();
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        if(state != null) {
-//            Log.d(TAG, "trying to restore listview state..");
-//            listView.onRestoreInstanceState(state);
-//        }
-//        super.onResume();
-//    }
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -209,6 +198,8 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
         } else {
             setHasOptionsMenu(false);
         }
+        loadingIndicator = (ProgressBar) view.findViewById(R.id.pb_loading_indicator);
+        loadingIndicator.setVisibility(View.VISIBLE);
 
         listView = (ListView) view.findViewById(R.id.listViewHome);
 
@@ -217,33 +208,14 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
 
         if (fragmentType == "home") {
             firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
-                    QuestionBean.class, R.layout.card_layout, questionRef);
+                    QuestionBean.class, R.layout.card_layout, questionRef, loadingIndicator);
         } else {
             firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
-                    QuestionBean.class, R.layout.card_layout, questionRef.orderByChild("username").equalTo(current_uname));
+                    QuestionBean.class, R.layout.card_layout, questionRef.orderByChild("username").equalTo(current_uname), loadingIndicator);
         }
 
         listView.setAdapter(firebaseListAdapter);
         listView.setOnItemClickListener(this);
-
-
-
-//        vList = listView.getChildAt(0);
-//
-//        listView.setSelectionFromTop(indexList, toplist);
-//
-//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//
-//            }
-//
-//            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//                indexList = firstVisibleItem;
-//                toplist = (vList == null) ? 0 : (vList.getTop() - listView.getPaddingTop());
-//            }
-//        });
 
         floatBtn = (FloatingActionButton) view.findViewById(R.id.fab);
         floatBtn.setOnClickListener(new View.OnClickListener() {
@@ -256,7 +228,6 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                         .commit();
             }
         });
-
         return view;
     }
 
@@ -289,8 +260,6 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                 .replace(R.id.fragment, fragment)
                 .addToBackStack("ansFragment")
                 .commit();
-
-        new GetSentimentTask().execute("My name is Chirag");
 
     }
 

@@ -44,7 +44,6 @@ public class MyAnswersFragment extends Fragment {
             protected void populateView(View v, QuestionBean model, int position) {
 
 
-
             }
         };
 

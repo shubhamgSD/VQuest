@@ -193,6 +193,7 @@ public class AnsFragment extends Fragment {
                             likebtn.setBackgroundColor(Color.parseColor("#FFD4D1D1"));
                         }
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
@@ -200,9 +201,8 @@ public class AnsFragment extends Fragment {
                 });
 
 
-
                 aVar_btn = (Button) view.findViewById(R.id.btn_report1);
-                if(model.getUsername().equalsIgnoreCase(current_uname))
+                if (model.getUsername().equalsIgnoreCase(current_uname))
                     aVar_btn.setText("Edit");
                 else
                     aVar_btn.setText("Report");
@@ -213,12 +213,11 @@ public class AnsFragment extends Fragment {
 
                         Button aBtn = (Button) v.findViewById(R.id.btn_report1);
 
-                        if(aBtn.getText().toString().equalsIgnoreCase("Report")) {
+                        if (aBtn.getText().toString().equalsIgnoreCase("Report")) {
 
                             Toast.makeText(getActivity(), "Reported successfully", Toast.LENGTH_LONG).show();
 
-                        }
-                        else {
+                        } else {
 
 
                             AlertDialog.Builder aEditDialog = new AlertDialog.Builder(getActivity());
@@ -231,9 +230,9 @@ public class AnsFragment extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                    if(aEditText.getText() == null)
+                                    if (aEditText.getText() == null)
                                         aEditText.setError("Required");
-                                    else{
+                                    else {
                                         aEditText.setError(null);
                                         DatabaseReference ansRef = rootRef.child("answer").child(key).child(firebaseListAdapter.getRef(tempPos).getKey());
                                         ansRef.child("astring").setValue(aEditText.getText().toString());
@@ -244,19 +243,17 @@ public class AnsFragment extends Fragment {
 
                                 }
                             })
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
 
-                                }
-                            });
+                                        }
+                                    });
                             aEditDialog.create().show();
 
                         }
                     }
                 });
-
-
 
 
                 astringView.setText(model.getAstring());
@@ -267,7 +264,7 @@ public class AnsFragment extends Fragment {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(date);
                 year = cal.get(Calendar.YEAR);
-                month = cal.get(Calendar.MONTH)+1;
+                month = cal.get(Calendar.MONTH) + 1;
                 day = cal.get(Calendar.DAY_OF_MONTH);
                 hour = cal.get(Calendar.HOUR_OF_DAY);
                 minute = cal.get(Calendar.MINUTE);
@@ -275,17 +272,13 @@ public class AnsFragment extends Fragment {
                 time.setText(day + "/" + month + "/" + year);
 
 
-
-                    if(model.getaanonymity()==1)
-                    {
-                        username.setText("Anonymous");
-                        username.setTextColor(Color.parseColor("#FF4B4A4B"));
-                    }
-                    else
-                    {
-                        username.setText(model.getUsername());
-                        username.setTextColor(Color.parseColor("#0000EE"));
-                    }
+                if (model.getaanonymity() == 1) {
+                    username.setText("Anonymous");
+                    username.setTextColor(Color.parseColor("#FF4B4A4B"));
+                } else {
+                    username.setText(model.getUsername());
+                    username.setTextColor(Color.parseColor("#0000EE"));
+                }
 
                 return view;
 
@@ -294,45 +287,42 @@ public class AnsFragment extends Fragment {
         };
 
 
-
         queRef.child(key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        questionBean = dataSnapshot.getValue(QuestionBean.class);
-                        qstring.setText(questionBean.getQstring());
+                questionBean = dataSnapshot.getValue(QuestionBean.class);
+                qstring.setText(questionBean.getQstring());
 
 
-                      views_view.setText(questionBean.getViews()+" views");
-                      Date date = new Date(questionBean.getTime());
+                views_view.setText(questionBean.getViews() + " views");
+                Date date = new Date(questionBean.getTime());
 
-                      Calendar cal = Calendar.getInstance();
-                      cal.setTime(date);
-                      year = cal.get(Calendar.YEAR);
-                      month = cal.get(Calendar.MONTH)+1;
-                      day = cal.get(Calendar.DAY_OF_MONTH);
-                      hour = cal.get(Calendar.HOUR_OF_DAY);
-                      minute = cal.get(Calendar.MINUTE);
-                      seconds = cal.get(Calendar.SECOND);
-                      time_view.setText(day+"/"+month+"/"+year);
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+
+                year = cal.get(Calendar.YEAR);
+                month = cal.get(Calendar.MONTH) + 1;
+                day = cal.get(Calendar.DAY_OF_MONTH);
+                hour = cal.get(Calendar.HOUR_OF_DAY);
+                minute = cal.get(Calendar.MINUTE);
+                seconds = cal.get(Calendar.SECOND);
+                time_view.setText(day + "/" + month + "/" + year);
 
 
-                      if(questionBean.getQanonymity() == 1)
-                      {
-                          username_view.setText("Anonymous");
-                          username_view.setTextColor(Color.parseColor("#FF4B4A4B"));
+                if (questionBean.getQanonymity() == 1) {
+                    username_view.setText("Anonymous");
+                    username_view.setTextColor(Color.parseColor("#FF4B4A4B"));
 
-                      }
-                      else
-                      {
-                          username_view.setText(questionBean.getUsername());
-                          username_view.setTextColor(Color.parseColor("#0000EE"));
-                      }
+                } else {
+                    username_view.setText(questionBean.getUsername());
+                    username_view.setTextColor(Color.parseColor("#0000EE"));
+                }
 
-                        if(questionBean.getUsername().equalsIgnoreCase(current_uname))
-                            qVar_btn.setText("Edit");
-                        else
-                            qVar_btn.setText("Report");
+                if (questionBean.getUsername().equalsIgnoreCase(current_uname))
+                    qVar_btn.setText("Edit");
+                else
+                    qVar_btn.setText("Report");
 
             }
 
@@ -355,12 +345,11 @@ public class AnsFragment extends Fragment {
         qVar_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(qVar_btn.getText().toString() == "Report"){
+                if (qVar_btn.getText().toString() == "Report") {
 
                     Toast.makeText(getActivity(), "Reported successfully", Toast.LENGTH_LONG).show();
 
-                }
-                else {
+                } else {
 
                     AlertDialog.Builder qEditDialog = new AlertDialog.Builder(getActivity());
                     final View qEditView = LayoutInflater.from(getActivity()).inflate(R.layout.edit_question_dialog, null);
@@ -372,9 +361,9 @@ public class AnsFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                            if(qEditText.getText() == null)
+                            if (qEditText.getText() == null)
                                 qEditText.setError("Required");
-                            else{
+                            else {
                                 qEditText.setError(null);
                                 queRef.child(key).child("qstring").setValue(qEditText.getText().toString());
                                 queRef.child(key).child("qedited").setValue(1);
@@ -384,12 +373,12 @@ public class AnsFragment extends Fragment {
 
                         }
                     })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                        }
-                    });
+                                }
+                            });
                     qEditDialog.create().show();
 
                 }

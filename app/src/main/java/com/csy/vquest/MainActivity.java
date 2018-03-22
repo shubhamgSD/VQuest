@@ -27,8 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (currentUser == null) {
             intent = new Intent(this, SignInActivity.class);
-        }
-        else {
+        } else {
             intent = new Intent(this, NavigationDrawerActivity.class);
         }
 
