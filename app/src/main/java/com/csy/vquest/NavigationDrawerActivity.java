@@ -7,6 +7,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +23,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,6 +33,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.csy.vquest.model.SentimentInfo;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.GenericJson;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.language.v1.CloudNaturalLanguage;
+import com.google.api.services.language.v1.CloudNaturalLanguageRequest;
+import com.google.api.services.language.v1.CloudNaturalLanguageScopes;
+import com.google.api.services.language.v1.model.AnalyzeSentimentRequest;
+import com.google.api.services.language.v1.model.AnalyzeSentimentResponse;
+import com.google.api.services.language.v1.model.Document;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,8 +56,36 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.io.IOException;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
 public class NavigationDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    public static String searchKey = null;
+    public static String score = null;
+    public static String magnitude = null;
+
+//    public String getScore() {
+//        return score;
+//    }
+//
+//    public void setScore(String score) {
+//        this.score = score;
+//    }
+//
+//    public String getMagnitude() {
+//        return magnitude;
+//    }
+//
+//    public void setMagnitude(String magnitude) {
+//        this.magnitude = magnitude;
+//    }
+
+    private static final String FRAGMENT_API = "api";
+    private static final int LOADER_ACCESS_TOKEN = 1;
 
     FirebaseAuth firebaseAuth;
     public static String current_uname;
@@ -67,6 +116,10 @@ public class NavigationDrawerActivity extends AppCompatActivity
             }
         });
 
+        final FragmentManager fm = getSupportFragmentManager();
+        if (getApiFragment() == null) {
+            fm.beginTransaction().add(new ApiFragment(), FRAGMENT_API).commit();
+        }
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +176,23 @@ public class NavigationDrawerActivity extends AppCompatActivity
         }
     }
 
-//    @Override
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        if (searchKey != null && !searchKey.equals("")) {
+            searchQuery(searchKey);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        searchKey = "";
+        super.onPause();
+    }
+
+    //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
 //        getMenuInflater().inflate(R.menu.navigation_drawer, menu);
@@ -297,4 +366,68 @@ public class NavigationDrawerActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+    public void searchQuery(String key) {
+        Bundle bundle = new Bundle();
+        bundle.putString("key", key);
+
+        Fragment fragment = new AnsFragment();
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment, fragment, "ans_fragment")
+                .addToBackStack("ansFragment")
+                .commit();
+    }
+
+
+//    @Override
+//    public void onSentimentReady(SentimentInfo sentiment) {
+//
+//        Toast.makeText(this, "OnReady", Toast.LENGTH_SHORT).show();
+//        //score = String.valueOf(sentiment.score);
+//
+//
+//    }
+
+
+
+
+    public void startAnalyze(String text) {
+
+        prepareApi();
+        getApiFragment().analyzeSentiment(text);
+    }
+//
+//    public void uiThread()
+//    {
+//        Toast.makeText(this, NavigationDrawerActivity.score, Toast.LENGTH_SHORT).show();
+//    }
+
+    private ApiFragment getApiFragment() {
+        return (ApiFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_API);
+    }
+
+
+
+    private void prepareApi() {
+        getSupportLoaderManager().initLoader(LOADER_ACCESS_TOKEN, null,
+                new LoaderManager.LoaderCallbacks<String>() {
+                    @Override
+                    public Loader<String> onCreateLoader(int id, Bundle args) {
+                        return new AccessTokenLoader(NavigationDrawerActivity.this);
+                    }
+
+                    @Override
+                    public void onLoadFinished(Loader<String> loader, String token) {
+                        getApiFragment().setAccessToken(token);
+                    }
+
+                    @Override
+                    public void onLoaderReset(Loader<String> loader) {
+                    }
+                });
+    }
+
 }
+

@@ -1,12 +1,17 @@
 package com.csy.vquest;
 
 
+import android.app.ActionBar;
+import android.app.SearchManager;
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,8 +23,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +43,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 import static com.csy.vquest.NavigationDrawerActivity.current_uname;
@@ -42,6 +52,7 @@ import static com.csy.vquest.NavigationDrawerActivity.current_uname;
 public class HomePageFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private FloatingActionButton floatBtn;
+    private ImageButton imageButton;
     private ListView listView;
     private ProgressBar loadingIndicator;
 
@@ -51,6 +62,17 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
 //    private int indexList = 0;
 //    private int toplist = 0;
 //    private View vList;
+    private SearchView searchView;
+    private ActionBar bar;
+    private String[] values;
+    CursorAdapter adapter;
+    Query query;
+    Map<String, String>  map;
+    int count=0;
+    int i=-1;
+   static int pos=0;
+
+
 
     CustomFirebaseListAdapter firebaseListAdapter;
 
@@ -62,6 +84,13 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.home_filter_menu, menu);
+
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setIconifiedByDefault(false);
+
     }
 
     @Override
@@ -82,92 +111,92 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
             else
                 item.setChecked(true);
 
-            DatabaseReference questionRef = FirebaseDatabase.getInstance().getReference().child("question");
+        DatabaseReference questionRef = FirebaseDatabase.getInstance().getReference().child("question");
 
-            Query query;
+        Query query;
 
-            switch (item.getItemId()) {
+        switch(item.getItemId()) {
 
-                case R.id.fil_all:
+            case R.id.fil_all:
+                query = questionRef;
+                break;
+
+            case R.id.fil_unanswered:
+                if(item.isChecked())
+                    query = questionRef.orderByChild("replies").equalTo(0);
+                else
                     query = questionRef;
-                    break;
+                break;
 
-                case R.id.fil_unanswered:
-                    if (item.isChecked())
-                        query = questionRef.orderByChild("replies").equalTo(0);
-                    else
-                        query = questionRef;
-                    break;
-
-                case R.id.fil_answered:
-                    if (item.isChecked())
-                        query = questionRef.orderByChild("replies").startAt(1);
-                    else
-                        query = questionRef;
-                    break;
-
-                case R.id.fil_general:
-                    if (item.isChecked())
-                        query = questionRef.orderByChild("category").equalTo("General");
-                    else
-                        query = questionRef;
-                    break;
-
-                case R.id.fil_academic_common:
-                    if (item.isChecked())
-                        query = questionRef.orderByChild("category").equalTo("Common Academic");
-                    else
-                        query = questionRef;
-                    break;
-
-                case R.id.fil_academic_cse:
-                    if (item.isChecked())
-                        query = questionRef.orderByChild("category").equalTo("Academic-CSE");
-                    else
-                        query = questionRef;
-                    break;
-
-                case R.id.fil_academic_ece:
-                    if (item.isChecked())
-                        query = questionRef.orderByChild("category").equalTo("Academic-ECE");
-                    else
-                        query = questionRef;
-                    break;
-
-                case R.id.fil_academic_me:
-                    if (item.isChecked())
-                        query = questionRef.orderByChild("category").equalTo("Academic-ME");
-                    else
-                        query = questionRef;
-                    break;
-
-                case R.id.fil_hostel:
-                    if (item.isChecked())
-                        query = questionRef.orderByChild("category").equalTo("Hostel");
-                    else
-                        query = questionRef;
-                    break;
-
-                case R.id.fil_mess:
-                    if (item.isChecked())
-                        query = questionRef.orderByChild("category").equalTo("Mess");
-                    else
-                        query = questionRef;
-                    break;
-
-                case R.id.fil_events:
-                    if (item.isChecked())
-                        query = questionRef.orderByChild("category").equalTo("Events");
-                    else
-                        query = questionRef;
-                    break;
-
-                default:
+            case R.id.fil_answered:
+                if(item.isChecked())
+                    query = questionRef.orderByChild("replies").startAt(1);
+                else
                     query = questionRef;
-                    break;
+                break;
 
-            }
-            //  query = query.orderByChild("time");
+            case R.id.fil_general:
+                if(item.isChecked())
+                    query = questionRef.orderByChild("category").equalTo("General");
+                else
+                    query = questionRef;
+                break;
+
+            case R.id.fil_academic_common:
+                if(item.isChecked())
+                    query = questionRef.orderByChild("category").equalTo("Common Academic");
+                else
+                    query = questionRef;
+                break;
+
+            case R.id.fil_academic_cse:
+                if(item.isChecked())
+                    query = questionRef.orderByChild("category").equalTo("Academic-CSE");
+                else
+                    query = questionRef;
+                break;
+
+            case R.id.fil_academic_ece:
+                if(item.isChecked())
+                    query = questionRef.orderByChild("category").equalTo("Academic-ECE");
+                else
+                    query = questionRef;
+                break;
+
+            case R.id.fil_academic_me:
+                if(item.isChecked())
+                    query = questionRef.orderByChild("category").equalTo("Academic-ME");
+                else
+                    query = questionRef;
+                break;
+
+            case R.id.fil_hostel:
+                if(item.isChecked())
+                    query = questionRef.orderByChild("category").equalTo("Hostel");
+                else
+                    query = questionRef;
+                break;
+
+            case R.id.fil_mess:
+                if(item.isChecked())
+                    query = questionRef.orderByChild("category").equalTo("Mess");
+                else
+                    query = questionRef;
+                break;
+
+            case R.id.fil_events:
+                if(item.isChecked())
+                    query = questionRef.orderByChild("category").equalTo("Events");
+                else
+                    query = questionRef;
+                break;
+
+            default:
+                query = questionRef;
+                break;
+
+        }
+      //  query = query.orderByChild("time");
 
             firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
                     QuestionBean.class, R.layout.card_layout, query, loadingIndicator);
@@ -177,7 +206,6 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
         }
 
         return true;
-
     }
 
     @Override

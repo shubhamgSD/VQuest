@@ -17,8 +17,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
-    }
+}
+
+ext {
+    supportLibraryVersion = '25.3.1'
+    googleApiClientVersion = '1.22.0'
 }
 
 dependencies {
@@ -33,6 +36,12 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    compile("com.google.apis:google-api-services-language:v1-rev386-$googleApiClientVersion") {
+        exclude module: 'httpclient'
+        exclude module: 'jsr305'
+    }
+
     implementation 'com.android.support:appcompat-v7:25.3.1'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.firebaseui:firebase-ui-database:2.2.0'
@@ -40,11 +49,13 @@ dependencies {
     implementation 'com.android.support:cardview-v7:25.3.1'
     implementation 'com.google.firebase:firebase-messaging:11.0.4'
 }
-
-
-
-
-
-
+task copySecretKey(type: Copy) {
+    def File secretKey = file "$System.env.GOOGLE_APPLICATION_CREDENTIALS"
+    from secretKey.getParent()
+    include secretKey.getName()
+    into 'src/main/res/raw'
+    rename secretKey.getName(), "credential.json"
+}
+preBuild.dependsOn(copySecretKey)
 
 apply plugin: 'com.google.gms.google-services'

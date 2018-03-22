@@ -1,8 +1,12 @@
 package com.csy.vquest;
 
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.csy.vquest.model.SentimentInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,7 +37,7 @@ import static com.csy.vquest.NavigationDrawerActivity.current_uname;
 
 public class QuestionFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
-//    private long qno = 4;
+    private long qno = 4;
 
     private String category = "";
     private String question = "";
@@ -50,7 +55,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
     private EditText editText;
     private Spinner spinner;
     private FirebaseDatabase database;
-    private long noOfChild = 0;
+    private long noOfChild=0;
 
     public QuestionFragment() {
         // Required empty public constructor
@@ -69,9 +74,10 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+                if(isChecked) {
                     anonymity = 1;
-                } else {
+                }
+                else {
                     anonymity = 0;
                 }
             }
@@ -85,7 +91,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 noOfChild = dataSnapshot.getChildrenCount();
-                Log.d("Value", "onDataChannge" + noOfChild);
+                Log.d("Value","onDataChannge"+noOfChild);
 
             }
 
@@ -96,14 +102,25 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
         });
 
         btn1 = (Button) view.findViewById(R.id.button4);
-        btn1.setOnClickListener(new View.OnClickListener() {
+        btn1.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
-                question = editText.getText().toString();
-                noOfChild = noOfChild + 1;
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference rootRef = database.getReference();
-                DatabaseReference questionRef = rootRef.child("question");
+                ((NavigationDrawerActivity)getActivity()).startAnalyze(editText.getText().toString());
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while(true) {
+                            if (NavigationDrawerActivity.score != null) {
+                                if (Double.parseDouble(NavigationDrawerActivity.score) >= 0) {
+//                Toast.makeText(getContext(), NavigationDrawerActivity.score+" if",
+                      //  Toast.LENGTH_SHORT).show();
+                                    NavigationDrawerActivity.score=null;
+                                    question = editText.getText().toString();
+                                    noOfChild = noOfChild + 1;
+                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                    DatabaseReference rootRef = database.getReference();
+                                    DatabaseReference questionRef = rootRef.child("question");
 
                 final DatabaseReference newQuestionRef = questionRef.child(String.valueOf(noOfChild));
                 newQuestionRef.child("category").setValue(category);
@@ -117,7 +134,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
                 newQuestionRef.child("replies").setValue(0);
                 newQuestionRef.child("username").setValue(current_uname);
 
-                /*rootRef.child("member")
+                rootRef.child("member")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .child("username").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -129,11 +146,59 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-                });*/
+                });
 
-                Toast.makeText(getActivity(), "Question raised succesfully", Toast.LENGTH_LONG).show();
-                getActivity().onBackPressed();
+                                    // Toast.makeText(getActivity(), "Question raised succesfully", Toast.LENGTH_LONG).show();
 
+                                    //getActivity().onBackPressed();
+
+                                    final Activity activity = getActivity();
+                                    activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            Toast.makeText(getContext(),"Question raised succesfully",
+                                                    Toast.LENGTH_SHORT).show();
+                                            Log.d("If","Score");
+                                            getActivity().onBackPressed();
+
+                                        }
+                                    });
+
+                                    break;
+                                } else {
+                                    final Activity activity = getActivity();
+                                    activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            Toast.makeText(getContext(),"Score: "+ NavigationDrawerActivity.score+" , "+"Magnitude: "+NavigationDrawerActivity.magnitude,
+                                                   Toast.LENGTH_SHORT).show();
+                                            Log.d("Else Part","Score");
+                                            NavigationDrawerActivity.score=null;
+                                            AlertDialog alertDialog = new AlertDialog.Builder(
+                                                    getContext()).create();
+                                            alertDialog.setTitle("Warning");
+                                            alertDialog.setMessage("Looks like What you are writing is not appropriate");
+                                            alertDialog.setIcon(R.drawable.alert);
+                                           alertDialog.setButton(Dialog.BUTTON_NEUTRAL,"OK", new DialogInterface.OnClickListener() {
+                                               @Override
+                                               public void onClick(DialogInterface dialogInterface, int i) {
+                                                   //Nothing
+                                               }
+                                           });
+                                            alertDialog.show();
+                                     }
+                                    });
+                                 break;
+                                }
+                            }
+                        }
+                    }
+                });
+
+
+                thread.start();
             }
         });
 
