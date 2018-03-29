@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.csy.vquest"
         minSdkVersion 16
@@ -37,7 +36,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile("com.google.apis:google-api-services-language:v1-rev386-$googleApiClientVersion") {
+    implementation("com.google.apis:google-api-services-language:v1-rev386-$googleApiClientVersion") {
         exclude module: 'httpclient'
         exclude module: 'jsr305'
     }
