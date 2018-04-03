@@ -8,3 +8,5 @@
 /captures
 .externalNativeBuild
 /functions/*
+.firebaserc
+firebase.json
