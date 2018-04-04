@@ -5,10 +5,15 @@ import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +22,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
@@ -24,10 +30,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,15 +44,42 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+
+import java.util.Calendar;
+
+import java.io.IOException;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.content.ContentValues.TAG;
+import static com.csy.vquest.NavigationDrawerActivity.current_uname;
 
 public class HomePageFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private FloatingActionButton floatBtn;
     private ImageButton imageButton;
     private ListView listView;
+    private ProgressBar loadingIndicator;
+
+    private String fragmentType;
+
+    private DatabaseReference announcementRef;
+    private RecyclerView list;
+    private LinearLayoutManager mLayoutManager;
+    private static int year;
+    private static int month;
+    private static int day;
+    private static int hour;
+    private static int minute;
+    private static int seconds;
+
+//    Parcelable state;
+
+//    private int indexList = 0;
+//    private int toplist = 0;
+//    private View vList;
     private SearchView searchView;
     private ActionBar bar;
     private String[] values;
@@ -79,6 +114,16 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        if (item.getItemId() == R.id.survey_menu) {
+
+            Fragment viewSurveyFragment = new ViewSurveyFragment();
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment, viewSurveyFragment, "view_survey_fragment")
+                    .addToBackStack("viewSurveyFragment")
+                    .commit();
+
+        } else {
+
             if (item.isChecked())
                 item.setChecked(false);
             else
@@ -86,7 +131,7 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
 
             DatabaseReference questionRef = FirebaseDatabase.getInstance().getReference().child("question");
 
-            //Query query = questionRef;
+            Query query;
 
             switch (item.getItemId()) {
 
@@ -164,19 +209,20 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                         query = questionRef;
                     break;
 
-
                 default:
                     query = questionRef;
                     break;
 
             }
-
             //  query = query.orderByChild("time");
 
             firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
-                    QuestionBean.class, R.layout.card_layout, query);
+                    QuestionBean.class, R.layout.card_layout, query, loadingIndicator);
 
             listView.setAdapter(firebaseListAdapter);
+
+        }
+
         return true;
 
     }
@@ -185,20 +231,46 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        getActivity().setTitle("Home");
+        fragmentType = getArguments().getString("fragment");
+
+        if (fragmentType == "home") {
+            getActivity().setTitle("Home");
+        } else {
+            getActivity().setTitle("My Questions");
+        }
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
-        setHasOptionsMenu(true);
+
+        announcementRef = FirebaseDatabase.getInstance().getReference("announcement");
+        announcementRef.keepSynced(true);
+        list = (RecyclerView) view.findViewById(R.id.list);
+        mLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, true);
+        mLayoutManager.setStackFromEnd(true);
+        list.setLayoutManager(mLayoutManager);
+
+
+        if (fragmentType == "home") {
+            setHasOptionsMenu(true);
+        } else {
+            setHasOptionsMenu(false);
+        }
+        loadingIndicator = (ProgressBar) view.findViewById(R.id.pb_loading_indicator);
+        loadingIndicator.setVisibility(View.VISIBLE);
+
         listView = (ListView) view.findViewById(R.id.listViewHome);
+
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference questionRef = rootRef.child("question");
 
-        firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
-                QuestionBean.class,R.layout.card_layout,questionRef);
+        if (fragmentType == "home") {
+            firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
+                    QuestionBean.class, R.layout.card_layout, questionRef, loadingIndicator);
+        } else {
+            firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
+                    QuestionBean.class, R.layout.card_layout, questionRef.orderByChild("username").equalTo(current_uname), loadingIndicator);
+        }
 
         listView.setAdapter(firebaseListAdapter);
         listView.setOnItemClickListener(this);
-        //listView.setSelection(pos);
-
 
         floatBtn = (FloatingActionButton) view.findViewById(R.id.fab);
         floatBtn.setOnClickListener(new View.OnClickListener() {
@@ -211,15 +283,12 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                         .commit();
             }
         });
-
-      //  Toast.makeText(getContext(),map.toString(),Toast.LENGTH_SHORT).show();
-
         return view;
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        pos = position;
+
         final DatabaseReference databaseReference = firebaseListAdapter.getRef(position);
 
         final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -237,8 +306,8 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
             }
         });
 
-      Bundle bundle  = new Bundle();
-      bundle.putString("key",databaseReference.getKey());
+        Bundle bundle = new Bundle();
+        bundle.putString("key", databaseReference.getKey());
 
         Fragment fragment = new AnsFragment();
         fragment.setArguments(bundle);
@@ -246,11 +315,53 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                 .replace(R.id.fragment, fragment)
                 .addToBackStack("ansFragment")
                 .commit();
+
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        //listView.setSelection(pos);
+    public void onStart() {
+        super.onStart();
+        FirebaseRecyclerAdapter<AnnouncementBean,AnnouncementViewHolder>firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<AnnouncementBean, AnnouncementViewHolder>
+                (AnnouncementBean.class, R.layout.announcement_item,AnnouncementViewHolder.class,announcementRef) {
+            @Override
+            protected void populateViewHolder(AnnouncementViewHolder viewHolder, AnnouncementBean model, int position) {
+                viewHolder.setannouncement(model.getAstring());
+                viewHolder.setusername(model.getUsername());
+                viewHolder.settime(model.getTime());
+            }
+        };
+        list.setAdapter(firebaseRecyclerAdapter);
+
     }
+
+    public static class AnnouncementViewHolder extends RecyclerView.ViewHolder{
+        View mview;
+        public AnnouncementViewHolder(View itemview){
+            super(itemview);
+            mview = itemview;
+        }
+        public void setusername(String username){
+            TextView announcement_username = (TextView)mview.findViewById(R.id.user_name);
+            announcement_username.setText(username);
+        }
+        public void setannouncement(String announcement){
+            TextView announcement_string = (TextView)mview.findViewById(R.id.user_announcement);
+            announcement_string.setText(announcement);
+        }
+        public void settime(long time){
+            TextView announcement_time = (TextView) mview.findViewById(R.id.user_time);
+            Date date = new Date(time);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            year = cal.get(Calendar.YEAR);
+            month = cal.get(Calendar.MONTH);
+            day = cal.get(Calendar.DAY_OF_MONTH);
+            hour = cal.get(Calendar.HOUR_OF_DAY);
+            minute = cal.get(Calendar.MINUTE);
+            seconds = cal.get(Calendar.SECOND);
+            announcement_time.setText(day+"/"+month+"/"+year);
+
+        }
+    }
+
 }

@@ -3,6 +3,8 @@ package com.csy.vquest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
@@ -10,6 +12,8 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,33 +21,28 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.csy.vquest.model.SentimentInfo;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.GenericJson;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.language.v1.CloudNaturalLanguage;
-import com.google.api.services.language.v1.CloudNaturalLanguageRequest;
-import com.google.api.services.language.v1.CloudNaturalLanguageScopes;
-import com.google.api.services.language.v1.model.AnalyzeSentimentRequest;
-import com.google.api.services.language.v1.model.AnalyzeSentimentResponse;
-import com.google.api.services.language.v1.model.Document;
+
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -53,9 +52,9 @@ public class NavigationDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    public  static String searchKey = null;
-    public static String score=null;
-    public static String magnitude=null;
+    public static String searchKey = null;
+    public static String score = null;
+    public static String magnitude = null;
 
 //    public String getScore() {
 //        return score;
@@ -78,10 +77,14 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
     FirebaseAuth firebaseAuth;
     public static String current_uname;
+    private long nFeeds = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FirebaseMessaging.getInstance().subscribeToTopic("pushNotifications");
+
         setContentView(R.layout.activity_navigation_drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -106,6 +109,14 @@ public class NavigationDrawerActivity extends AppCompatActivity
             fm.beginTransaction().add(new ApiFragment(), FRAGMENT_API).commit();
         }
 
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -128,12 +139,13 @@ public class NavigationDrawerActivity extends AppCompatActivity
         imageView.setImageURI(firebaseAuth.getCurrentUser().getPhotoUrl());
 
         Fragment fragment = new HomePageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("fragment", "home");
+        fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment, fragment, "home_page_fragment")
                 .commit();
 
-
-       // prepareApi();
 
     }
 
@@ -157,8 +169,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
         super.onResume();
 
-        if(searchKey != null && !searchKey.equals(""))
-        {
+        if (searchKey != null && !searchKey.equals("")) {
             searchQuery(searchKey);
         }
     }
@@ -197,6 +208,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
 
         Fragment fragment;
+        Bundle bundle;
 
         switch (item.getItemId()) {
 
@@ -208,6 +220,9 @@ public class NavigationDrawerActivity extends AppCompatActivity
                     break;
                 }
                 fragment = new HomePageFragment();
+                bundle = new Bundle();
+                bundle.putString("fragment", "home");
+                fragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, fragment, "home_page_fragment")
                         .commit();
@@ -220,7 +235,6 @@ public class NavigationDrawerActivity extends AppCompatActivity
                     drawer.closeDrawer(GravityCompat.START);
                     break;
                 }
-                startAnalyze("Bastard");
                 fragment = new QuestionFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, fragment, "question_fragment")
@@ -228,33 +242,123 @@ public class NavigationDrawerActivity extends AppCompatActivity
                         .commit();
                 break;
 
+            case R.id.nav_my_que:
+                HomePageFragment homePageFragment1 = (HomePageFragment) getSupportFragmentManager().findFragmentByTag("my_question_fragment");
+                if (homePageFragment1 != null && homePageFragment1.isVisible()) {
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    break;
+                }
+                fragment = new HomePageFragment();
+                bundle = new Bundle();
+                bundle.putString("fragment", "myquestion");
+                fragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, fragment, "my_question_fragment")
+                        .addToBackStack("myQuestionFragment")
+                        .commit();
+
+                break;
+
+            case R.id.nav_new_ann:
+                AnnouncementFragment announcementFragment = (AnnouncementFragment) getSupportFragmentManager().findFragmentByTag("announcement_fragment");
+                if(announcementFragment != null && announcementFragment.isVisible()) {
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    break;
+                }
+                fragment = new AnnouncementFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, fragment, "announcement_fragment")
+                        .addToBackStack("announcementFragment")
+                        .commit();
+                break;
+
+            case R.id.nav_feedback:
+                DatabaseReference feedRef = FirebaseDatabase.getInstance().getReference().child("feedback");
+                feedRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot != null)
+                            nFeeds = dataSnapshot.getChildrenCount();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                AlertDialog.Builder feedbackDialog = new AlertDialog.Builder(this);
+                View feedView = LayoutInflater.from(this).inflate(R.layout.feedback_dialog, null);
+                final EditText feedText = (EditText) feedView.findViewById(R.id.input_feedback);
+                feedbackDialog.setView(feedView);
+                feedbackDialog.setTitle("Help & Feedback");
+                feedbackDialog.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String feedString = feedText.getText().toString();
+                        if(feedString == null || feedString.equals("")){
+                            feedText.setError("Required");
+                        }
+                        else {
+                            nFeeds++;
+                            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                            DatabaseReference newFeedRef = rootRef.child("feedback").child(String.valueOf(nFeeds));
+                            newFeedRef.child("username").setValue(current_uname);
+                            newFeedRef.child("fstring").setValue(feedString);
+                            newFeedRef.child("time").setValue(ServerValue.TIMESTAMP);
+                            Toast.makeText(NavigationDrawerActivity.this, "Thankyou for your views", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+
+                feedbackDialog.create().show();
+
+                break;
+
+            case R.id.nav_create_survey:
+                CreateSurveyFragment createSurveyFragment = (CreateSurveyFragment) getSupportFragmentManager().findFragmentByTag("create_survey_fragment");
+                if (createSurveyFragment != null && createSurveyFragment.isVisible()) {
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    break;
+                }
+                fragment = new CreateSurveyFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, fragment, "create_survey_fragment")
+                        .addToBackStack("createsurveyfragment")
+                        .commit();
+
+                break;
+
+            case R.id.nav_my_surveys:
+                MySurveysFragment mySurveysFragment = (MySurveysFragment) getSupportFragmentManager().findFragmentByTag("my_surveys_fragment");
+                if(mySurveysFragment != null && mySurveysFragment.isVisible()){
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    break;
+                }
+                fragment = new MySurveysFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, fragment, "my_surveys_fragment")
+                        .addToBackStack("mysurveysfragment")
+                        .commit();
+
+                break;
+
             case R.id.nav_logout:
                 firebaseAuth.signOut();
                 Intent intent = new Intent(this, SignInActivity.class);
                 startActivity(intent);
-                break;
-
-            case R.id.nav_feedback:
-//                    Intent intent1 = new Intent(this,temp_activity.class);
-//                    startActivity(intent1);
-//                Thread thread = new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        while(true)
-//                        {
-//                            if(score!=null)
-//                            {
-//                                Toast.makeText(NavigationDrawerActivity.this, score, Toast.LENGTH_SHORT).show();
-//                                Log.d("Score",score);
-//                                break;
-//                            }
-//                        }
-//
-//                    }
-//                });
-//                thread.start();
-                startAnalyze("Bastard");
-
                 break;
 
 
@@ -266,17 +370,16 @@ public class NavigationDrawerActivity extends AppCompatActivity
     }
 
 
-    public void searchQuery(String key)
-    {
-        Bundle bundle  = new Bundle();
-        bundle.putString("key",key);
+    public void searchQuery(String key) {
+        Bundle bundle = new Bundle();
+        bundle.putString("key", key);
 
         Fragment fragment = new AnsFragment();
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
-            .replace(R.id.fragment, fragment, "ans_fragment")
-            .addToBackStack("ansFragment")
-            .commit();
+                .replace(R.id.fragment, fragment, "ans_fragment")
+                .addToBackStack("ansFragment")
+                .commit();
     }
 
 

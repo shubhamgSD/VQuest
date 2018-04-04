@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
@@ -27,12 +29,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (currentUser == null) {
             intent = new Intent(this, SignInActivity.class);
-        }
-        else {
+        } else {
             intent = new Intent(this, NavigationDrawerActivity.class);
         }
 
         startActivity(intent);
+
 
     }
 

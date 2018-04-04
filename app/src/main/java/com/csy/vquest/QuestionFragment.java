@@ -32,10 +32,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.sql.Timestamp;
 import java.util.Map;
 
+import static com.csy.vquest.NavigationDrawerActivity.current_uname;
 
-public class QuestionFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
-    private long qno = 4;
+public class QuestionFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+
+//    private long qno = 4;
 
     private String category = "";
     private String question = "";
@@ -53,7 +55,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
     private EditText editText;
     private Spinner spinner;
     private FirebaseDatabase database;
-    private long noOfChild=0;
+    private long noOfChild = 0;
 
     public QuestionFragment() {
         // Required empty public constructor
@@ -72,10 +74,9 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
                     anonymity = 1;
-                }
-                else {
+                } else {
                     anonymity = 0;
                 }
             }
@@ -89,7 +90,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 noOfChild = dataSnapshot.getChildrenCount();
-                Log.d("Value","onDataChannge"+noOfChild);
+                Log.d("Value", "onDataChannge" + noOfChild);
 
             }
 
@@ -100,8 +101,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
         });
 
         btn1 = (Button) view.findViewById(R.id.button4);
-        btn1.setOnClickListener(new View.OnClickListener()
-        {
+        btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((NavigationDrawerActivity)getActivity()).startAnalyze(editText.getText().toString());
@@ -120,30 +120,31 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
                                     DatabaseReference rootRef = database.getReference();
                                     DatabaseReference questionRef = rootRef.child("question");
 
-                                    final DatabaseReference newQuestionRef = questionRef.child(String.valueOf(noOfChild));
-                                    newQuestionRef.child("category").setValue(category);
-                                    newQuestionRef.child("qanonymity").setValue(anonymity);
-                                    newQuestionRef.child("qedited").setValue(edited);
-                                    newQuestionRef.child("qstring").setValue(question);
-                                    newQuestionRef.child("r_no").setValue(r_no);
-                                    newQuestionRef.child("time").setValue(ServerValue.TIMESTAMP);
-                                    newQuestionRef.child("views").setValue(views);
-                                    newQuestionRef.child("visibility").setValue(visibility);
-                                    newQuestionRef.child("replies").setValue(0);
+                final DatabaseReference newQuestionRef = questionRef.child(String.valueOf(noOfChild));
+                newQuestionRef.child("category").setValue(category);
+                newQuestionRef.child("qanonymity").setValue(anonymity);
+                newQuestionRef.child("qedited").setValue(edited);
+                newQuestionRef.child("qstring").setValue(question);
+                newQuestionRef.child("r_no").setValue(r_no);
+                newQuestionRef.child("time").setValue(ServerValue.TIMESTAMP);
+                newQuestionRef.child("views").setValue(views);
+                newQuestionRef.child("visibility").setValue(visibility);
+                newQuestionRef.child("replies").setValue(0);
+                newQuestionRef.child("username").setValue(current_uname);
 
-                                    rootRef.child("member")
-                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                            .child("username").addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            newQuestionRef.child("username").setValue(dataSnapshot.getValue());
-                                        }
+                rootRef.child("member")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child("username").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        newQuestionRef.child("username").setValue(dataSnapshot.getValue());
+                    }
 
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                                        }
-                                    });
+                    }
+                });
 
                                     // Toast.makeText(getActivity(), "Question raised succesfully", Toast.LENGTH_LONG).show();
 
@@ -212,7 +213,6 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
 
     }
 
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         category = parent.getItemAtPosition(position).toString();
@@ -222,7 +222,5 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
     public void onNothingSelected(AdapterView<?> parent) {
         category = parent.getItemAtPosition(0).toString();
     }
-
-
 
 }

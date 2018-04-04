@@ -110,20 +110,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 uname = unameText.getText().toString().trim();
-                if (uname.isEmpty()){
+                if (uname.isEmpty()) {
                     Log.d("empty", "working");
                     unameText.setError("Required");
                     uname_valid = false;
-                }
-                else if(uname.contains(" ")){
-                        unameText.setError("No space allowed");
-                        uname_valid = false;
-                }
-                else if(uname.contains("@")){
+                } else if (uname.contains(" ")) {
+                    unameText.setError("No space allowed");
+                    uname_valid = false;
+                } else if (uname.contains("@")) {
                     unameText.setError("No @ allowed");
                     uname_valid = false;
-                }
-                else {
+                } else {
                     memberRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -132,7 +129,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                     dataSnapshot.getChildren()) {
                                 unameText.setError(null);
                                 uname_valid = true;
-                                if (data.child("username").getValue(String.class).equalsIgnoreCase(uname)){
+                                if (data.child("username").getValue(String.class).equalsIgnoreCase(uname)) {
                                     unameText.setError("Already exists");
                                     uname_valid = false;
                                     break;
@@ -149,8 +146,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     });
 
                 }
-
-
 
 
             }
@@ -172,14 +167,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 //            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 //        }
 
-        if(v.getId() == R.id.btn_signup) {
+        if (v.getId() == R.id.btn_signup) {
 
             fname = fnameText.getText().toString().trim();
             if (fname.isEmpty()) {
                 fnameText.setError("Required");
                 fname_valid = false;
-            }
-            else{
+            } else {
                 fnameText.setError(null);
                 fname_valid = true;
             }
@@ -188,8 +182,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             if (lname.isEmpty()) {
                 lnameText.setError("Required");
                 lname_valid = false;
-            }
-            else{
+            } else {
                 lnameText.setError(null);
                 lname_valid = true;
             }
@@ -201,14 +194,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             } else if (!email.endsWith("@smvdu.ac.in") || email.length() < 13) {
                 emailText.setError("Valid SMVDU email id");
                 email_valid = false;
-            }
-            else{
+            } else {
                 emailText.setError(null);
                 email_valid = true;
             }
 
             uname = unameText.getText().toString().trim();
-            if(uname.isEmpty()){
+            if (uname.isEmpty()) {
                 unameText.setError("Required");
                 uname_valid = false;
             }
@@ -230,8 +222,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     contact_valid = false;
                 }
 
-            }
-            else {
+            } else {
                 contactText.setError(null);
                 contact_valid = true;
             }
@@ -240,8 +231,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             if (pass.isEmpty() || pass.length() < 8) {
                 passText.setError("Minimum 8 characters");
                 pass_valid = false;
-            }
-            else {
+            } else {
                 passText.setError(null);
                 pass_valid = true;
             }
@@ -250,8 +240,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             if (!conpass.equals(pass)) {
                 conpassText.setError("Mismatch");
                 conpass_valid = false;
-            }
-            else{
+            } else {
                 conpassText.setError(null);
                 conpass_valid = true;
             }
@@ -259,8 +248,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             if (termsAccepted == 0) {
                 termsCheck.setError("Required");
                 terms_valid = false;
-            }
-            else {
+            } else {
                 termsCheck.setError(null);
                 terms_valid = true;
             }
@@ -322,8 +310,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             }
                         });
 
-            }
-            else {
+            } else {
 
                 Toast.makeText(this, "Please enter the required details accurately",
                         Toast.LENGTH_LONG).show();
@@ -340,11 +327,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         switch (buttonView.getId()) {
 
             case R.id.check_anonym:
-                anonymity = (anonymity+1)%2;
+                anonymity = (anonymity + 1) % 2;
                 break;
 
             case R.id.check_terms:
-                termsAccepted = (termsAccepted+1)%2;
+                termsAccepted = (termsAccepted + 1) % 2;
                 break;
 
         }

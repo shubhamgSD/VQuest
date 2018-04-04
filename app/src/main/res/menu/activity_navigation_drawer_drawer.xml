@@ -14,11 +14,20 @@
             android:id="@+id/nav_my_que"
             android:title="My Questions" />
         <item
+            android:id="@+id/nav_new_ann"
+            android:title="New Announcement" />
+        <item
+            android:id="@+id/nav_create_survey"
+            android:title="Create Survey" />
+        <item
+            android:id="@+id/nav_my_surveys"
+            android:title="My Surveys" />
+        <!--<item
             android:id="@+id/nav_my_ans"
             android:title="My Answers" />
         <item
             android:id="@+id/nav_settings"
-            android:title="Settings" />
+            android:title="Settings" />-->
         <item
             android:id="@+id/nav_feedback"
             android:title="Help and Feedback" />
