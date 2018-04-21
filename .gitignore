@@ -3,10 +3,14 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/caches
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 /functions/*
+/public/*
 .firebaserc
 firebase.json
+database.rules.json
+storage.rules

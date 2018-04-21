@@ -9,6 +9,8 @@ import android.os.Parcelable;
 
 public class SurveyBean implements Parcelable {
 
+    private String degree;
+    private String department;
     private String option1;
     private String option2;
     private String option3;
@@ -20,11 +22,11 @@ public class SurveyBean implements Parcelable {
     private String username;
     private int views;
     private int visibility;
+    private String year;
 
-    public SurveyBean() {
-    }
-
-    public SurveyBean(String option1, String option2, String option3, String option4, int r_no, int sanonymity, String sstring, long time, String username, int views, int visibility) {
+    public SurveyBean(String degree, String department, String option1, String option2, String option3, String option4, int r_no, int sanonymity, String sstring, long time, String username, int views, int visibility, String year) {
+        this.degree = degree;
+        this.department = department;
         this.option1 = option1;
         this.option2 = option2;
         this.option3 = option3;
@@ -36,9 +38,12 @@ public class SurveyBean implements Parcelable {
         this.username = username;
         this.views = views;
         this.visibility = visibility;
+        this.year = year;
     }
 
     protected SurveyBean(Parcel in) {
+        degree = in.readString();
+        department = in.readString();
         option1 = in.readString();
         option2 = in.readString();
         option3 = in.readString();
@@ -50,6 +55,7 @@ public class SurveyBean implements Parcelable {
         username = in.readString();
         views = in.readInt();
         visibility = in.readInt();
+        year = in.readString();
     }
 
     public static final Creator<SurveyBean> CREATOR = new Creator<SurveyBean>() {
@@ -63,6 +69,33 @@ public class SurveyBean implements Parcelable {
             return new SurveyBean[size];
         }
     };
+
+    public SurveyBean() {
+    }
+
+    public String getDegree() {
+        return degree;
+    }
+
+    public void setDegree(String degree) {
+        this.degree = degree;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
 
     public String getOption1() {
         return option1;
