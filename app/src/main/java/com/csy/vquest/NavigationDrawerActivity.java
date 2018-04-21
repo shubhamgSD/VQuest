@@ -76,7 +76,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
     private static final int LOADER_ACCESS_TOKEN = 1;
 
     FirebaseAuth firebaseAuth;
-    public static String current_uname;
+    public static String current_uname, current_dept, current_deg, current_year;
     private long nFeeds = 0;
 
     @Override
@@ -96,6 +96,9 @@ public class NavigationDrawerActivity extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 current_uname = dataSnapshot.child("username").getValue().toString();
+                current_dept = dataSnapshot.child("department").getValue().toString();
+                current_deg = dataSnapshot.child("degree").getValue().toString();
+                current_year = dataSnapshot.child("year").getValue().toString();
             }
 
             @Override

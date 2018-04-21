@@ -8,7 +8,7 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent">
 
 
         <LinearLayout
@@ -18,93 +18,161 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
 
-            <EditText
-                android:id="@+id/input_fname"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:inputType="textPersonName"
-                android:hint="First name"/>
+                android:layout_marginTop="4dp">
 
-            <EditText
-                android:id="@+id/input_lname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:inputType="textPersonName"
-                android:hint="Last name"/>
+                <EditText
+                    android:id="@+id/input_fname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="First name"
+                    android:inputType="textPersonName" />
 
-            <EditText
-                android:id="@+id/input_new_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:inputType="textEmailAddress"
-                android:hint="Email address"/>
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/input_uname"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:inputType="text"
-                android:hint="Unique username"/>
+                android:layout_marginTop="4dp">
 
-            <EditText
-                android:id="@+id/input_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:inputType="number"
-                android:hint="Contact no."/>
+                <EditText
+                    android:id="@+id/input_lname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Last name"
+                    android:inputType="textPersonName" />
 
-            <EditText
-                android:id="@+id/input_new_pass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:inputType="textPassword"
-                android:hint="Set password"/>
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/input_con_pass"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:inputType="textPassword"
-                android:hint="Confirm password"/>
+                android:layout_marginTop="4dp">
+
+                <EditText
+                    android:id="@+id/input_new_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="SMVDU Email address"
+                    android:inputType="textEmailAddress" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Spinner
+                    android:id="@+id/spinner_dept"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <Spinner
+                    android:id="@+id/spinner_deg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true" />
+
+                <Spinner
+                    android:id="@+id/spinner_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true" />
+
+            </RelativeLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp">
+
+                <EditText
+                    android:id="@+id/input_uname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Unique username"
+                    android:inputType="text" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp">
+
+                <EditText
+                    android:id="@+id/input_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Contact no."
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp">
+
+                <EditText
+                    android:id="@+id/input_new_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Set password"
+                    android:inputType="textPassword" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp">
+
+                <EditText
+                    android:id="@+id/input_con_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Confirm password"
+                    android:inputType="textPassword" />
+
+            </android.support.design.widget.TextInputLayout>
 
             <CheckBox
                 android:id="@+id/check_anonym"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Use app anonymously"
-                android:checked="true"
+                android:layout_marginBottom="4dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"/>
+                android:checked="true"
+                android:text="Use app anonymously" />
 
             <CheckBox
                 android:id="@+id/check_terms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Agree with terms and conditions"
+                android:layout_marginBottom="4dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"/>
+                android:text="Agree with terms and conditions" />
 
             <Button
                 android:id="@+id/btn_signup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sign Up !"
+                android:layout_marginBottom="4dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"/>
+                android:text="Sign Up !" />
 
         </LinearLayout>
 

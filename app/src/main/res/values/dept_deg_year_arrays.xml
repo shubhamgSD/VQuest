@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="dept_array">
+        <item>CSE</item>
+        <item>ECE</item>
+        <item>ME</item>
+    </string-array>
+
+    <string-array name="deg_array">
+        <item>BTech</item>
+        <item>MTech</item>
+    </string-array>
+
+    <string-array name="year_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <string-array name="dept_all_array">
+        <item>CSE</item>
+        <item>ECE</item>
+        <item>ME</item>
+        <item>All</item>
+    </string-array>
+
+    <string-array name="deg_all_array">
+        <item>BTech</item>
+        <item>MTech</item>
+        <item>All</item>
+    </string-array>
+
+    <string-array name="year_all_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>All</item>
+    </string-array>
+
+</resources>
