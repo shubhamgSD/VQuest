@@ -10,28 +10,30 @@
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="175dp"
-        app:cardCornerRadius="5dp"
-        android:layout_margin="10dp"
+        android:layout_height="160dp"
+        app:cardCornerRadius="0dp"
+        app:contentPadding="0dp"
+        android:layout_margin="3dp"
+
         android:layout_alignParentTop="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/imgone"
+            android:background="@color/questions"
             android:padding="10dp">
 
 
             <Button
                 android:id="@+id/btn_answer"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_below="@+id/qstring_view1"
                 android:text="Answer"
-                android:textColor="@color/colorPrimary"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+                android:textColor="@color/naviation" />
 
             <TextView
                 android:id="@+id/qstring_view1"
@@ -45,15 +47,19 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/brown"
+    android:layout_below="@id/qstring_view1"/>
             <ImageView
                 android:id="@+id/uimage_view1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/anonymous_user_image" />
+                android:src="@drawable/annonymousimage" />
 
             <TextView
                 android:id="@+id/uname_view2"
@@ -76,7 +82,8 @@
                 android:layout_alignParentTop="true"
                 android:gravity="center"
                 android:text="Report"
-                android:textColor="@color/red" />
+                android:textColor="@color/red"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"/>
 
             <TextView
                 android:id="@+id/time_view2"
@@ -91,14 +98,23 @@
                 android:id="@+id/views_view1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/btn_answer"
-                android:layout_alignBottom="@+id/btn_answer"
+                android:layout_alignParentBottom="true"
                 android:layout_toLeftOf="@+id/time_view2"
                 android:layout_toStartOf="@+id/time_view2"
                 android:text="views" />
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
+    <View
+        android:id="@+id/question_view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:background="@color/naviation"
+        android:layout_below="@+id/card_view"/>
 
     <!--<LinearLayout
         android:layout_width="match_parent"
@@ -109,7 +125,7 @@
             android:id="@+id/ans_lv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/card_view"/>
+            android:layout_below="@id/question_view"/>
 
     <!--</LinearLayout>-->
 
