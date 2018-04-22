@@ -44,7 +44,7 @@ public class OneSurveyFragment extends Fragment implements View.OnClickListener 
     private RadioGroup optionGroup;
     private Button continueBtn;
     private boolean radioChecked = false;
-    private DatabaseReference rootRef, surveyVotesRef;
+    private DatabaseReference rootRef, surveyVotesRef, surveyDoneRef;
     private String firebaseUser;
     private long votes1, votes2, votes3, votes4;
 
@@ -149,6 +149,50 @@ public class OneSurveyFragment extends Fragment implements View.OnClickListener 
             }
         });
 
+        surveyDoneRef = rootRef.child("survey_done").child(String.valueOf(surveyKey));
+        surveyDoneRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot != null){
+                    if(dataSnapshot.hasChild(firebaseUser)){
+                        continueBtn.setEnabled(false);
+                        optionView1.setEnabled(false);
+                        optionView2.setEnabled(false);
+                        optionView3.setEnabled(false);
+                        optionView4.setEnabled(false);
+
+                        long option = (long) dataSnapshot.child(firebaseUser).getValue();
+                        if (option == 1) {
+                            optionView1.setEnabled(true);
+                            optionView1.setChecked(true);
+
+                        } else if (option == 2) {
+                            optionView2.setEnabled(true);
+                            optionView2.setChecked(true);
+
+                        } else if (option == 3) {
+                            optionView3.setEnabled(true);
+                            optionView3.setChecked(true);
+
+                        } else if (option == 4) {
+                            optionView4.setEnabled(true);
+                            optionView4.setChecked(true);
+
+                        }
+
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         return view;
 
     }
@@ -161,24 +205,29 @@ public class OneSurveyFragment extends Fragment implements View.OnClickListener 
             if (radioChecked) {
 
                 checkedRadioBtn = (RadioButton) view.findViewById(optionGroup.getCheckedRadioButtonId());
-                DatabaseReference surveyDoneRef = rootRef.child("survey_done").child(String.valueOf(surveyKey));
 
-                surveyDoneRef.child(firebaseUser).setValue(0);
+                String displayMessage = "Successfully voted for \"" + checkedRadioBtn.getText().toString() + "\"";
 
                 switch (optionGroup.getCheckedRadioButtonId()) {
                     case R.id.survey_option_1:
+                        surveyDoneRef.child(firebaseUser).setValue(1);
                         surveyVotesRef.child("option1").setValue(votes1 + 1);
                         break;
                     case R.id.survey_option_2:
+                        surveyDoneRef.child(firebaseUser).setValue(2);
                         surveyVotesRef.child("option2").setValue(votes2 + 1);
                         break;
                     case R.id.survey_option_3:
+                        surveyDoneRef.child(firebaseUser).setValue(3);
                         surveyVotesRef.child("option3").setValue(votes3 + 1);
                         break;
                     case R.id.survey_option_4:
+                        surveyDoneRef.child(firebaseUser).setValue(4);
                         surveyVotesRef.child("option4").setValue(votes4 + 1);
                         break;
                 }
+
+                Toast.makeText(getContext(), displayMessage, Toast.LENGTH_SHORT).show();
 
             }
             Log.d("Log", viewPager.getCurrentItem()+" "+surveyCount);

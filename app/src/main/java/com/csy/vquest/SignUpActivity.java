@@ -12,11 +12,14 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,6 +47,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private CheckBox anonymCheck;
     private CheckBox termsCheck;
     private Button signupBtn;
+    private Spinner deptSpinner, degSpinner, yearSpinner;
 
     private int anonymity = 1;
     private int termsAccepted = 0;
@@ -69,6 +73,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private long contactNum;
     private String pass;
     private String conpass;
+    private String dept, deg, year;
 
 
     @Override
@@ -90,6 +95,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         anonymCheck = (CheckBox) findViewById(R.id.check_anonym);
         termsCheck = (CheckBox) findViewById(R.id.check_terms);
         signupBtn = (Button) findViewById(R.id.btn_signup);
+        deptSpinner = (Spinner) findViewById(R.id.spinner_dept);
+        degSpinner = (Spinner) findViewById(R.id.spinner_deg);
+        yearSpinner = (Spinner) findViewById(R.id.spinner_year);
 
         rootRef = FirebaseDatabase
                 .getInstance()
@@ -153,6 +161,63 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        ArrayAdapter<CharSequence> deptAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.dept_array,
+                android.R.layout.simple_spinner_item);
+        deptAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        deptSpinner.setAdapter(deptAdapter);
+
+        deptSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                dept = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                dept = parent.getItemAtPosition(0).toString();
+            }
+        });
+
+        ArrayAdapter<CharSequence> degAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.deg_array,
+                android.R.layout.simple_spinner_item);
+        degAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        degSpinner.setAdapter(degAdapter);
+
+        degSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                deg = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                deg = parent.getItemAtPosition(0).toString();
+            }
+        });
+
+        ArrayAdapter<CharSequence> yearAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.year_array,
+                android.R.layout.simple_spinner_item);
+        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearSpinner.setAdapter(yearAdapter);
+
+        yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                year = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                year = parent.getItemAtPosition(0).toString();
             }
         });
 
@@ -281,6 +346,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                     newMemberRef.child("phone").setValue(contactNum);
                                     newMemberRef.child("status").setValue("Student");
                                     newMemberRef.child("username").setValue(uname);
+                                    newMemberRef.child("department").setValue(dept);
+                                    newMemberRef.child("degree").setValue(deg);
+                                    newMemberRef.child("year").setValue(year);
 
                                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                             .setDisplayName(fname + " " + lname)
@@ -291,7 +359,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                                     progressDialog.dismiss();
 
-                                    Toast.makeText(SignUpActivity.this, "Authentication successfull.",
+                                    Toast.makeText(SignUpActivity.this,
+                                            "Authentication successfull. Please check mail for verification link",
                                             Toast.LENGTH_LONG).show();
 
                                     onBackPressed();

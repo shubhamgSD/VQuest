@@ -27,6 +27,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.csy.vquest.NavigationDrawerActivity.current_deg;
+import static com.csy.vquest.NavigationDrawerActivity.current_dept;
+import static com.csy.vquest.NavigationDrawerActivity.current_year;
+
 public class ViewSurveyFragment extends Fragment {
 
     private TabLayout tabLayout;
@@ -34,6 +38,7 @@ public class ViewSurveyFragment extends Fragment {
     private ProgressBar loadingIndicator;
 
     private String firebaseUser;
+    private final static String ALL = "All";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,12 +88,27 @@ public class ViewSurveyFragment extends Fragment {
 
                     int surveyCount = 0;
                     for (DataSnapshot surveySnapshot : dataSnapshot.getChildren()) {
-                        surveyCount++;
-                        final String surveyKey = surveySnapshot.getKey();
-
                         SurveyBean survey = surveySnapshot.getValue(SurveyBean.class);
-                        surveyFragments.add(OneSurveyFragment.newInstance(surveyKey, survey, surveyCount));
-                        surveyTitles.add("Survey " + surveyCount);
+
+                        Log.d("for loop", "enter " + surveyCount);
+                        Log.d(survey.getDegree(), current_deg);
+                        Log.d(survey.getDepartment(), current_dept);
+                        Log.d(survey.getYear(), current_year);
+
+
+                        if((survey.getDegree().equals(ALL) || survey.getDegree().equals(current_deg))
+                                && (survey.getDepartment().equals(ALL) || survey.getDepartment().equals(current_dept))
+                                &&(survey.getYear().equals(ALL) || survey.getYear().equals(current_year))) {
+                            Log.d("if", "enter " + surveyCount);
+                            surveyCount++;
+                            final String surveyKey = surveySnapshot.getKey();
+
+                            surveyFragments.add(OneSurveyFragment.newInstance(surveyKey, survey, surveyCount));
+                            surveyTitles.add("Survey " + surveyCount);
+
+
+
+                        }
 
                         /*surveyDoneRef.addValueEventListener(new ValueEventListener() {
                             @Override

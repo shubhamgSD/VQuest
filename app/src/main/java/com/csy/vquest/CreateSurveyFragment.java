@@ -33,14 +33,16 @@ import java.util.Arrays;
 import static com.csy.vquest.NavigationDrawerActivity.current_uname;
 
 
-public class CreateSurveyFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class CreateSurveyFragment extends Fragment implements View.OnClickListener {
 
     private int options = 2;
     private long nSurveys;
+    private String dept, deg, year;
+
     private EditText surveyQuestionText, optionText1, optionText2, optionText3, optionText4;
     private CardView optionCard3, optionCard4;
     private Button publishButton;
-    String[] hints = {"1", "2", "3", "4"};
+    private Spinner deptSpinner, degSpinner, yearSpinner;
 
     private DatabaseReference rootRef;
 
@@ -57,11 +59,36 @@ public class CreateSurveyFragment extends Fragment implements AdapterView.OnItem
         getActivity().setTitle("Create Survey");
 
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner2);
-        spinner.setOnItemSelectedListener(this);
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.survey_option_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                options = Integer.parseInt(parent.getItemAtPosition(position).toString());
+
+                if (options == 2) {
+                    optionCard3.setVisibility(View.GONE);
+                    optionCard4.setVisibility(View.GONE);
+                    Log.d("2", String.valueOf(optionText3.getVisibility()) + " " + optionText3.isShown());
+                } else if (options == 3) {
+                    optionCard3.setVisibility(View.VISIBLE);
+                    optionCard4.setVisibility(View.GONE);
+                    Log.d("3", String.valueOf(optionText3.getVisibility()) + " " + optionText3.isShown());
+                } else if (options == 4) {
+                    optionCard3.setVisibility(View.VISIBLE);
+                    optionCard4.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                options = 2;
+            }
+        });
 
         surveyQuestionText = (EditText) view.findViewById(R.id.input_survey_question);
         optionText1 = (EditText) view.findViewById(R.id.input_option_1);
@@ -72,14 +99,69 @@ public class CreateSurveyFragment extends Fragment implements AdapterView.OnItem
         optionCard3 = (CardView) view.findViewById(R.id.option_card_3);
         optionCard4 = (CardView) view.findViewById(R.id.option_card_4);
 
+        deptSpinner = (Spinner) view.findViewById(R.id.spinner_dept);
+        degSpinner = (Spinner) view.findViewById(R.id.spinner_deg);
+        yearSpinner = (Spinner) view.findViewById(R.id.spinner_year);
+
         publishButton = (Button) view.findViewById(R.id.publish_btn);
         publishButton.setOnClickListener(this);
-        /*publishButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
+        ArrayAdapter<CharSequence> deptAdapter = ArrayAdapter.createFromResource(
+                getContext(),
+                R.array.dept_all_array,
+                android.R.layout.simple_spinner_item);
+        deptAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        deptSpinner.setAdapter(deptAdapter);
+
+        deptSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                dept = parent.getItemAtPosition(position).toString();
             }
-        });*/
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                dept = parent.getItemAtPosition(0).toString();
+            }
+        });
+
+        ArrayAdapter<CharSequence> degAdapter = ArrayAdapter.createFromResource(
+                getContext(),
+                R.array.deg_all_array,
+                android.R.layout.simple_spinner_item);
+        degAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        degSpinner.setAdapter(degAdapter);
+
+        degSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                deg = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                deg = parent.getItemAtPosition(0).toString();
+            }
+        });
+
+        ArrayAdapter<CharSequence> yearAdapter = ArrayAdapter.createFromResource(
+                getContext(),
+                R.array.year_all_array,
+                android.R.layout.simple_spinner_item);
+        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearSpinner.setAdapter(yearAdapter);
+
+        yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                year = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                year = parent.getItemAtPosition(0).toString();
+            }
+        });
 
         rootRef = FirebaseDatabase.getInstance().getReference();
         rootRef.child("survey").addValueEventListener(new ValueEventListener() {
@@ -98,7 +180,7 @@ public class CreateSurveyFragment extends Fragment implements AdapterView.OnItem
 
     }
 
-    @Override
+    /*@Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         options = Integer.parseInt(parent.getItemAtPosition(position).toString());
 
@@ -120,7 +202,7 @@ public class CreateSurveyFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         options = 2;
-    }
+    }*/
 
     @Override
     public void onClick(View v) {
@@ -233,6 +315,11 @@ public class CreateSurveyFragment extends Fragment implements AdapterView.OnItem
             surveyRef = rootRef.child("survey");
             DatabaseReference newSurveyRef = surveyRef.child(String.valueOf(nSurveys));
             DatabaseReference newSurveyVotesRef = rootRef.child("survey_votes").child(String.valueOf(nSurveys));
+
+            newSurveyRef.child("degree").setValue(deg);
+            newSurveyRef.child("department").setValue(dept);
+            newSurveyRef.child("year").setValue(year);
+
             newSurveyRef.child("sanonymity").setValue(anonymity);
             newSurveyRef.child("sstring").setValue(surveyQuestion);
             newSurveyRef.child("views").setValue(views);
@@ -246,16 +333,12 @@ public class CreateSurveyFragment extends Fragment implements AdapterView.OnItem
             newSurveyRef.child("option3").setValue(NULL_VALUE_STRING);
             newSurveyRef.child("option4").setValue(NULL_VALUE_STRING);
 
+
+
             newSurveyVotesRef.child("option1").setValue(0);
             newSurveyVotesRef.child("option2").setValue(0);
             newSurveyVotesRef.child("option3").setValue(-1);
             newSurveyVotesRef.child("option4").setValue(-1);
-
-//            DatabaseReference newOptionRef = newSurveyRef.child("options");
-//            newOptionRef.child("1").child("opstring").setValue(option1);
-//            newOptionRef.child("1").child("votes").setValue(votes);
-//            newOptionRef.child("2").child("opstring").setValue(option2);
-//            newOptionRef.child("2").child("votes").setValue(votes);
 
             if (options == 3) {
                 newSurveyRef.child("option3").setValue(option3);

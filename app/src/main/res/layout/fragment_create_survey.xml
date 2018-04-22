@@ -1,11 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp"
-
     android:background="@color/back_survey"
+
+    android:padding="10dp"
     tools:context="com.csy.vquest.CreateSurveyFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -16,10 +16,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_above="@id/rl_filter_spinner"
         android:layout_alignParentTop="true"
-        android:layout_above="@id/publish_btn">
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -78,7 +78,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fadeScrollbars="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -86,14 +87,13 @@
                 android:orientation="vertical">
 
 
-
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="20dp"
-                    app:contentPadding="10dp"
+                    android:layout_margin="10dp"
                     app:cardBackgroundColor="@color/questions"
-                    android:layout_margin="10dp">
+                    app:cardCornerRadius="20dp"
+                    app:contentPadding="10dp">
 
                     <EditText
                         android:id="@+id/input_option_1"
@@ -101,17 +101,17 @@
                         android:layout_height="wrap_content"
                         android:hint="Option 1"
                         android:maxLength="30"
-                        android:singleLine="true"/>
+                        android:singleLine="true" />
 
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="20dp"
-                    app:contentPadding="10dp"
+                    android:layout_margin="10dp"
                     app:cardBackgroundColor="@color/questions"
-                    android:layout_margin="10dp">
+                    app:cardCornerRadius="20dp"
+                    app:contentPadding="10dp">
 
                     <EditText
                         android:id="@+id/input_option_2"
@@ -119,7 +119,7 @@
                         android:layout_height="wrap_content"
                         android:hint="Option 2"
                         android:maxLength="30"
-                        android:singleLine="true"/>
+                        android:singleLine="true" />
 
                 </android.support.v7.widget.CardView>
 
@@ -127,11 +127,11 @@
                     android:id="@+id/option_card_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="20dp"
-                    app:contentPadding="10dp"
-                    app:cardBackgroundColor="@color/questions"
                     android:layout_margin="10dp"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/questions"
+                    app:cardCornerRadius="20dp"
+                    app:contentPadding="10dp">
 
                     <EditText
                         android:id="@+id/input_option_3"
@@ -139,7 +139,7 @@
                         android:layout_height="wrap_content"
                         android:hint="Option 3"
                         android:maxLength="30"
-                        android:singleLine="true"/>
+                        android:singleLine="true" />
 
                 </android.support.v7.widget.CardView>
 
@@ -147,11 +147,11 @@
                     android:id="@+id/option_card_4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="20dp"
-                    app:contentPadding="10dp"
-                    app:cardBackgroundColor="@color/questions"
                     android:layout_margin="10dp"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/questions"
+                    app:cardCornerRadius="20dp"
+                    app:contentPadding="10dp">
 
                     <EditText
                         android:id="@+id/input_option_4"
@@ -159,13 +159,51 @@
                         android:layout_height="wrap_content"
                         android:hint="Option 4"
                         android:maxLength="30"
-                        android:singleLine="true"/>
+                        android:singleLine="true" />
 
                 </android.support.v7.widget.CardView>
             </LinearLayout>
         </ScrollView>
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_filter_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/publish_btn">
+
+        <TextView
+            android:id="@+id/tv_audience"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select audience:"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="8dp"/>
+
+        <Spinner
+            android:id="@+id/spinner_dept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_audience"
+            android:layout_alignParentLeft="true"/>
+
+        <Spinner
+            android:id="@+id/spinner_deg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_audience"
+            android:layout_centerHorizontal="true"/>
+
+        <Spinner
+            android:id="@+id/spinner_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_audience"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
 
 
     <Button
@@ -176,8 +214,6 @@
         android:layout_marginTop="10dp"
         android:padding="10dp"
         android:text="Publish" />
-
-
 
 
     <!--</ScrollView>-->
