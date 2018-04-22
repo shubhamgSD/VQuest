@@ -3,15 +3,10 @@ package com.csy.vquest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,21 +16,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,9 +32,7 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.io.IOException;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+import java.sql.Time;
 
 public class NavigationDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -353,6 +339,21 @@ public class NavigationDrawerActivity extends AppCompatActivity
                         .addToBackStack("mysurveysfragment")
                         .commit();
 
+                break;
+
+            case R.id.nav_my_timetable:
+              Timetable timetable = (Timetable) getSupportFragmentManager().findFragmentByTag("my_timetable_fragment");
+              if(timetable != null && timetable.isVisible())
+              {
+                  DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                  drawer.closeDrawer(GravityCompat.START);
+                  break;
+              }
+                fragment = new Timetable();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, fragment, "my_timetable_fragment")
+                        .addToBackStack("mytimetablefragment")
+                        .commit();
                 break;
 
             case R.id.nav_logout:
