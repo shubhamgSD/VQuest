@@ -9,6 +9,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -58,10 +60,10 @@ import static com.csy.vquest.NavigationDrawerActivity.current_uname;
 
 public class HomePageFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private FloatingActionButton floatBtn;
     private ImageButton imageButton;
     private ListView listView;
     private ProgressBar loadingIndicator;
+    private BottomNavigationView bottomNavigationView;
 
     private String fragmentType;
 
@@ -257,6 +259,51 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
         loadingIndicator.setVisibility(View.VISIBLE);
 
         listView = (ListView) view.findViewById(R.id.listViewHome);
+        bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottom_navigation_view);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                Fragment fragment;
+
+                switch (item.getItemId()){
+
+                    case R.id.action_survey:
+
+                        fragment = new CreateSurveyFragment();
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.fragment, fragment, "create_survey_fragment")
+                                .addToBackStack("createSurveyFragment")
+                                .commit();
+
+                        break;
+
+                    case R.id.action_question:
+
+                        fragment = new QuestionFragment();
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.fragment, fragment, "question_fragment")
+                                .addToBackStack("questionFragment")
+                                .commit();
+
+                        break;
+
+                    case R.id.action_announcement:
+
+                        fragment = new AnnouncementFragment();
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.fragment, fragment, "announcement_fragment")
+                                .addToBackStack("announcementFragment")
+                                .commit();
+
+                        break;
+
+                }
+
+                return true;
+            }
+        });
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference questionRef = rootRef.child("question");
@@ -272,17 +319,6 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
         listView.setAdapter(firebaseListAdapter);
         listView.setOnItemClickListener(this);
 
-        floatBtn = (FloatingActionButton) view.findViewById(R.id.fab);
-        floatBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment fragment = new QuestionFragment();
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.fragment, fragment, "question_fragment")
-                        .addToBackStack("questionfragment")
-                        .commit();
-            }
-        });
         return view;
     }
 

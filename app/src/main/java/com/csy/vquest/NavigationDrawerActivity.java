@@ -324,7 +324,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 fragment = new CreateSurveyFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, fragment, "create_survey_fragment")
-                        .addToBackStack("createsurveyfragment")
+                        .addToBackStack("createSurveyFragment")
                         .commit();
 
                 break;
@@ -339,7 +339,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 fragment = new MySurveysFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, fragment, "my_surveys_fragment")
-                        .addToBackStack("mysurveysfragment")
+                        .addToBackStack("mySurveysFragment")
                         .commit();
 
                 break;
@@ -355,7 +355,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 fragment = new Timetable();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, fragment, "my_timetable_fragment")
-                        .addToBackStack("mytimetablefragment")
+                        .addToBackStack("myTimetableFragment")
                         .commit();
                 break;
 

@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_item1"
+        android:id="@+id/action_survey"
         android:icon="@drawable/survey"
         android:title="Survey"/>
 
     <item
-        android:id="@+id/action_item2"
+        android:id="@+id/action_question"
         android:icon="@drawable/askicon"
         android:title="Ask"
         />
 
 
     <item
-        android:id="@+id/action_item3"
+        android:id="@+id/action_announcement"
         android:icon="@drawable/announcement"
         android:title="Announcement"/>
 

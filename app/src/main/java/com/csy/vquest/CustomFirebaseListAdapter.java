@@ -66,7 +66,7 @@ public class CustomFirebaseListAdapter extends FirebaseListAdapter<QuestionBean>
         qstringView.setText(model.getQstring());
         categoryView.setText(model.getCategory());
 
-        if (model.getCategory().equals("Events")) {
+        /*if (model.getCategory().equals("Events")) {
 
             categoryView.setTextColor(Color.parseColor("#303F9F"));
         } else if (model.getCategory().equals("General")) {
@@ -90,7 +90,7 @@ public class CustomFirebaseListAdapter extends FirebaseListAdapter<QuestionBean>
         } else if (model.getCategory().equals("Mess")) {
 
             categoryView.setTextColor(Color.parseColor("#FF30CEC0"));
-        }
+        }*/
 
 
         if (model.getQanonymity() == 0) {

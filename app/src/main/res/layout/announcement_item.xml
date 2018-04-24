@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="10dp"
-            android:background="@color/grey">
+            android:background="@drawable/view_announcement_gradient">
         <TextView
             android:id="@+id/user_announcement"
             android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:layout_below="@+id/user_time"
             android:text="Current Announcement"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
         <ImageView
@@ -47,7 +47,7 @@
             android:layout_marginStart="18dp"
             android:layout_toRightOf="@+id/user_image"
             android:text="UserName"
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="#0000EE"
             android:textStyle="bold" />
 
 
