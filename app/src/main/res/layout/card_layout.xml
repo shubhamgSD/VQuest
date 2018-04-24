@@ -58,7 +58,7 @@
                android:layout_marginStart="18dp"
                android:layout_toRightOf="@+id/uimage_view1"
                android:text="UserName"
-               android:textColor="@android:color/holo_blue_dark"
+               android:textColor="#0000EE"
                android:textStyle="bold" />
 
 
@@ -98,7 +98,7 @@
                android:layout_height="wrap_content"
                android:layout_alignParentRight="true"
                android:text="Category"
-               android:textColor="@color/category_color" />
+               android:textColor="@color/appbar" />
        </RelativeLayout>
     </android.support.v7.widget.CardView>
 
