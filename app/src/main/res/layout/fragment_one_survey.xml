@@ -10,12 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="20dp"
-        app:contentPadding="10dp"
         android:layout_margin="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:background="@drawable/survey_gradient">
 
             <ImageView
                 android:id="@+id/uimage_view1"
@@ -113,6 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:background="@drawable/publish_gradient"
                 android:text="Continue" />
 
         </RelativeLayout>

@@ -3,22 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/back_survey"
+    android:background="@drawable/survey_gradient"
 
     android:padding="10dp"
     tools:context="com.csy.vquest.CreateSurveyFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <!--<ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">-->
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/rl_filter_spinner"
         android:layout_alignParentTop="true"
+        android:fadeScrollbars="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
         android:orientation="vertical">
 
         <RelativeLayout
@@ -167,6 +169,8 @@
 
     </LinearLayout>
 
+    </ScrollView>
+
     <RelativeLayout
         android:id="@+id/rl_filter_spinner"
         android:layout_width="match_parent"
@@ -213,9 +217,9 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="10dp"
         android:padding="10dp"
+        android:textColor="@color/black"
+        android:background="@drawable/publish_gradient"
         android:text="Publish" />
 
-
-    <!--</ScrollView>-->
 
 </RelativeLayout>

@@ -24,31 +24,27 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/list">
+        android:id="@+id/list"
+        android:layout_alignParentTop="true">
 
     </android.support.v7.widget.RecyclerView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/list">
 
         <ListView
             android:id="@+id/listViewHome"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:layout_below="@id/list"
+            android:layout_above="@+id/bottom_navigation_view"/>
 
-    </LinearLayout>
 
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/list">
+        android:layout_height="match_parent">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
@@ -57,13 +53,25 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="35dp"
+            android:layout_marginBottom="60dp"
             android:layout_marginRight="35dp"
             android:elevation="@dimen/cardview_default_elevation"
             android:src="@android:drawable/ic_input_add"
-            app:backgroundTint="@color/colorPrimary" />
+            app:backgroundTint="@color/appbar" />
 
-    </RelativeLayout>
+    </RelativeLayout>-->
+
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/bottomtoolbar"
+        app:itemTextColor="@color/back_questions"
+        app:menu="@menu/bottom_navigation_menu" />
 
     <ProgressBar
         android:id="@+id/pb_loading_indicator"

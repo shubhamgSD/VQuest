@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradientfile"
     tools:context="com.csy.vquest.SignInActivity">
 
     <View
@@ -95,6 +96,8 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
                 android:padding="12dp"
+                android:textColor="@color/black"
+                android:background="@drawable/logingradient"
                 android:text="Login"/>
 
             <TextView
