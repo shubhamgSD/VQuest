@@ -18,13 +18,22 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCo-->mpat.Light" />
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            app:tabMode="scrollable"
-            app:tabGravity="fill"/>
+    <ProgressBar
+        android:id="@+id/pb_loading_indicator"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bottomtoolbar"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/appbar"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/appbar" />
 
     <!--</android.support.design.widget.AppBarLayout>-->
 
@@ -34,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:background="#fdf9f9"
         />
 
 

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 
 public class AnnouncementFragment extends Fragment{
@@ -69,7 +72,17 @@ public class AnnouncementFragment extends Fragment{
         make_announcement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ann = announcement.getText().toString();
+                try {
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                ann = announcement.getText().toString().trim();
+                if (ann.equals("")){
+                    announcement.setError("Required");
+                    return;
+                }
                 noOfChild = noOfChild + 1;
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference rootRef = database.getReference();

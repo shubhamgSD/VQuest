@@ -330,16 +330,16 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_my_surveys:
-                MySurveysFragment mySurveysFragment = (MySurveysFragment) getSupportFragmentManager().findFragmentByTag("my_surveys_fragment");
-                if(mySurveysFragment != null && mySurveysFragment.isVisible()){
+                MySurveyCreatedFragment mySurveyCreatedFragment = (MySurveyCreatedFragment) getSupportFragmentManager().findFragmentByTag("my_survey_created_fragment");
+                if(mySurveyCreatedFragment != null && mySurveyCreatedFragment.isVisible()){
                     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                     drawer.closeDrawer(GravityCompat.START);
                     break;
                 }
-                fragment = new MySurveysFragment();
+                fragment = new MySurveyCreatedFragment();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment, fragment, "my_surveys_fragment")
-                        .addToBackStack("mySurveysFragment")
+                        .replace(R.id.fragment, fragment, "my_survey_created_fragment")
+                        .addToBackStack("mySurveyCreatedFragment")
                         .commit();
 
                 break;
@@ -363,6 +363,21 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 firebaseAuth.signOut();
                 Intent intent = new Intent(this, SignInActivity.class);
                 startActivity(intent);
+                break;
+
+            case R.id.nav_aboutus:
+                AboutUsFragment aboutUsFragment = (AboutUsFragment) getSupportFragmentManager().findFragmentByTag("about_us_fragment");
+                if(aboutUsFragment != null && aboutUsFragment.isVisible())
+                {
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    break;
+                }
+                fragment = new AboutUsFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, fragment, "about_us_fragment")
+                        .addToBackStack("aboutUsFragment")
+                        .commit();
                 break;
 
 

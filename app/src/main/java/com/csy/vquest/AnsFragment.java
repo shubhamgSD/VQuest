@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,8 @@ public class AnsFragment extends Fragment {
     private Button likeBtn, qVar_btn, aVar_btn;
     private ListView listView;
     private TextView username_view, time_view, qstring, views_view;
+    private TextView noAnswerView;
+    private ProgressBar loadingIndicator;
     private long currentAnswers;
 
     FirebaseAuth firebaseAuth;
@@ -70,6 +73,12 @@ public class AnsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_ans, container, false);
 
         getActivity().setTitle("Question Insight");
+
+        loadingIndicator = (ProgressBar) view.findViewById(R.id.pb_loading_indicator);
+        loadingIndicator.setVisibility(View.VISIBLE);
+
+        noAnswerView = (TextView) view.findViewById(R.id.tv_no_answer);
+        noAnswerView.setVisibility(View.GONE);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -114,6 +123,8 @@ public class AnsFragment extends Fragment {
 
             @Override
             public View getView(int position, View view, ViewGroup viewGroup) {
+
+
                 // super.getView(position, view, viewGroup);
                 if (view == null) {
                     // Log.d("check inflate >","view= "+view);
@@ -230,12 +241,14 @@ public class AnsFragment extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                    if (aEditText.getText() == null)
+                                    String ansString = aEditText.getText().toString().trim();
+
+                                    if (ansString == null || ansString.equals(""))
                                         aEditText.setError("Required");
                                     else {
                                         aEditText.setError(null);
                                         DatabaseReference ansRef = rootRef.child("answer").child(key).child(firebaseListAdapter.getRef(tempPos).getKey());
-                                        ansRef.child("astring").setValue(aEditText.getText().toString());
+                                        ansRef.child("astring").setValue(ansString);
                                         ansRef.child("aedited").setValue(1);
                                         ansRef.child("time").setValue(ServerValue.TIMESTAMP);
                                         Toast.makeText(getContext(), "Answer Edited successfully", Toast.LENGTH_LONG).show();
@@ -279,6 +292,9 @@ public class AnsFragment extends Fragment {
                     username.setText(model.getUsername());
                     username.setTextColor(Color.parseColor("#0000EE"));
                 }
+
+                loadingIndicator.setVisibility(View.GONE);
+                noAnswerView.setVisibility(View.GONE);
 
                 return view;
 
@@ -332,6 +348,11 @@ public class AnsFragment extends Fragment {
             }
         });
 
+        if (firebaseListAdapter.isEmpty()) {
+            loadingIndicator.setVisibility(View.GONE);
+            noAnswerView.setVisibility(View.VISIBLE);
+        }
+
 
         listView.setAdapter(firebaseListAdapter);
 
@@ -361,11 +382,13 @@ public class AnsFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                            if (qEditText.getText() == null)
+                            String queString = qEditText.getText().toString().trim();
+
+                            if (queString == null || queString.equals(""))
                                 qEditText.setError("Required");
                             else {
                                 qEditText.setError(null);
-                                queRef.child(key).child("qstring").setValue(qEditText.getText().toString());
+                                queRef.child(key).child("qstring").setValue(queString);
                                 queRef.child(key).child("qedited").setValue(1);
                                 queRef.child(key).child("time").setValue(ServerValue.TIMESTAMP);
                                 Toast.makeText(getContext(), "Question Edited successfully", Toast.LENGTH_LONG).show();
@@ -418,6 +441,12 @@ public class AnsFragment extends Fragment {
                                 EditText answerText = (EditText) view1.findViewById(R.id.input_answer);
                                 CheckBox checkAnonym = (CheckBox) view1.findViewById(R.id.check_aanonym);
 
+                                String ansString = answerText.getText().toString().trim();
+                                if(ansString == null || ansString.equals("")){
+                                    answerText.setError("Required");
+                                    return;
+                                }
+
                                 currentAnswers++;
                                 rootRef.child("question").child(key).child("replies").setValue(currentAnswers);
                                 final DatabaseReference newAnswerRef = rootRef.child("answer").child(key).child(String.valueOf(currentAnswers));
@@ -427,7 +456,7 @@ public class AnsFragment extends Fragment {
                                     newAnswerRef.child("aanonymity").setValue(0);
                                 }
                                 newAnswerRef.child("aedited").setValue(0);
-                                newAnswerRef.child("astring").setValue(answerText.getText().toString());
+                                newAnswerRef.child("astring").setValue(ansString);
                                 newAnswerRef.child("likes").setValue(0);
                                 newAnswerRef.child("r_no").setValue(-1);
                                 newAnswerRef.child("time").setValue(ServerValue.TIMESTAMP);
