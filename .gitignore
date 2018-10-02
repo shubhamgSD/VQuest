@@ -8,9 +8,15 @@
 /build
 /captures
 .externalNativeBuild
-/functions/*
+/functions/etc/*
+/functions/node_modules/*
+/functions/.eslintrc.json
+/functions/package.json
+/functions/package-lock.json
 /public/*
 .firebaserc
 firebase.json
 database.rules.json
 storage.rules
+.idea
+/.idea/
