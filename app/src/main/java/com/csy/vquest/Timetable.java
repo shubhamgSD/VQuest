@@ -8,16 +8,25 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.csy.vquest.NavigationDrawerActivity.current_deg;
+import static com.csy.vquest.NavigationDrawerActivity.current_dept;
+import static com.csy.vquest.NavigationDrawerActivity.current_year;
 
 
 public class Timetable extends Fragment {
@@ -46,15 +55,22 @@ public class Timetable extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_timetable, container, false);
 
+        getActivity().setTitle("Timetable");
        // toolbar = (Toolbar) view.findViewById(R.id.toolbar);
 //        loadingIndicator = (ProgressBar) view.findViewById(R.id.pb_loading_indicator);
 //        loadingIndicator.setVisibility(View.VISIBLE);
+
+        loadingIndicator = (ProgressBar) view.findViewById(R.id.pb_loading_indicator);
+
+        loadingIndicator.setVisibility(View.VISIBLE);
 
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+
 
         return view;
 
@@ -71,69 +87,53 @@ public class Timetable extends Fragment {
 
         private List<Fragment> timingFragments = new ArrayList<>();
         private List<String> days = new ArrayList<>();
+        private int loaded = 0;
 
         private DatabaseReference rootRef, surveyReference, surveyDoneRef;
 
         FirebasePagerAdapter(FragmentManager fm) {
             super(fm);
-
-            for(int i=1;i<8;i++)
+            final Timing tm = new Timing();
+            DatabaseReference timetablerefs = FirebaseDatabase.getInstance().getReference().child("timetable");
+            DatabaseReference timingrefs = timetablerefs.child(current_dept).child(current_deg).child(current_year);
+            for(int i=0;i<7;i++)
             {
-                timingFragments.add(new Timing());
-                       days.add("Day: "+i);
-            }
-           // loadingIndicator.setVisibility(View.GONE);
+                DatabaseReference dayrefs = timingrefs.child(tm.findDay(i));
 
-//            rootRef = FirebaseDatabase.getInstance().getReference();
-//            surveyReference = rootRef.child("survey");
-//            surveyDoneRef = rootRef.child("survey_done");
-//
-//            Query query = surveyReference.orderByChild("visibility").equalTo(1);
-//
-//            query.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    surveyFragments.clear();
-//                    surveyTitles.clear();
-//
-//                    int surveyCount = 0;
-//                    for (DataSnapshot surveySnapshot : dataSnapshot.getChildren()) {
-//                        surveyCount++;
-//                        final String surveyKey = surveySnapshot.getKey();
-//
-//                        SurveyBean survey = surveySnapshot.getValue(SurveyBean.class);
-//                        surveyFragments.add(OneSurveyFragment.newInstance(surveyKey, survey, surveyCount));
-//                        surveyTitles.add("Survey " + surveyCount);
-//
-//                        /*surveyDoneRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                                if (dataSnapshot != null){
-//                                    if (!dataSnapshot.child(surveyKey).child(firebaseUser).exists()){
-//
-//
-//
-//                                    }
-//                                }
-//
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//
-//                            }
-//                        });*/
-//                    }
-//                    notifyDataSetChanged();
-//                    loadingIndicator.setVisibility(View.GONE);
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
+                dayrefs.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (loaded <= 6) {
+                            Log.d("if", "done");
+                            TimingBean timingBean= dataSnapshot.getValue(TimingBean.class);
+                            timingFragments.add(Timing.newInstance(timingBean));
+
+                            notifyDataSetChanged();
+                            loadingIndicator.setVisibility(View.GONE);
+                            loaded++;
+                        } else {
+                            Log.d("else", "done");
+                            TimingBean timingBean= dataSnapshot.getValue(TimingBean.class);
+                            String key = dataSnapshot.getKey();
+                            int p = tm.findPosition(key);
+                            timingFragments.remove(p);
+                            timingFragments.add(p, Timing.newInstance(timingBean));
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+                days.add(tm.findDay(i));
+
+
+            }
+
         }
 
 
@@ -149,9 +149,7 @@ public class Timetable extends Fragment {
         }
 
         @Override
-        public CharSequence getPageTitle(int position) {
-            return days.get(position);
-        }
+        public CharSequence getPageTitle(int position) {return days.get(position); }
     }
 
 

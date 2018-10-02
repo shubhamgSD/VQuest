@@ -41,7 +41,8 @@
                 android:ems="10"
                 android:hint="Write here.."
                 android:inputType="textCapSentences|textMultiLine"
-                android:maxLength="70" />
+                android:maxLength="70"
+                />
 
             <RelativeLayout
                 android:id="@+id/rl_filter_spinner"

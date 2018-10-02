@@ -18,5 +18,5 @@
 firebase.json
 database.rules.json
 storage.rules
+/.idea/*
 .idea
-/.idea/

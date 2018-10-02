@@ -41,10 +41,11 @@
             android:id="@+id/nav_settings"
             android:title="Settings" />-->
 
-        <item
+      <!--  <item
             android:id="@+id/nav_setting"
             android:icon="@drawable/setting"
-            android:title="Setting" />
+            android:title="Setting" />-->
+
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
