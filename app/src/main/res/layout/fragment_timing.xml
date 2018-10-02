@@ -25,6 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="Time" />
 
         <TextView
@@ -32,6 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="Subject" />
 
         <TextView
@@ -39,6 +43,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="Teacher" />
 
     </TableRow>
@@ -58,21 +64,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="8:30" />
+            android:textColor="@color/black"
+            android:text="8:30 A.M." />
 
         <EditText
             android:id="@+id/sub_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Computer Networks" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
 
         <EditText
             android:id="@+id/teacher_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="xyz" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
     </TableRow>
 
     <TableRow android:layout_width="match_parent"
@@ -85,21 +102,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="9:30" />
+            android:textColor="@color/black"
+            android:text="9:30 A.M." />
 
         <EditText
             android:id="@+id/sub_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Computer Networks" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
 
         <EditText
             android:id="@+id/teacher_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="xyz" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
     </TableRow>
 
     <TableRow android:layout_width="match_parent"
@@ -112,21 +140,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="10:30" />
+            android:textColor="@color/black"
+            android:text="10:30 A.M." />
 
         <EditText
             android:id="@+id/sub_three"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Computer Networks" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
 
         <EditText
             android:id="@+id/teacher_three"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="xyz" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
     </TableRow>
 
     <TableRow android:layout_width="match_parent"
@@ -139,21 +178,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="11:30" />
+            android:textColor="@color/black"
+            android:text="11:30 A.M." />
 
         <EditText
             android:id="@+id/sub_four"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Computer Networks" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
 
         <EditText
             android:id="@+id/teacher_four"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="xyz" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
     </TableRow>
 
     <TableRow android:layout_width="match_parent"
@@ -166,21 +216,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="1:30" />
+            android:textColor="@color/black"
+            android:text="1:30 P.M." />
 
         <EditText
             android:id="@+id/sub_five"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Computer Networks" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
 
         <EditText
             android:id="@+id/teacher_five"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="xyz" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
     </TableRow>
 
     <TableRow android:layout_width="match_parent"
@@ -193,21 +254,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="2:30" />
+            android:textColor="@color/black"
+            android:text="2:30 P.M." />
 
         <EditText
             android:id="@+id/sub_six"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Computer Networks" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
 
         <EditText
             android:id="@+id/teacher_six"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="xyz" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
     </TableRow>
 
     <TableRow android:layout_width="match_parent"
@@ -220,21 +292,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="3:30" />
+            android:textColor="@color/black"
+            android:text="3:30 P.M." />
 
         <EditText
             android:id="@+id/sub_seven"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Computer Networks" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
 
         <EditText
             android:id="@+id/teacher_seven"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="xyz" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
     </TableRow>
 
     <TableRow android:layout_width="match_parent"
@@ -247,21 +330,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="4:30" />
+            android:textColor="@color/black"
+            android:text="4:30 P.M." />
 
         <EditText
             android:id="@+id/sub_eight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Computer Networks" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
 
         <EditText
             android:id="@+id/teacher_eight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="xyz" />
+            android:layout_margin="2dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:background="@android:color/transparent" />
     </TableRow>
 
     <View
@@ -280,23 +374,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="15dp"
             android:text="Location: " />
 
         <EditText
             android:id="@+id/location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="C01E" />
+            android:layout_margin="5dp"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="Enter classroom"
+            android:paddingTop="10dp" />
 
         <Button
-            android:id="@+id/save_timetable"
+            android:id="@+id/edit_timetable"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_gravity="center"
-            android:background="@color/colorPrimary"
-            android:text="Save" />
+            android:text="Edit"
+            android:textStyle="bold"
+            android:textColor="@color/naviation"
+
+            />
 
 
     </TableRow>
