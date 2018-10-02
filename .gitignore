@@ -20,3 +20,4 @@ database.rules.json
 storage.rules
 /.idea/*
 .idea
+/app/release/*
