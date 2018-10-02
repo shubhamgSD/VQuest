@@ -71,6 +71,7 @@
         android:layout_alignParentStart="true"
         android:background="@color/bottomtoolbar"
         app:itemTextColor="@color/back_questions"
+
         app:menu="@menu/bottom_navigation_menu" />
 
     <ProgressBar
