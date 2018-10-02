@@ -115,7 +115,7 @@ public class CustomFirebaseListAdapter extends FirebaseListAdapter<QuestionBean>
         timeView.setText(day + "/" + month + "/" + year);
 
         replyView.setText(model.getReplies() + " replies");
-        loadingIndicator.setVisibility(View.GONE);
+//        loadingIndicator.setVisibility(View.GONE);
         return view;
 
     }
@@ -124,4 +124,9 @@ public class CustomFirebaseListAdapter extends FirebaseListAdapter<QuestionBean>
     protected void populateView(View v, QuestionBean model, int position) {
     }
 
+    @Override
+    public void onDataChanged() {
+        super.onDataChanged();
+        loadingIndicator.setVisibility(View.GONE);
+    }
 }

@@ -78,7 +78,7 @@ public class Timetable extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
 
-        FirebasePagerAdapter firebasePagerAdapter = new FirebasePagerAdapter(getFragmentManager());
+        FirebasePagerAdapter firebasePagerAdapter = new FirebasePagerAdapter(getActivity().getSupportFragmentManager());
         viewPager.setAdapter(firebasePagerAdapter);
 
     }

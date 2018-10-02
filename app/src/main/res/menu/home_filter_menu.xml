@@ -12,7 +12,7 @@
 
     <item android:id="@+id/search"
         android:title="@string/search_title"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/ic_search_black_24dp"
         app:showAsAction="collapseActionView|ifRoom"
         app:actionViewClass="android.widget.SearchView" />
 
@@ -64,7 +64,7 @@
     <item android:id="@+id/survey_menu"
         app:showAsAction="ifRoom"
         android:title="Survey Questions"
-        android:icon="@drawable/survey_icon"/>
+        android:icon="@drawable/ic_survey_black_24dp"/>
 
 
 </menu>

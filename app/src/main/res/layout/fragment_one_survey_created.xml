@@ -17,15 +17,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/uimage_view1"
+            <TextView
+                android:id="@+id/tv_user_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/anonymous_user_image"
-                android:contentDescription="User Image" />
+                android:background="@drawable/ic_person_black_24dp" />
 
             <TextView
                 android:id="@+id/uname_view2"
@@ -34,11 +33,11 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="18dp"
                 android:layout_marginStart="18dp"
-                android:layout_toRightOf="@+id/uimage_view1"
+                android:layout_toRightOf="@+id/tv_user_image"
                 android:text="UserName"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textStyle="bold"
-                android:layout_toEndOf="@+id/uimage_view1" />
+                android:layout_toEndOf="@+id/tv_user_image" />
 
             <TextView
                 android:id="@+id/time_view2"
@@ -77,6 +76,7 @@
 
                     <TableRow>
                         <TextView
+                            android:id="@+id/tv_option1"
                             android:layout_column="1"
                             android:text="Option 1"
                             android:padding="10dp"
@@ -91,6 +91,7 @@
 
                     <TableRow>
                         <TextView
+                            android:id="@+id/tv_option2"
                             android:layout_column="1"
                             android:text="Option 2"
                             android:padding="10dp"
@@ -107,6 +108,7 @@
                         android:id="@+id/row_option3"
                         android:visibility="gone">
                         <TextView
+                            android:id="@+id/tv_option3"
                             android:layout_column="1"
                             android:text="Option 3"
                             android:padding="10dp"
@@ -123,6 +125,7 @@
                         android:id="@+id/row_option4"
                         android:visibility="gone">
                         <TextView
+                            android:id="@+id/tv_option4"
                             android:layout_column="1"
                             android:text="Option 4"
                             android:padding="10dp"

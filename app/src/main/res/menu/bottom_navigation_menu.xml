@@ -3,19 +3,19 @@
 
     <item
         android:id="@+id/action_survey"
-        android:icon="@drawable/survey"
+        android:icon="@drawable/ic_survey_black_24dp"
         android:title="Survey"/>
 
     <item
         android:id="@+id/action_question"
-        android:icon="@drawable/askicon"
+        android:icon="@drawable/ic_question_black_24dp"
         android:title="Ask"
         />
 
 
     <item
         android:id="@+id/action_announcement"
-        android:icon="@drawable/announcement"
+        android:icon="@drawable/ic_announcement_black_24dp"
         android:title="Announcement"/>
 
 

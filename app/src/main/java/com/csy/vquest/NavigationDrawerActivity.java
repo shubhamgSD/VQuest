@@ -143,14 +143,15 @@ public class NavigationDrawerActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else super.onBackPressed();
+        /*else {
 
             HomePageFragment homePageFragment = (HomePageFragment) getSupportFragmentManager().findFragmentByTag("home_page_fragment");
             if (homePageFragment != null && homePageFragment.isVisible())
                 moveTaskToBack(true);
             else
                 super.onBackPressed();
-        }
+        }*/
     }
 
     @Override
@@ -227,7 +228,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 fragment = new QuestionFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, fragment, "question_fragment")
-                        .addToBackStack("questionFragment")
+                        .addToBackStack(null)
                         .commit();
                 break;
 
@@ -244,7 +245,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 fragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, fragment, "my_question_fragment")
-                        .addToBackStack("myQuestionFragment")
+                        .addToBackStack(null)
                         .commit();
 
                 break;
@@ -259,7 +260,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 fragment = new AnnouncementFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, fragment, "announcement_fragment")
-                        .addToBackStack("announcementFragment")
+                        .addToBackStack(null)
                         .commit();
                 break;
 
@@ -324,7 +325,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 fragment = new CreateSurveyFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, fragment, "create_survey_fragment")
-                        .addToBackStack("createSurveyFragment")
+                        .addToBackStack(null)
                         .commit();
 
                 break;
@@ -339,7 +340,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 fragment = new MySurveyCreatedFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, fragment, "my_survey_created_fragment")
-                        .addToBackStack("mySurveyCreatedFragment")
+                        .addToBackStack(null)
                         .commit();
 
                 break;
@@ -355,14 +356,27 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 fragment = new Timetable();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, fragment, "my_timetable_fragment")
-                        .addToBackStack("myTimetableFragment")
+                        .addToBackStack(null)
                         .commit();
                 break;
 
             case R.id.nav_logout:
-                firebaseAuth.signOut();
-                Intent intent = new Intent(this, SignInActivity.class);
-                startActivity(intent);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Logout")
+                        .setMessage("Are you sure?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                firebaseAuth.signOut();
+                                Toast.makeText(NavigationDrawerActivity.this, "You have been successfully logged out.", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(NavigationDrawerActivity.this, SignInActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .create().show();
+
                 break;
 
             case R.id.nav_aboutus:
@@ -376,7 +390,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 fragment = new AboutUsFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, fragment, "about_us_fragment")
-                        .addToBackStack("aboutUsFragment")
+                        .addToBackStack(null)
                         .commit();
                 break;
 
@@ -397,7 +411,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment, fragment, "ans_fragment")
-                .addToBackStack("ansFragment")
+                .addToBackStack(null)
                 .commit();
     }
 

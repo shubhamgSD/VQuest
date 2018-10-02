@@ -2,6 +2,7 @@ package com.csy.vquest;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,23 +18,33 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btn;
     FirebaseAuth firebaseAuth;
+    private static final int DELAY = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        final FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
-        Intent intent;
+        new Handler().postDelayed(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent;
 
-        if (currentUser == null) {
-            intent = new Intent(this, SignInActivity.class);
-        } else {
-            intent = new Intent(this, NavigationDrawerActivity.class);
-        }
+                        if (currentUser == null) {
+                            intent = new Intent(MainActivity.this, SignInActivity.class);
+                        } else {
+                            intent = new Intent(MainActivity.this, NavigationDrawerActivity.class);
+                        }
 
-        startActivity(intent);
+                        startActivity(intent);
+                        finish();
+                    }
+                },
+                DELAY
+        );
 
 
     }

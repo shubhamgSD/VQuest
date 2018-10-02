@@ -249,8 +249,8 @@ public class AnsFragment extends Fragment {
                                         aEditText.setError(null);
                                         DatabaseReference ansRef = rootRef.child("answer").child(key).child(firebaseListAdapter.getRef(tempPos).getKey());
                                         ansRef.child("astring").setValue(ansString);
-                                        ansRef.child("aedited").setValue(1);
                                         ansRef.child("time").setValue(ServerValue.TIMESTAMP);
+                                        ansRef.child("aedited").setValue(1);
                                         Toast.makeText(getContext(), "Answer Edited successfully", Toast.LENGTH_LONG).show();
                                     }
 
@@ -450,18 +450,18 @@ public class AnsFragment extends Fragment {
                                 currentAnswers++;
                                 rootRef.child("question").child(key).child("replies").setValue(currentAnswers);
                                 final DatabaseReference newAnswerRef = rootRef.child("answer").child(key).child(String.valueOf(currentAnswers));
+                                newAnswerRef.child("username").setValue(current_uname);
+                                newAnswerRef.child("astring").setValue(ansString);
+                                newAnswerRef.child("likes").setValue(0);
+                                newAnswerRef.child("time").setValue(ServerValue.TIMESTAMP);
                                 if (checkAnonym.isChecked()) {
                                     newAnswerRef.child("aanonymity").setValue(1);
                                 } else {
                                     newAnswerRef.child("aanonymity").setValue(0);
                                 }
                                 newAnswerRef.child("aedited").setValue(0);
-                                newAnswerRef.child("astring").setValue(ansString);
-                                newAnswerRef.child("likes").setValue(0);
                                 newAnswerRef.child("r_no").setValue(-1);
-                                newAnswerRef.child("time").setValue(ServerValue.TIMESTAMP);
                                 newAnswerRef.child("visibility").setValue(1);
-                                newAnswerRef.child("username").setValue(current_uname);
 
                                 Toast.makeText(getActivity(), "Answered succesfully", Toast.LENGTH_SHORT).show();
 

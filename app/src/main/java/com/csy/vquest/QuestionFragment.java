@@ -194,7 +194,7 @@ public class QuestionFragment extends Fragment implements AdapterView.OnItemSele
                                             alertDialog.setTitle("Warning");
                                             alertDialog.setMessage("Looks like what you are writing is not appropriate and may get deleted " +
                                                     "in future. Do you still want to continue?");
-                                            alertDialog.setIcon(R.drawable.alert);
+                                            alertDialog.setIcon(R.drawable.ic_warning_black_24dp);
                                             alertDialog.setButton(Dialog.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {

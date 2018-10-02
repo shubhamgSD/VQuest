@@ -33,6 +33,7 @@ public class OneSurveyCreatedFragment extends Fragment {
     private TextView unameView;
     private TextView timeView;
     private TableRow optionRow3, optionRow4;
+    private TextView tvOption1, tvOption2, tvOption3, tvOption4;
     private TextView votesView1, votesView2, votesView3, votesView4;
     private TextView totalVotesView, totalViewsView;
 
@@ -67,6 +68,10 @@ public class OneSurveyCreatedFragment extends Fragment {
         timeView = (TextView) view.findViewById(R.id.time_view2);
         optionRow3 = (TableRow) view.findViewById(R.id.row_option3);
         optionRow4 = (TableRow) view.findViewById(R.id.row_option4);
+        tvOption1 = (TextView) view.findViewById(R.id.tv_option1);
+        tvOption2 = (TextView) view.findViewById(R.id.tv_option2);
+        tvOption3 = (TextView) view.findViewById(R.id.tv_option3);
+        tvOption4 = (TextView) view.findViewById(R.id.tv_option4);
         votesView1 = (TextView) view.findViewById(R.id.tv_survey_votes1);
         votesView2 = (TextView) view.findViewById(R.id.tv_survey_votes2);
         votesView3 = (TextView) view.findViewById(R.id.tv_survey_votes3);
@@ -85,6 +90,17 @@ public class OneSurveyCreatedFragment extends Fragment {
         int year = cal.get(Calendar.YEAR);
 
         timeView.setText(day + "/" + month + "/" + year);
+
+        tvOption1.setText(surveyBean.getOption1());
+        tvOption2.setText(surveyBean.getOption2());
+        if (!surveyBean.getOption3().equals(SurveyBean.NULL_VALUE_STRING)) {
+            optionRow3.setVisibility(View.VISIBLE);
+            tvOption3.setText(surveyBean.getOption3());
+        }
+        if (!surveyBean.getOption4().equals(SurveyBean.NULL_VALUE_STRING)) {
+            optionRow4.setVisibility(View.VISIBLE);
+            tvOption4.setText(surveyBean.getOption4());
+        }
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference surveyVotesRef = rootRef.child("survey_votes").child(String.valueOf(surveyKey));
@@ -106,12 +122,10 @@ public class OneSurveyCreatedFragment extends Fragment {
 
                 if(votes3 > -1){
                     totalVotes += votes3;
-                    optionRow3.setVisibility(View.VISIBLE);
                     votesView3.setText(String.valueOf(votes3));
                 }
                 if(votes4 > -1){
                     totalVotes += votes4;
-                    optionRow4.setVisibility(View.VISIBLE);
                     votesView4.setText(String.valueOf(votes4));
                 }
 

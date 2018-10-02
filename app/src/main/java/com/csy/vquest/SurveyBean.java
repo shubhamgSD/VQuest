@@ -9,6 +9,8 @@ import android.os.Parcelable;
 
 public class SurveyBean implements Parcelable {
 
+    public final static String NULL_VALUE_STRING = "__NULL__";
+
     private String degree;
     private String department;
     private String option1;

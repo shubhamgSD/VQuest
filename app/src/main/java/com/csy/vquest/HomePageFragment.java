@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -105,9 +106,9 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
         if (item.getItemId() == R.id.survey_menu) {
 
             Fragment viewSurveyFragment = new ViewSurveyFragment();
-            getFragmentManager().beginTransaction()
+            getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment, viewSurveyFragment, "view_survey_fragment")
-                    .addToBackStack("viewSurveyFragment")
+                    .addToBackStack(null)
                     .commit();
 
         } else {
@@ -216,28 +217,29 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        fragmentType = getArguments().getString("fragment");
+    }
+
+    @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        fragmentType = getArguments().getString("fragment");
-
-        if (fragmentType == "home") {
-            getActivity().setTitle("Home");
-        } else {
-            getActivity().setTitle("My Questions");
-        }
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
         list = (RecyclerView) view.findViewById(R.id.list);
-        mLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, true);
-        mLayoutManager.setStackFromEnd(true);
-        list.setLayoutManager(mLayoutManager);
-
-
         if (fragmentType == "home") {
+            getActivity().setTitle("Home");
             setHasOptionsMenu(true);
+            list.setVisibility(View.VISIBLE);
+            mLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, true);
+            mLayoutManager.setStackFromEnd(true);
+            list.setLayoutManager(mLayoutManager);
         } else {
+            getActivity().setTitle("My Questions");
             setHasOptionsMenu(false);
+            list.setVisibility(View.GONE);
         }
         loadingIndicator = (ProgressBar) view.findViewById(R.id.pb_loading_indicator);
         loadingIndicator.setVisibility(View.VISIBLE);
@@ -256,9 +258,9 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                     case R.id.action_survey:
 
                         fragment = new CreateSurveyFragment();
-                        getFragmentManager().beginTransaction()
+                        getActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragment, fragment, "create_survey_fragment")
-                                .addToBackStack("createSurveyFragment")
+                                .addToBackStack(null)
                                 .commit();
 
                         break;
@@ -266,9 +268,9 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                     case R.id.action_question:
 
                         fragment = new QuestionFragment();
-                        getFragmentManager().beginTransaction()
+                        getActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragment, fragment, "question_fragment")
-                                .addToBackStack("questionFragment")
+                                .addToBackStack(null)
                                 .commit();
 
                         break;
@@ -276,9 +278,9 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
                     case R.id.action_announcement:
 
                         fragment = new AnnouncementFragment();
-                        getFragmentManager().beginTransaction()
+                        getActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragment, fragment, "announcement_fragment")
-                                .addToBackStack("announcementFragment")
+                                .addToBackStack(null)
                                 .commit();
 
                         break;
@@ -333,9 +335,9 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
 
         Fragment fragment = new AnsFragment();
         fragment.setArguments(bundle);
-        getFragmentManager().beginTransaction()
+        getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment, fragment)
-                .addToBackStack("ansFragment")
+                .addToBackStack(null)
                 .commit();
 
     }
@@ -343,23 +345,25 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseRecyclerAdapter<AnnouncementBean,AnnouncementViewHolder>firebaseRecyclerAdapter
-                = new FirebaseRecyclerAdapter<AnnouncementBean, AnnouncementViewHolder>
-                (AnnouncementBean.class, R.layout.announcement_item,AnnouncementViewHolder.class,announcementRef) {
-            @Override
-            protected void populateViewHolder(AnnouncementViewHolder viewHolder, AnnouncementBean model, int position) {
-                if ((model.getDegree().equals(ALL) || model.getDegree().equals(current_deg))
-                        && (model.getDepartment().equals(ALL) || model.getDepartment().equals(current_dept))
-                        && (model.getYear().equals(ALL) || model.getYear().equals(current_year))) {
+        if (fragmentType.equals("home")) {
+            FirebaseRecyclerAdapter<AnnouncementBean,AnnouncementViewHolder>firebaseRecyclerAdapter
+                    = new FirebaseRecyclerAdapter<AnnouncementBean, AnnouncementViewHolder>
+                    (AnnouncementBean.class, R.layout.announcement_item,AnnouncementViewHolder.class,announcementRef) {
+                @Override
+                protected void populateViewHolder(AnnouncementViewHolder viewHolder, AnnouncementBean model, int position) {
+                    if ((model.getDegree().equals(ALL) || model.getDegree().equals(current_deg))
+                            && (model.getDepartment().equals(ALL) || model.getDepartment().equals(current_dept))
+                            && (model.getYear().equals(ALL) || model.getYear().equals(current_year))) {
 
-                    viewHolder.setannouncement(model.getAstring());
-                    viewHolder.setusername(model.getUsername());
-                    viewHolder.settime(model.getTime());
+                        viewHolder.setannouncement(model.getAstring());
+                        viewHolder.setusername(model.getUsername());
+                        viewHolder.settime(model.getTime());
 
+                    }
                 }
-            }
-        };
-        list.setAdapter(firebaseRecyclerAdapter);
+            };
+            list.setAdapter(firebaseRecyclerAdapter);
+        }
 
     }
 

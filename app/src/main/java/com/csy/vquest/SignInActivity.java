@@ -60,11 +60,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
-    }
-
-    @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
@@ -92,6 +87,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
                                         Intent intent = new Intent(SignInActivity.this, NavigationDrawerActivity.class);
                                         startActivity(intent);
+                                        finish();
                                     } else {
 
                                         progressDialog.dismiss();

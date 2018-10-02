@@ -39,9 +39,9 @@ public class MySurveysFragment extends Fragment implements View.OnClickListener 
         switch(v.getId()){
             case R.id.tv_surveys_created:
                 fragment = new MySurveyCreatedFragment();
-                getFragmentManager().beginTransaction()
+                getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment, fragment, "my_survey_created_fragment")
-                        .addToBackStack("mysurveycreatedfragment")
+                        .addToBackStack(null)
                         .commit();
                 break;
 

@@ -27,7 +27,7 @@
         android:layout_marginLeft="27dp"
         android:layout_marginStart="27dp"
         android:layout_marginTop="76dp"
-        android:text="Developed by,"
+        android:text="Developed by"
         android:textColor="@color/white"
         android:textStyle="bold|italic" />
 
@@ -37,10 +37,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView8"
         android:layout_marginTop="16dp"
-        android:layout_toLeftOf="@+id/imageView"
-        android:layout_toStartOf="@+id/imageView"
+        android:layout_marginLeft="60dp"
         android:text="Chirag Mittal"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:layout_marginStart="75dp" />
 
     <TextView
         android:id="@+id/textView10"
@@ -93,7 +93,7 @@
         android:layout_alignStart="@+id/textView13"
         android:layout_below="@+id/textView14"
         android:layout_marginTop="16dp"
-        android:text="at, "
+        android:text="at "
         android:textColor="@color/white"
         android:textStyle="bold|italic" />
 
@@ -101,11 +101,11 @@
         android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView15"
-        android:layout_toEndOf="@+id/textView15"
-        android:layout_toRightOf="@+id/textView15"
+        android:layout_below="@+id/textView15"
+        android:layout_alignStart="@id/textView14"
         android:text="Shri Mata Vaishno Devi University, Katra"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:layout_alignLeft="@id/textView14" />
 
     <TextView
         android:id="@+id/textView19"

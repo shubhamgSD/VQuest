@@ -6,33 +6,33 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/home"
+            android:icon="@drawable/ic_home_black_24dp"
             android:title="Home" />
         <item
             android:id="@+id/nav_new_que"
-            android:icon="@drawable/question"
+            android:icon="@drawable/ic_question_black_24dp"
             android:title="New Question" />
         <item
             android:id="@+id/nav_create_survey"
-            android:icon="@drawable/survey"
+            android:icon="@drawable/ic_survey_black_24dp"
             android:title="Create Survey" />
         <item
             android:id="@+id/nav_new_ann"
-            android:icon="@drawable/announcement"
+            android:icon="@drawable/ic_announcement_black_24dp"
             android:title="New Announcement" />
 
         <item
             android:id="@+id/nav_my_timetable"
-            android:icon="@drawable/timetablett"
+            android:icon="@drawable/ic_table_black_24dp"
             android:title="Timetable" />
 
         <item
             android:id="@+id/nav_my_que"
-            android:icon="@drawable/myquestionsimage"
+            android:icon="@drawable/ic_my_questions_black_24dp"
             android:title="My Questions" />
         <item
             android:id="@+id/nav_my_surveys"
-            android:icon="@drawable/surveys"
+            android:icon="@drawable/ic_my_surveys_24dp"
             android:title="My Surveys" />
         <!--<item
             android:id="@+id/nav_my_ans"
@@ -48,16 +48,16 @@
 
         <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/logout"
+            android:icon="@drawable/ic_power_black_24dp"
             android:title="Logout" />
 
         <item
             android:id="@+id/nav_feedback"
-            android:icon="@drawable/feedback"
+            android:icon="@drawable/ic_feedback_black_24dp"
             android:title="Help and Feedback" />
         <item
             android:id="@+id/nav_aboutus"
-            android:icon="@drawable/aboutus"
+            android:icon="@drawable/ic_people_black_24dp"
             android:title="About us" />
 
 

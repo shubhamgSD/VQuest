@@ -29,6 +29,8 @@ public class MySurveyCreatedFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ProgressBar loadingIndicator;
+    private FirebasePagerAdapter firebasePagerAdapter;
+    private boolean isAlreadyRendered = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,19 +45,13 @@ public class MySurveyCreatedFragment extends Fragment {
         viewPager = (ViewPager) view.findViewById(R.id.view_pager_survey_created);
         loadingIndicator = (ProgressBar) view.findViewById(R.id.pb_loading_indicator);
 
-        loadingIndicator.setVisibility(View.VISIBLE);
-
-        setupViewPager(viewPager);
-        tabLayout.setupWithViewPager(viewPager);
+        if (!isAlreadyRendered) {
+            loadingIndicator.setVisibility(View.VISIBLE);
+            firebasePagerAdapter = new FirebasePagerAdapter(getChildFragmentManager());
+            isAlreadyRendered = true;
+        }
 
         return view;
-    }
-
-    private void setupViewPager(ViewPager viewPager) {
-
-        FirebasePagerAdapter firebasePagerAdapter = new FirebasePagerAdapter(getFragmentManager());
-        viewPager.setAdapter(firebasePagerAdapter);
-
     }
 
     private class FirebasePagerAdapter extends FragmentStatePagerAdapter{
@@ -115,4 +111,10 @@ public class MySurveyCreatedFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewPager.setAdapter(firebasePagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+    }
 }
