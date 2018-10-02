@@ -6,13 +6,57 @@ package com.csy.vquest;
 
 public class AnnouncementBean {
     private String astring;
+    private String degree;
+    private String department;
     private long time;
     private String username;
+    private long visibility;
+    private String year;
 
-    public AnnouncementBean(int aanonymity, String astring, long time, String username) {
+    public AnnouncementBean() {
+
+    }
+
+    public AnnouncementBean(String astring, String degree, String department, long time, String username,long visibility, String year) {
         this.astring = astring;
+        this.degree = degree;
+        this.department = department;
         this.time = time;
         this.username = username;
+        this.visibility = visibility;
+        this.year = year;
+    }
+
+    public long getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(long visibility) {
+        this.visibility = visibility;
+    }
+
+    public String getDegree() {
+        return degree;
+    }
+
+    public void setDegree(String degree) {
+        this.degree = degree;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public String getAstring() {
@@ -39,7 +83,4 @@ public class AnnouncementBean {
         this.username = username;
     }
 
-    public AnnouncementBean(){
-
-    }
 }

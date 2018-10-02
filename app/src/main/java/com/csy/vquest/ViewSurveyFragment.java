@@ -22,14 +22,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static com.csy.vquest.NavigationDrawerActivity.current_deg;
 import static com.csy.vquest.NavigationDrawerActivity.current_dept;
 import static com.csy.vquest.NavigationDrawerActivity.current_year;
+import static com.google.firebase.database.ServerValue.TIMESTAMP;
 
 public class ViewSurveyFragment extends Fragment {
 
@@ -90,45 +96,25 @@ public class ViewSurveyFragment extends Fragment {
                     for (DataSnapshot surveySnapshot : dataSnapshot.getChildren()) {
                         SurveyBean survey = surveySnapshot.getValue(SurveyBean.class);
 
-                        Log.d("for loop", "enter " + surveyCount);
-                        Log.d(survey.getDegree(), current_deg);
-                        Log.d(survey.getDepartment(), current_dept);
-                        Log.d(survey.getYear(), current_year);
-
-
-                        if((survey.getDegree().equals(ALL) || survey.getDegree().equals(current_deg))
+                        if (survey != null
+                                && (survey.getDegree().equals(ALL) || survey.getDegree().equals(current_deg))
                                 && (survey.getDepartment().equals(ALL) || survey.getDepartment().equals(current_dept))
-                                &&(survey.getYear().equals(ALL) || survey.getYear().equals(current_year))) {
-                            Log.d("if", "enter " + surveyCount);
-                            surveyCount++;
-                            final String surveyKey = surveySnapshot.getKey();
+                                && (survey.getYear().equals(ALL) || survey.getYear().equals(current_year))) {
 
-                            surveyFragments.add(OneSurveyFragment.newInstance(surveyKey, survey, surveyCount));
-                            surveyTitles.add("Survey " + surveyCount);
+                            long timeDiff = System.currentTimeMillis() - survey.getTime();
 
+                            if (timeDiff < 86400000) {
+                                surveyCount++;
+                                final String surveyKey = surveySnapshot.getKey();
 
+                                surveyFragments.add(OneSurveyFragment.newInstance(surveyKey, survey, surveyCount));
+                                surveyTitles.add("Survey " + surveyCount);
+                            } else {
+                                surveySnapshot.child("visibility").getRef().setValue(0);
+                            }
 
                         }
 
-                        /*surveyDoneRef.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                if (dataSnapshot != null){
-                                    if (!dataSnapshot.child(surveyKey).child(firebaseUser).exists()){
-
-
-
-                                    }
-                                }
-
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });*/
                     }
                     notifyDataSetChanged();
                     loadingIndicator.setVisibility(View.GONE);

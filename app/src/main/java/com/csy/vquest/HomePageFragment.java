@@ -56,43 +56,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.content.ContentValues.TAG;
+import static com.csy.vquest.NavigationDrawerActivity.current_deg;
+import static com.csy.vquest.NavigationDrawerActivity.current_dept;
 import static com.csy.vquest.NavigationDrawerActivity.current_uname;
+import static com.csy.vquest.NavigationDrawerActivity.current_year;
 
 public class HomePageFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private ImageButton imageButton;
     private ListView listView;
     private ProgressBar loadingIndicator;
     private BottomNavigationView bottomNavigationView;
 
     private String fragmentType;
 
-    private DatabaseReference announcementRef;
+    private Query announcementRef;
     private RecyclerView list;
     private LinearLayoutManager mLayoutManager;
     private static int year;
     private static int month;
     private static int day;
-    private static int hour;
-    private static int minute;
-    private static int seconds;
 
-//    Parcelable state;
+    private final static String ALL = "All";
 
-//    private int indexList = 0;
-//    private int toplist = 0;
-//    private View vList;
-    private SearchView searchView;
-    private ActionBar bar;
-    private String[] values;
-    CursorAdapter adapter;
-    Query query;
-    Map<String, String>  map;
-    int count=0;
     int i=-1;
-   static int pos=0;
-
-
 
     CustomFirebaseListAdapter firebaseListAdapter;
 
@@ -242,8 +228,6 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
         }
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
-        announcementRef = FirebaseDatabase.getInstance().getReference("announcement");
-        announcementRef.keepSynced(true);
         list = (RecyclerView) view.findViewById(R.id.list);
         mLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, true);
         mLayoutManager.setStackFromEnd(true);
@@ -307,6 +291,8 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference questionRef = rootRef.child("question");
+        announcementRef = rootRef.child("announcement").orderByChild("visibility").equalTo(1);
+        announcementRef.keepSynced(true);
 
         if (fragmentType == "home") {
             firebaseListAdapter = new CustomFirebaseListAdapter(getActivity(),
@@ -357,13 +343,20 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseRecyclerAdapter<AnnouncementBean,AnnouncementViewHolder>firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<AnnouncementBean, AnnouncementViewHolder>
+        FirebaseRecyclerAdapter<AnnouncementBean,AnnouncementViewHolder>firebaseRecyclerAdapter
+                = new FirebaseRecyclerAdapter<AnnouncementBean, AnnouncementViewHolder>
                 (AnnouncementBean.class, R.layout.announcement_item,AnnouncementViewHolder.class,announcementRef) {
             @Override
             protected void populateViewHolder(AnnouncementViewHolder viewHolder, AnnouncementBean model, int position) {
-                viewHolder.setannouncement(model.getAstring());
-                viewHolder.setusername(model.getUsername());
-                viewHolder.settime(model.getTime());
+                if ((model.getDegree().equals(ALL) || model.getDegree().equals(current_deg))
+                        && (model.getDepartment().equals(ALL) || model.getDepartment().equals(current_dept))
+                        && (model.getYear().equals(ALL) || model.getYear().equals(current_year))) {
+
+                    viewHolder.setannouncement(model.getAstring());
+                    viewHolder.setusername(model.getUsername());
+                    viewHolder.settime(model.getTime());
+
+                }
             }
         };
         list.setAdapter(firebaseRecyclerAdapter);
@@ -390,14 +383,12 @@ public class HomePageFragment extends Fragment implements AdapterView.OnItemClic
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
             year = cal.get(Calendar.YEAR);
-            month = cal.get(Calendar.MONTH);
+            month = cal.get(Calendar.MONTH) + 1;
             day = cal.get(Calendar.DAY_OF_MONTH);
-            hour = cal.get(Calendar.HOUR_OF_DAY);
-            minute = cal.get(Calendar.MINUTE);
-            seconds = cal.get(Calendar.SECOND);
             announcement_time.setText(day+"/"+month+"/"+year);
 
         }
+
     }
 
 }

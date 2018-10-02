@@ -319,11 +319,10 @@ public class CreateSurveyFragment extends Fragment implements View.OnClickListen
             newSurveyRef.child("degree").setValue(deg);
             newSurveyRef.child("department").setValue(dept);
             newSurveyRef.child("year").setValue(year);
-
+            newSurveyRef.child("time").setValue(ServerValue.TIMESTAMP);
             newSurveyRef.child("sanonymity").setValue(anonymity);
             newSurveyRef.child("sstring").setValue(surveyQuestion);
             newSurveyRef.child("views").setValue(views);
-            newSurveyRef.child("time").setValue(ServerValue.TIMESTAMP);
             newSurveyRef.child("r_no").setValue(r_no);
             newSurveyRef.child("visibility").setValue(visibility);
             newSurveyRef.child("username").setValue(current_uname);
