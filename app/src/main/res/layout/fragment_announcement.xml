@@ -44,15 +44,56 @@
                 android:maxLength="70"
                 />
 
+            <RelativeLayout
+                android:id="@+id/rl_filter_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_below="@id/writeannounce">
+
+                <TextView
+                    android:id="@+id/tv_audience"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Select audience:"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="8dp"/>
+
+                <Spinner
+                    android:id="@+id/spinner_dept"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_audience"
+                    android:layout_alignParentLeft="true"/>
+
+                <Spinner
+                    android:id="@+id/spinner_deg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_audience"
+                    android:layout_centerHorizontal="true"/>
+
+                <Spinner
+                    android:id="@+id/spinner_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_audience"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
             <Button
                 android:id="@+id/buttonannounce"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/writeannounce"
+                android:layout_below="@id/rl_filter_spinner"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:background="@color/naviation"
                 android:textColor="@color/white"
                 android:text="Make Announcement" />
